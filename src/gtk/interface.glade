@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk+" version="3.24"/>
-  <object class="GtkWindow">
+  <object class="GtkWindow" id="shotopof">
     <property name="can-focus">False</property>
     <child>
       <object class="GtkPaned">
@@ -26,76 +26,22 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton">
-                <property name="label" translatable="yes">button</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">True</property>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">0</property>
-              </packing>
+              <placeholder/>
             </child>
             <child>
-              <object class="GtkButton">
-                <property name="label" translatable="yes">button</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">True</property>
-              </object>
-              <packing>
-                <property name="left-attach">2</property>
-                <property name="top-attach">0</property>
-              </packing>
+              <placeholder/>
             </child>
             <child>
-              <object class="GtkButton">
-                <property name="label" translatable="yes">button</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">True</property>
-              </object>
-              <packing>
-                <property name="left-attach">3</property>
-                <property name="top-attach">0</property>
-              </packing>
+              <placeholder/>
             </child>
             <child>
-              <object class="GtkButton">
-                <property name="label" translatable="yes">button</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">True</property>
-              </object>
-              <packing>
-                <property name="left-attach">4</property>
-                <property name="top-attach">0</property>
-              </packing>
+              <placeholder/>
             </child>
             <child>
-              <object class="GtkButton">
-                <property name="label" translatable="yes">button</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">True</property>
-              </object>
-              <packing>
-                <property name="left-attach">5</property>
-                <property name="top-attach">0</property>
-              </packing>
+              <placeholder/>
             </child>
             <child>
-              <object class="GtkButton">
-                <property name="label" translatable="yes">button</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">True</property>
-              </object>
-              <packing>
-                <property name="left-attach">6</property>
-                <property name="top-attach">0</property>
-              </packing>
+              <placeholder/>
             </child>
           </object>
           <packing>
@@ -107,6 +53,7 @@
           <object class="GtkImage">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
+            <property name="stock">gtk-missing-image</property>
           </object>
           <packing>
             <property name="resize">True</property>
