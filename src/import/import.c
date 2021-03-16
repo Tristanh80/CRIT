@@ -170,32 +170,3 @@ void greyscale(SDL_Surface *img)
 }
 
 
-/*
-   int main()
-   {
-   SDL_Surface* image_surface;
-   SDL_Surface* screen_surface;
-
-   void init_sdl();
-
-   image_surface = load_image("my_image.jpg");
-   screen_surface = display_image(image_surface);
-
-   wait_for_keypressed();
-
-   greyscale(image_surface);
-//screen_surface = display_image(image_surface);
-
-//wait_for_keypressed();
-
-SDL_Surface *img2 = copy_image(image_surface);
-
-screen_surface = display_image(img2);
-
-wait_for_keypressed();
-
-SDL_FreeSurface(image_surface);
-SDL_FreeSurface(screen_surface);
-
-return 0;
-}*/
