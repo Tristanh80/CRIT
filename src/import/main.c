@@ -18,12 +18,24 @@ int main()
 
     wait_for_keypressed();
 
-    SDL_FreeSurface(image_surface);
-    SDL_FreeSurface(screen_surface);
+    greyscale(image_surface);
+    //screen_surface = display_image(image_surface);
+
+    //wait_for_keypressed();
 
     SDL_Surface *img2 = copy_image(image_surface);
 
+    screen_surface = display_image(img2);
+
+    wait_for_keypressed();
+
+    SDL_SaveBMP(screen_surface, "savebmp.bmp");
+
+    SDL_FreeSurface(image_surface);
+    SDL_FreeSurface(screen_surface);
+
     return 0;
+
 }
 
 
