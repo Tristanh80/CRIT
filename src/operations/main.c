@@ -1,10 +1,12 @@
 #include "pixels.h"
 #include "grey.h"
+#include "filters.h"
 
 #include <stdlib.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <err.h>
+#include <string.h>
 
 
 SDL_Surface* load_image(char *path)
@@ -67,7 +69,7 @@ void wait_for_keypressed()
 
 
 
-int main()
+int main(int argc, char* argv[])
 {
     SDL_Surface* image_surface;
     SDL_Surface* screen_surface;
@@ -77,22 +79,48 @@ int main()
     image_surface = load_image("my_image.jpg");
     screen_surface = display_image(image_surface);
 
-    wait_for_keypressed();
+    if(argc == 1)
+    {
 
-    greyscale(image_surface);
-    screen_surface = display_image(image_surface);
+        /*    wait_for_keypressed();
 
-    wait_for_keypressed();
+              greyscale(image_surface);
+              screen_surface = display_image(image_surface);
 
-    monochromatic(image_surface);
-    screen_surface = display_image(image_surface);
+              wait_for_keypressed();
 
-    wait_for_keypressed();
+              monochromatic(image_surface);
+              screen_surface = display_image(image_surface);
 
-    //SDL_SaveBMP(screen_surface, "savebmp.bmp");
+              wait_for_keypressed();
+         */
+        wait_for_keypressed();
+
+        filter(image_surface, 'g');
+        screen_surface = display_image(image_surface);
+
+        wait_for_keypressed();
+        //SDL_SaveBMP(screen_surface, "savebmp.bmp");
+    }
+
+
+
+    else if(argc == 3 && strcmp(argv[1], "filter") == 0)
+    {
+        wait_for_keypressed();
+
+        char color = *argv[2];
+        filter(image_surface, color);
+        screen_surface = display_image(image_surface);
+
+        wait_for_keypressed();
+
+
+    }
 
     SDL_FreeSurface(image_surface);
     SDL_FreeSurface(screen_surface);
+
 
     return 0;
 
