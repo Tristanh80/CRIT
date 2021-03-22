@@ -1,6 +1,7 @@
 #include "pixels.h"
 #include "grey.h"
 #include "filters.h"
+#include "blur.h"
 
 #include <stdlib.h>
 #include <SDL/SDL.h>
@@ -96,7 +97,7 @@ int main(int argc, char* argv[])
          */
         wait_for_keypressed();
 
-        filter(image_surface, 'g');
+        blur(image_surface, 20);
         screen_surface = display_image(image_surface);
 
         wait_for_keypressed();
