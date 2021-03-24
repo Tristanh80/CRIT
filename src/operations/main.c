@@ -77,7 +77,7 @@ int main(int argc, char* argv[])
 
     void init_sdl();
 
-    image_surface = load_image("my_image.jpg");
+    image_surface = load_image("chromatic_circle.jpg");
     screen_surface = display_image(image_surface);
 
     if(argc == 1)
