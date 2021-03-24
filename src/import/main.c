@@ -14,6 +14,7 @@ int main()
     void init_sdl();
 
     image_surface = load_image("my_image.jpg");
+    SDL_SaveBMP(image_surface,"Example.bmp");
     screen_surface = display_image(image_surface);
 
     wait_for_keypressed();

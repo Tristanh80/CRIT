@@ -59,7 +59,7 @@ void wait_for_keypressed()
 }
 
 
-static inline Uint8* pixelref(SDL_Surface *surf, unsigned x, unsigned y)
+Uint8* pixelref(SDL_Surface *surf, unsigned x, unsigned y)
 {
     int bpp = surf -> format -> BytesPerPixel;
     return (Uint8*)surf -> pixels + y * surf -> pitch + x * bpp;
@@ -169,4 +169,45 @@ void greyscale(SDL_Surface *img)
     }
 }
 
+void monochromatic(SDL_Surface *img)
+{
+    /* Variables */
+    Uint32 pixel;
+    Uint8 r;
+    Uint8 g;
+    Uint8 b;
+    float mean;
+    int w;
+    int h;
+    w = img -> w;
+    h = img -> h;
+
+    /* Iterate on each pixel */
+    for(int i = 0; i<w; i++)
+    {
+        for(int j = 0; j < h; j++)
+        {
+            /* turn each pixel into black or white */
+            pixel = getpixel(img, i, j);
+            SDL_GetRGB(pixel, img->format, &r, &g, &b);
+            mean = (r + g + b) / 3;
+            if(mean > 128)
+            {
+                r = 255;
+                g = 255;
+                b = 255;
+            }
+
+            else
+            {
+                r = 0;
+                g = 0;
+                b = 0;
+            }
+
+            pixel = SDL_MapRGB(img->format, r, g, b);
+            putpixel(img, i, j, pixel);
+        }
+    }
+}
 
