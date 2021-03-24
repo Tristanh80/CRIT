@@ -1,16 +1,21 @@
-//#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <gtk/gtk.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
+#include <err.h>
+#include "../import/import.h"
+#include "../operations/grey.h"
+#include "../operations/filters.h"
 
 // Definition of GTK widget
 GtkBuilder *builder;
 GtkWidget *window;
 GtkWidget *image;
 GtkWidget *fileChooser;
-GtkFileChooser *f;
-GtkFileFilter *filter;
+// GtkButton *gScaleButton;
+// GtkButton *Bmonochromatic;
+GtkFileFilter *filterr;
 char *file;
 
 
@@ -18,6 +23,14 @@ char *file;
 typedef struct {
     GtkWidget *w_dlg_file_choose;       // Pointer to file chooser dialog box
     GtkWidget *w_img_main;              // Pointer to image widget
+    gchar *file_name;
+    GtkButton *gScaleButton;
+    GtkButton *monochromaticButton;
+    GtkButton *redButton;
+    GtkButton *greenButton;
+    GtkButton *blueButton;
+    size_t number;
+
 } app_widgets;
 
 
@@ -29,12 +42,18 @@ int main(int argc, char *argv[])
 	// Connecting glade file and file chooser
 	builder = gtk_builder_new_from_file("interface.glade");
 	window = GTK_WIDGET(gtk_builder_get_object(builder, "window_main"));
-	filter = gtk_file_filter_new();
+	filterr = gtk_file_filter_new();
 	widgets->w_dlg_file_choose = GTK_WIDGET(gtk_builder_get_object(builder, "dlg_file_choose"));
-	gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(widgets->w_dlg_file_choose),filter);
-	gtk_file_filter_set_name(filter,"image");
-	gtk_file_filter_add_pattern(filter,"*.bmp");
+	gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(widgets->w_dlg_file_choose),filterr);
+	gtk_file_filter_set_name(filterr,"image");
+	gtk_file_filter_add_pattern(filterr,"*.bmp");
 	widgets->w_img_main = GTK_WIDGET(gtk_builder_get_object(builder, "img_main"));
+    widgets->file_name = NULL;
+    widgets->gScaleButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_grayscale"));
+    widgets->monochromaticButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_monochromatic"));
+    widgets->redButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_red"));
+    widgets->greenButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_green"));
+    widgets->blueButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_blue"));
 
 	gtk_builder_connect_signals(builder, widgets);
 
@@ -44,6 +63,12 @@ int main(int argc, char *argv[])
     g_signal_connect(window,"destroy",G_CALLBACK(gtk_main_quit),NULL);
 	gtk_main();
 	g_slice_free(app_widgets, widgets);
+    
+    int del = system("rm -rf .tmp");
+    if(del ==-1)
+    {
+        errx(1,"Could not delete .tmp directory");
+    }
 	
 
 
@@ -53,7 +78,7 @@ int main(int argc, char *argv[])
 // File --> Open
 void on_menuitm_open_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
 {
-    gchar *file_name = NULL;        // Name of file to open from dialog box
+    // gchar *file_name = NULL;        // Name of file to open from dialog box
     
     // Show the "Open Image" dialog box
     gtk_widget_show(app_wdgts->w_dlg_file_choose);
@@ -61,15 +86,79 @@ void on_menuitm_open_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
     // Check return value from Open Image dialog box to see if user clicked the Open button
     if (gtk_dialog_run(GTK_DIALOG (app_wdgts->w_dlg_file_choose)) == GTK_RESPONSE_OK) {
         // Get the file name from the dialog box
-        file_name = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(app_wdgts->w_dlg_file_choose));
-        if (file_name != NULL) {
-            gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), file_name);
+        app_wdgts->file_name = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(app_wdgts->w_dlg_file_choose));
+        if (app_wdgts->file_name != NULL) {
+            gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
         }
-        g_free(file_name);
+        int tmp = system("mkdir .tmp");
+        if (tmp==-1)
+        {
+            errx(1,"Create tmp directory");
+        }
+        SDL_Surface *image = load_image(app_wdgts->file_name);
+        SDL_SaveBMP(image,"temp0.bmp");
+        SDL_FreeSurface(image);
+        tmp = system("mv temp0.bmp .tmp");
+        if (tmp==-1)
+        {
+            errx(1,"Create tmp directory");
+        }
+        // gtk_widget_set_sensitive(GTK_WIDGET(game->ui.stop_button),FALSE);
+        gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->gScaleButton),TRUE);
+        gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->monochromaticButton),TRUE);
+        gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->redButton),TRUE);
+        gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->greenButton),TRUE);
+        gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->blueButton),TRUE);
     }
 
     // Finished with the "Open Image" dialog box, so hide it
     gtk_widget_hide(app_wdgts->w_dlg_file_choose);
+}
+
+// Grayscale function
+void on_btn_grayscale_clicked(GtkButton *widget,app_widgets *app_wdgts)
+{
+    SDL_Surface *image = load_image(app_wdgts->file_name);
+    greyscale(image);
+    SDL_SaveBMP(image,app_wdgts->file_name);
+    SDL_FreeSurface(image);
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
+}
+
+void on_btn_monochromatic_clicked(GtkButton *widget,app_widgets *app_wdgts)
+{
+    SDL_Surface *image = load_image(app_wdgts->file_name);
+    monochromatic(image);
+    SDL_SaveBMP(image,app_wdgts->file_name);
+    SDL_FreeSurface(image);
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
+}
+
+void on_red_activate(GtkMenuItem *menuitem,app_widgets *app_wdgts)
+{
+    SDL_Surface *image = load_image(app_wdgts->file_name);
+    red(image);
+    SDL_SaveBMP(image,app_wdgts->file_name);
+    SDL_FreeSurface(image);
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
+}
+
+void on_green_activate(GtkMenuItem *menuitem,app_widgets *app_wdgts)
+{
+    SDL_Surface *image = load_image(app_wdgts->file_name);
+    green(image);
+    SDL_SaveBMP(image,app_wdgts->file_name);
+    SDL_FreeSurface(image);
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
+}
+
+void on_blue_activate(GtkMenuItem *menuitem,app_widgets *app_wdgts)
+{
+    SDL_Surface *image = load_image(app_wdgts->file_name);
+    blue(image);
+    SDL_SaveBMP(image,app_wdgts->file_name);
+    SDL_FreeSurface(image);
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
 }
 
 // File --> Quit
@@ -82,4 +171,16 @@ void on_menuitm_close_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
 void on_window_main_destroy()
 {
     gtk_main_quit();
+}
+
+void copy_image_for_crtlz(app_widgets *app_wdgts)
+{
+    char cmd[128];
+    sprintf(cmd,"cp .tmp/temp%li.bmp .tmp/temp%li.bmp",app_wdgts->number,app_wdgts->number+1);
+    int cp = system(cmd);
+    if(cp ==-1)
+    {
+        errx(1,"Error in copy for crtlz");
+    }
+    app_wdgts->number +=1;
 }
