@@ -68,11 +68,11 @@ void blur_pixels(SDL_Surface *img, int rate, int i, int j)
     if(miny < 0)
         miny = 0;
 
-    if(maxi > h)
-        maxi = h;
+    if(maxi > w)
+        maxi = w;
 
-    if(maxy > w)
-        maxy = w;
+    if(maxy > h)
+        maxy = h;
 
 
     for(int x = mini; x<maxi; x++)
