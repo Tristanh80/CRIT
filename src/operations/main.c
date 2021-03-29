@@ -2,6 +2,7 @@
 #include "grey.h"
 #include "filters.h"
 #include "blur.h"
+#include "border.h"
 
 #include <stdlib.h>
 #include <SDL/SDL.h>
@@ -97,7 +98,7 @@ int main(int argc, char* argv[])
          */
         wait_for_keypressed();
 
-        blur(image_surface, 20);
+        border(image_surface);
         screen_surface = display_image(image_surface);
 
         wait_for_keypressed();
@@ -121,7 +122,6 @@ int main(int argc, char* argv[])
 
     SDL_FreeSurface(image_surface);
     SDL_FreeSurface(screen_surface);
-
 
     return 0;
 

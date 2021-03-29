@@ -6,7 +6,7 @@
 #include <SDL/SDL_image.h>
 #include <err.h>
 
-//gcc blur.c filters.c grey.c pixels.c main.c -lSDL -lSDL_image
+//gcc blur.c border.c filters.c grey.c pixels.c main.c -lSDL -lSDL_image
 
 
 void blur(SDL_Surface *img, int rate)
