@@ -1,5 +1,5 @@
 #include "filters.h"
-#include "pixels.h"
+#include "../import/import.h"
 
 #include <stdlib.h>
 #include <SDL/SDL.h>

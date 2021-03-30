@@ -1,4 +1,4 @@
-#include "pixels.h"
+#include "../import/import.h"
 #include "grey.h"
 #include "filters.h"
 #include "blur.h"
@@ -10,7 +10,7 @@
 #include <err.h>
 #include <string.h>
 
-
+/*
 SDL_Surface* load_image(char *path)
 {
     SDL_Surface *img;
@@ -65,7 +65,7 @@ void wait_for_keypressed()
 }
 
 
-
+*/
 
 
 
