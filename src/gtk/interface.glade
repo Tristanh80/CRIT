@@ -37,12 +37,18 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">img/Chromatic_classic_red.bmp</property>
   </object>
+  <object class="GtkImage" id="img_return">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-go-back</property>
+  </object>
   <object class="GtkWindow" id="window_main">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Shotopof</property>
     <property name="default_width">1360</property>
     <property name="default_height">768</property>
     <property name="icon">../../../../../Downloads/shotopof.png</property>
+    <property name="gravity">north</property>
     <child type="titlebar">
       <placeholder/>
     </child>
@@ -76,12 +82,13 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem">
-                        <property name="label">gtk-save</property>
+                      <object class="GtkImageMenuItem" id="menuitm_return">
+                        <property name="label">Return</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
+                        <property name="image">img_return</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate" handler="on_menuitm_return_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
