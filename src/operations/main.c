@@ -88,7 +88,7 @@ int main(int argc, char* argv[])
 
         wait_for_keypressed();
 
-        symh(image_surface);
+        rotate(image_surface, 'r');
         screen_surface = display_image(image_surface);
 
         wait_for_keypressed();
