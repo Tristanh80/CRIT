@@ -17,6 +17,7 @@ void rotate(SDL_Surface *img, char angle)
 
     /* Variables */
     Uint32 pixel;
+    Uint32 pixel_ni;
     Uint8 r;
     Uint8 g;
     Uint8 b;
@@ -37,29 +38,27 @@ void rotate(SDL_Surface *img, char angle)
     nimg->w = nw;
     nimg->h = nh;
 
-    Uint32 Mat[w*h];
-
     for(int i = 0; i < w; i++)
     {
         for(int j = 0; j < h; j++)
         {
             pixel = getpixel(img, i, j);
             SDL_GetRGB(pixel, img->format, &r, &g, &b);
-            pixel = SDL_MapRGB(nimg->format, r, g, b);
-
-            Mat[i*h+j] = pixel;
+           
+            pixel_ni = getpixel(nimg, j ,i);
+            pixel_ni = SDL_MapRGB(nimg->format, r, g, b);
         }
     }
 
 
     //rotate 90 degrees right
-    if(angle == 'r')
+    if(angle == 'z')
     {
         for(int i = 0; i < nw; i++)
         {
             for(int j = 0; j < nh; j++)
             {
-                pixel = Mat[i*w+j];
+                //pixel = Mat[i*w+j];
                 putpixel(nimg, i, j, pixel);
             }
         }

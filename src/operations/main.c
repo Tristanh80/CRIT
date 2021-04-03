@@ -4,6 +4,7 @@
 #include "blur.h"
 #include "border.h"
 #include "rotate.h"
+#include "sym.h"
 
 #include <stdlib.h>
 #include <SDL/SDL.h>
@@ -87,7 +88,7 @@ int main(int argc, char* argv[])
 
         wait_for_keypressed();
 
-        rotate(image_surface, 'r');
+        symh(image_surface);
         screen_surface = display_image(image_surface);
 
         wait_for_keypressed();
