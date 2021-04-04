@@ -30,9 +30,6 @@ SDL_Surface *rotate(SDL_Surface *img, char angle)
     nw = h;
     nh = w;
 
-    //img->h = nh;
-    //img->w = nw;
-
     SDL_Surface *nimg = SDL_CreateRGBSurface(SDL_HWSURFACE,
             nw,
             nh,
