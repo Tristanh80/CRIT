@@ -5,5 +5,5 @@
 #include <SDL/SDL.h>
 #include "../import/import.h"
 
-void rotate(SDL_Surface *img, char angle);
+SDL_Surface *rotate(SDL_Surface *img, char angle);
 #endif

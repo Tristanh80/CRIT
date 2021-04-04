@@ -8,7 +8,7 @@
 
 
 
-void rotate(SDL_Surface *img, char angle)
+SDL_Surface *rotate(SDL_Surface *img, char angle)
 {
     if(angle != 'r' && angle != 'l')
         errx(EXIT_FAILURE, "Wrong rotate angle value");
@@ -30,8 +30,8 @@ void rotate(SDL_Surface *img, char angle)
     nw = h;
     nh = w;
 
-    img->h = nh;
-    img->w = nw;
+    //img->h = nh;
+    //img->w = nw;
 
     SDL_Surface *nimg = SDL_CreateRGBSurface(SDL_HWSURFACE,
             nw,
@@ -46,9 +46,12 @@ void rotate(SDL_Surface *img, char angle)
             for(int j = 0; j < h; j++)
             {
                 pixel = getpixel(img, i, j);
+                SDL_GetRGB(pixel, img -> format, &r, &g, &b);
+                pixel = SDL_MapRGB(img -> format, r, g, b);
                 putpixel(nimg, nw-1-j, i, pixel);
             }
         }
+
     }
 
     /*
@@ -69,10 +72,9 @@ void rotate(SDL_Surface *img, char angle)
 
     }
      */
-    img = nimg;
-    img->h = nh;
-    img->w = nw;
-    free(nimg);
+
+    SDL_FreeSurface(img);
+    return nimg;
 }
 
 
