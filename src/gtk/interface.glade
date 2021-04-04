@@ -85,6 +85,7 @@
                       <object class="GtkImageMenuItem" id="menuitm_return">
                         <property name="label">Return</property>
                         <property name="visible">True</property>
+                        <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
                         <property name="image">img_return</property>
                         <property name="use_stock">False</property>
