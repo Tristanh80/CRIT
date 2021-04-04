@@ -42,6 +42,26 @@
     <property name="can_focus">False</property>
     <property name="stock">gtk-go-back</property>
   </object>
+  <object class="GtkImage" id="img_rotater">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">img/chromatic_classic_rotater.bmp</property>
+  </object>
+  <object class="GtkImage" id="img_saturation">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">img/chromatic_classic_saturation.bmp</property>
+  </object>
+  <object class="GtkImage" id="img_symh">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">img/chromatic_classic_symh.bmp</property>
+  </object>
+  <object class="GtkImage" id="img_symv">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">img/chromatic_classic_symv.bmp</property>
+  </object>
   <object class="GtkWindow" id="window_main">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Shotopof</property>
@@ -96,6 +116,7 @@
                       <object class="GtkImageMenuItem">
                         <property name="label">gtk-save-as</property>
                         <property name="visible">True</property>
+                        <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
@@ -135,6 +156,7 @@
                       <object class="GtkImageMenuItem">
                         <property name="label">gtk-about</property>
                         <property name="visible">True</property>
+                        <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
@@ -301,6 +323,82 @@
               </object>
               <packing>
                 <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="btn_symhor">
+                <property name="label" translatable="yes">SymHorizontal</property>
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="hexpand">True</property>
+                <property name="image">img_symh</property>
+                <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_btn_symhor_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">8</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="btn_symver">
+                <property name="label" translatable="yes">SymVertical</property>
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="hexpand">True</property>
+                <property name="image">img_symv</property>
+                <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_btn_symver_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">9</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="btn_saturation">
+                <property name="label" translatable="yes">Saturation</property>
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="hexpand">True</property>
+                <property name="image">img_saturation</property>
+                <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_btn_saturation_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">10</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="btn_rotate">
+                <property name="label" translatable="yes">RotateRight</property>
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="hexpand">True</property>
+                <property name="image">img_rotater</property>
+                <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_btn_rotate_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">11</property>
                 <property name="top_attach">0</property>
               </packing>
             </child>

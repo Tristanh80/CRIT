@@ -9,6 +9,9 @@
 #include "../operations/filters.h"
 #include "../operations/blur.h"
 #include "../operations/border.h"
+#include "../operations/sym.h"
+#include "../operations/saturation.h"
+#include "../operations/rotate.h"
 
 // Definition of GTK widget
 GtkBuilder *builder;
@@ -30,7 +33,11 @@ typedef struct {
     GtkButton *blueButton;              // Button for blue
     GtkButton *blurButton;              // Button for blur
     GtkButton *borderButton;            // Button for border
-    size_t number;                      // Count for CRTLZ
+    GtkButton *symHor;            // Button for border
+    GtkButton *symVer;            // Button for border
+    GtkButton *satura;            // Button for border
+    GtkButton *rotat;            // Button for border
+    size_t number;                      // Count for CRTLZ(work in progress)
 
 } app_widgets;                          // Our struct for gtk
 
@@ -64,6 +71,10 @@ void interface(int argc, char *argv[])
     widgets->blueButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_blue"));
     widgets->blurButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_blur"));
     widgets->borderButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_border"));
+    widgets->symHor = GTK_BUTTON(gtk_builder_get_object(builder, "btn_symhor"));
+    widgets->symVer = GTK_BUTTON(gtk_builder_get_object(builder, "btn_symver"));
+    widgets->satura = GTK_BUTTON(gtk_builder_get_object(builder, "btn_saturation"));
+    widgets->rotat = GTK_BUTTON(gtk_builder_get_object(builder, "btn_rotate"));
     widgets->number=0;
 
     // Connect signals with builder
@@ -128,6 +139,10 @@ void on_menuitm_open_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->blueButton),TRUE);
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->blurButton),TRUE);
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->borderButton),TRUE);
+        gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->symHor),TRUE);
+        gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->symVer),TRUE);
+        gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->satura),TRUE);
+        gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->rotat),TRUE);
     }
 
     // Finished with the "Open Image" dialog box, so hide it
@@ -171,7 +186,7 @@ void on_btn_monochromatic_clicked(GtkButton *widget,app_widgets *app_wdgts)
 }
 
 // Red function
-void on_btn_red_clicked(GtkMenuItem *menuitem,app_widgets *app_wdgts)
+void on_btn_red_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
     SDL_Surface *image = load_image(app_wdgts->file_name);
     red(image);
@@ -182,7 +197,7 @@ void on_btn_red_clicked(GtkMenuItem *menuitem,app_widgets *app_wdgts)
 }
 
 // Green function
-void on_btn_green_clicked(GtkMenuItem *menuitem,app_widgets *app_wdgts)
+void on_btn_green_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
     SDL_Surface *image = load_image(app_wdgts->file_name);
     green(image);
@@ -193,7 +208,7 @@ void on_btn_green_clicked(GtkMenuItem *menuitem,app_widgets *app_wdgts)
 }
 
 // Blue function
-void on_btn_blue_clicked(GtkMenuItem *menuitem,app_widgets *app_wdgts)
+void on_btn_blue_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
     SDL_Surface *image = load_image(app_wdgts->file_name);
     blue(image);
@@ -204,7 +219,7 @@ void on_btn_blue_clicked(GtkMenuItem *menuitem,app_widgets *app_wdgts)
 }
 
 // Blur function
-void on_btn_blur_clicked(GtkMenuItem *menuitem,app_widgets *app_wdgts)
+void on_btn_blur_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
     SDL_Surface *image = load_image(app_wdgts->file_name);
     blur(image,10);
@@ -215,10 +230,54 @@ void on_btn_blur_clicked(GtkMenuItem *menuitem,app_widgets *app_wdgts)
 }
 
 // Border function
-void on_btn_border_clicked(GtkMenuItem *menuitem,app_widgets *app_wdgts)
+void on_btn_border_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
     SDL_Surface *image = load_image(app_wdgts->file_name);
     border(image);
+    SDL_SaveBMP(image,app_wdgts->file_name);
+    SDL_FreeSurface(image);
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
+    copy_image_for_crtlz(app_wdgts);
+}
+
+// Symhor function
+void on_btn_symhor_clicked(GtkButton *widget,app_widgets *app_wdgts)
+{
+    SDL_Surface *image = load_image(app_wdgts->file_name);
+    symh(image);
+    SDL_SaveBMP(image,app_wdgts->file_name);
+    SDL_FreeSurface(image);
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
+    copy_image_for_crtlz(app_wdgts);
+}
+
+// Symver function
+void on_btn_symver_clicked(GtkButton *widget,app_widgets *app_wdgts)
+{
+    SDL_Surface *image = load_image(app_wdgts->file_name);
+    symv(image);
+    SDL_SaveBMP(image,app_wdgts->file_name);
+    SDL_FreeSurface(image);
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
+    copy_image_for_crtlz(app_wdgts);
+}
+
+// Saturation function
+void on_btn_saturation_clicked(GtkButton *widget,app_widgets *app_wdgts)
+{
+    SDL_Surface *image = load_image(app_wdgts->file_name);
+    saturation_level(image,'1');
+    SDL_SaveBMP(image,app_wdgts->file_name);
+    SDL_FreeSurface(image);
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
+    copy_image_for_crtlz(app_wdgts);
+}
+
+// rotate function
+void on_btn_rotate_clicked(GtkButton *widget,app_widgets *app_wdgts)
+{
+    SDL_Surface *image = load_image(app_wdgts->file_name);
+    image = rotate(image,'r');
     SDL_SaveBMP(image,app_wdgts->file_name);
     SDL_FreeSurface(image);
     gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);

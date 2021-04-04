@@ -10,7 +10,6 @@ LDLIBS= `pkg-config --libs gtk+-3.0` `pkg-config --libs sdl` -lm -lSDL_image
 SRC= src/main.c src/import/import.c src/operations/blur.c src/gtk/interface.c src/operations/border.c src/operations/filters.c src/operations/grey.c src/operations/rotate.c src/operations/saturation.c src/operations/sym.c
 OBJ= ${SRC:.c=.o}
 DEP= ${SRC:.c=.d}
-BIN= bin/
 
 all: src/main
 
