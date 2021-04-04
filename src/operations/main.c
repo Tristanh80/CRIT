@@ -5,6 +5,7 @@
 #include "border.h"
 #include "rotate.h"
 #include "sym.h"
+#include "saturation.h"
 
 #include <stdlib.h>
 #include <SDL/SDL.h>
@@ -109,18 +110,25 @@ int main(int argc, char* argv[])
 
 
 
-    else if(argc == 3 && strcmp(argv[1], "filter") == 0)
-    {
+    else if(argc == 3)
+      {
+        wait_for_keypressed();
+	if (strcmp(argv[1], "filter") == 0)
+	  {
+	    char color = *argv[2];
+	    filter(image_surface, color);
+	    screen_surface = display_image(image_surface);
+	  }
+	if (strcmp(argv[1], "saturation") == 0)
+	  {
+	    char level = *argv[2];
+	    saturation_level(image_surface, level);
+	    screen_surface = display_image(image_surface);
+	  }
         wait_for_keypressed();
 
-        char color = *argv[2];
-        filter(image_surface, color);
-        screen_surface = display_image(image_surface);
 
-        wait_for_keypressed();
-
-
-    }
+      }
 
     SDL_FreeSurface(image_surface);
     SDL_FreeSurface(screen_surface);
