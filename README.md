@@ -14,8 +14,8 @@ The aim of this project is to do a photoshop like, at least a photoshop lite.
 
 > Build the project
 > 
-> make
+>> make
 > 
 > Execute the project
 >
-> ./src/main
+>> ./src/main
