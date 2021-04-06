@@ -1,103 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.2 -->
+<!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk+" version="3.24"/>
   <object class="GtkImage" id="img_blue">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="pixbuf">img/Chromatic_classic_blue.bmp</property>
   </object>
   <object class="GtkImage" id="img_blur">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="pixbuf">img/Chromatic_classic_blur.bmp</property>
   </object>
   <object class="GtkImage" id="img_border">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="pixbuf">img/Chromatic_classic_border.bmp</property>
   </object>
   <object class="GtkImage" id="img_grayscale">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="pixbuf">img/Chromatic_classic_grayscale.bmp</property>
   </object>
   <object class="GtkImage" id="img_green">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="pixbuf">img/Chromatic_classic_green.bmp</property>
   </object>
   <object class="GtkImage" id="img_monochromatic">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="pixbuf">img/Chromatic_classic_blacknwhite.bmp</property>
   </object>
   <object class="GtkImage" id="img_red">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="pixbuf">img/Chromatic_classic_red.bmp</property>
   </object>
   <object class="GtkImage" id="img_return">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="stock">gtk-go-back</property>
   </object>
   <object class="GtkImage" id="img_rotater">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="pixbuf">img/chromatic_classic_rotater.bmp</property>
   </object>
   <object class="GtkImage" id="img_saturation">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="pixbuf">img/chromatic_classic_saturation.bmp</property>
   </object>
   <object class="GtkImage" id="img_symh">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="pixbuf">img/chromatic_classic_symh.bmp</property>
   </object>
   <object class="GtkImage" id="img_symv">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="pixbuf">img/chromatic_classic_symv.bmp</property>
   </object>
   <object class="GtkWindow" id="window_main">
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="title" translatable="yes">Shotopof</property>
-    <property name="default_width">1360</property>
-    <property name="default_height">768</property>
-    <property name="icon">../../../../../Downloads/shotopof.png</property>
+    <property name="default-width">1360</property>
+    <property name="default-height">768</property>
+    <property name="icon">img/shotopof.png</property>
     <property name="gravity">north</property>
-    <child type="titlebar">
-      <placeholder/>
-    </child>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkMenuBar">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <child>
               <object class="GtkMenuItem">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="label" translatable="yes">_File</property>
-                <property name="use_underline">True</property>
+                <property name="use-underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <child>
                       <object class="GtkImageMenuItem" id="menuitm_open">
                         <property name="label">gtk-open</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="use-underline">True</property>
+                        <property name="use-stock">True</property>
                         <signal name="activate" handler="on_menuitm_open_activate" swapped="no"/>
                       </object>
                     </child>
@@ -106,9 +103,9 @@
                         <property name="label">Return</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="image">img_return</property>
-                        <property name="use_stock">False</property>
+                        <property name="use-stock">False</property>
                         <signal name="activate" handler="on_menuitm_return_activate" swapped="no"/>
                       </object>
                     </child>
@@ -117,24 +114,24 @@
                         <property name="label">gtk-save-as</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="use-underline">True</property>
+                        <property name="use-stock">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkSeparatorMenuItem">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="menuitm_close">
                         <property name="label">gtk-quit</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="use-underline">True</property>
+                        <property name="use-stock">True</property>
                         <signal name="activate" handler="on_menuitm_close_activate" swapped="no"/>
                       </object>
                     </child>
@@ -145,21 +142,21 @@
             <child>
               <object class="GtkMenuItem">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="label" translatable="yes">_Help</property>
-                <property name="use_underline">True</property>
+                <property name="use-underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <child>
                       <object class="GtkImageMenuItem">
                         <property name="label">gtk-about</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="use-underline">True</property>
+                        <property name="use-stock">True</property>
                       </object>
                     </child>
                   </object>
@@ -174,27 +171,28 @@
           </packing>
         </child>
         <child>
+          <!-- n-columns=12 n-rows=3 -->
           <object class="GtkGrid">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="resize_mode">immediate</property>
+            <property name="can-focus">False</property>
+            <property name="resize-mode">immediate</property>
             <child>
               <object class="GtkButton" id="btn_border">
                 <property name="label" translatable="yes">Border</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
                 <property name="hexpand">True</property>
                 <property name="image">img_border</property>
-                <property name="always_show_image">True</property>
+                <property name="always-show-image">True</property>
                 <signal name="clicked" handler="on_btn_border_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="left_attach">7</property>
-                <property name="top_attach">0</property>
+                <property name="left-attach">7</property>
+                <property name="top-attach">0</property>
               </packing>
             </child>
             <child>
@@ -202,18 +200,18 @@
                 <property name="label" translatable="yes">Blur</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
                 <property name="hexpand">True</property>
                 <property name="image">img_blur</property>
-                <property name="always_show_image">True</property>
+                <property name="always-show-image">True</property>
                 <signal name="clicked" handler="on_btn_blur_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="left_attach">6</property>
-                <property name="top_attach">0</property>
+                <property name="left-attach">6</property>
+                <property name="top-attach">0</property>
               </packing>
             </child>
             <child>
@@ -221,18 +219,18 @@
                 <property name="label" translatable="yes">Blue</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
                 <property name="hexpand">True</property>
                 <property name="image">img_blue</property>
-                <property name="always_show_image">True</property>
+                <property name="always-show-image">True</property>
                 <signal name="clicked" handler="on_btn_blue_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="left_attach">5</property>
-                <property name="top_attach">0</property>
+                <property name="left-attach">5</property>
+                <property name="top-attach">0</property>
               </packing>
             </child>
             <child>
@@ -240,18 +238,18 @@
                 <property name="label" translatable="yes">Green</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
                 <property name="hexpand">True</property>
                 <property name="image">img_green</property>
-                <property name="always_show_image">True</property>
+                <property name="always-show-image">True</property>
                 <signal name="clicked" handler="on_btn_green_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="left_attach">4</property>
-                <property name="top_attach">0</property>
+                <property name="left-attach">4</property>
+                <property name="top-attach">0</property>
               </packing>
             </child>
             <child>
@@ -259,18 +257,18 @@
                 <property name="label" translatable="yes">Red</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
                 <property name="hexpand">True</property>
                 <property name="image">img_red</property>
-                <property name="always_show_image">True</property>
+                <property name="always-show-image">True</property>
                 <signal name="clicked" handler="on_btn_red_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="left_attach">3</property>
-                <property name="top_attach">0</property>
+                <property name="left-attach">3</property>
+                <property name="top-attach">0</property>
               </packing>
             </child>
             <child>
@@ -278,18 +276,18 @@
                 <property name="label" translatable="yes">Monochromatic</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
                 <property name="hexpand">True</property>
                 <property name="image">img_monochromatic</property>
-                <property name="always_show_image">True</property>
+                <property name="always-show-image">True</property>
                 <signal name="clicked" handler="on_btn_monochromatic_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="left_attach">2</property>
-                <property name="top_attach">0</property>
+                <property name="left-attach">2</property>
+                <property name="top-attach">0</property>
               </packing>
             </child>
             <child>
@@ -297,33 +295,33 @@
                 <property name="label" translatable="yes">Grayscale</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
                 <property name="hexpand">True</property>
                 <property name="image">img_grayscale</property>
-                <property name="always_show_image">True</property>
+                <property name="always-show-image">True</property>
                 <signal name="clicked" handler="on_btn_grayscale_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">0</property>
+                <property name="left-attach">1</property>
+                <property name="top-attach">0</property>
               </packing>
             </child>
             <child>
               <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
                 <property name="hexpand">False</property>
                 <property name="pixbuf">img/Chromatic_classic.jpg</property>
               </object>
               <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">0</property>
+                <property name="left-attach">0</property>
+                <property name="top-attach">0</property>
               </packing>
             </child>
             <child>
@@ -331,18 +329,18 @@
                 <property name="label" translatable="yes">SymHorizontal</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
                 <property name="hexpand">True</property>
                 <property name="image">img_symh</property>
-                <property name="always_show_image">True</property>
+                <property name="always-show-image">True</property>
                 <signal name="clicked" handler="on_btn_symhor_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="left_attach">8</property>
-                <property name="top_attach">0</property>
+                <property name="left-attach">8</property>
+                <property name="top-attach">0</property>
               </packing>
             </child>
             <child>
@@ -350,18 +348,18 @@
                 <property name="label" translatable="yes">SymVertical</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
                 <property name="hexpand">True</property>
                 <property name="image">img_symv</property>
-                <property name="always_show_image">True</property>
+                <property name="always-show-image">True</property>
                 <signal name="clicked" handler="on_btn_symver_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="left_attach">9</property>
-                <property name="top_attach">0</property>
+                <property name="left-attach">9</property>
+                <property name="top-attach">0</property>
               </packing>
             </child>
             <child>
@@ -369,18 +367,18 @@
                 <property name="label" translatable="yes">Saturation</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
                 <property name="hexpand">True</property>
                 <property name="image">img_saturation</property>
-                <property name="always_show_image">True</property>
+                <property name="always-show-image">True</property>
                 <signal name="clicked" handler="on_btn_saturation_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="left_attach">10</property>
-                <property name="top_attach">0</property>
+                <property name="left-attach">10</property>
+                <property name="top-attach">0</property>
               </packing>
             </child>
             <child>
@@ -388,19 +386,91 @@
                 <property name="label" translatable="yes">RotateRight</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
                 <property name="hexpand">True</property>
                 <property name="image">img_rotater</property>
-                <property name="always_show_image">True</property>
+                <property name="always-show-image">True</property>
                 <signal name="clicked" handler="on_btn_rotate_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="left_attach">11</property>
-                <property name="top_attach">0</property>
+                <property name="left-attach">11</property>
+                <property name="top-attach">0</property>
               </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
             </child>
           </object>
           <packing>
@@ -412,16 +482,16 @@
         <child>
           <object class="GtkScrolledWindow">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="shadow_type">in</property>
+            <property name="can-focus">True</property>
+            <property name="shadow-type">in</property>
             <child>
               <object class="GtkViewport">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <child>
                   <object class="GtkImage" id="img_main">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="stock">gtk-discard</property>
                   </object>
                 </child>
@@ -438,25 +508,25 @@
     </child>
   </object>
   <object class="GtkFileChooserDialog" id="dlg_file_choose">
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="title" translatable="yes">Open Image</property>
-    <property name="type_hint">dialog</property>
-    <property name="transient_for">window_main</property>
+    <property name="type-hint">dialog</property>
+    <property name="transient-for">window_main</property>
     <child internal-child="vbox">
       <object class="GtkBox">
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child internal-child="action_area">
           <object class="GtkButtonBox">
-            <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
+            <property name="can-focus">False</property>
+            <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="btn_close">
                 <property name="label" translatable="yes">Cancel</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -468,9 +538,9 @@
               <object class="GtkButton" id="btn_open">
                 <property name="label" translatable="yes">Open</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="can_default">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="can-default">True</property>
+                <property name="receives-default">True</property>
               </object>
               <packing>
                 <property name="expand">True</property>
