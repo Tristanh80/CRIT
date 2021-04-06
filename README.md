@@ -19,3 +19,7 @@ The aim of this project is to do a photoshop like, at least a photoshop lite.
 > Execute the project
 >
 >> ./src/main
+
+## Links
+[Repository for website](https://github.com/K4GOS/K4GOS.github.io)
+[Website](https://k4gos.github.io/)
