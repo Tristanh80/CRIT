@@ -13,6 +13,20 @@
 #include <err.h>
 #include <string.h>
 
+void usage(void)
+{
+    printf("Usage:\n");
+    printf("./main 1 for greyscale\n");
+    printf("./main 2 for monochromatic\n");
+    printf("./main 3 for red\n");
+    printf("./main 4 for green\n");
+    printf("./main 5 for blue\n");
+    printf("./main 6 for blur\n");
+    printf("./main 7 for border\n");
+    printf("./main 8 for symh\n");
+    printf("./main 9 for symv\n");
+    printf("./main 10 for saturation\n");
+}
 
 int main(int argc, char* argv[])
 {
@@ -21,59 +35,129 @@ int main(int argc, char* argv[])
 
     void init_sdl();
 
-    image_surface = load_image("my_image.jpg");
-    screen_surface = display_image(image_surface);
-
-    if(argc == 1)
+    if(argc != 2)
     {
-
-        wait_for_keypressed();
-
-        image_surface = rotate(image_surface, 'r');
-        //saturation_level(image_surface, '2');
+        usage();
+        return EXIT_FAILURE;
+    }
+    unsigned long param = strtoul(argv[1],NULL,10);
+    if(param<1 || param>10)
+    {
+        usage();
+        return EXIT_FAILURE;
+    }
+    if(param == 1)
+    {
+        image_surface = load_image("my_image.jpg");
         screen_surface = display_image(image_surface);
-
         wait_for_keypressed();
-
+        greyscale(image_surface);
+        screen_surface = display_image(image_surface);
+        wait_for_keypressed();
+        SDL_FreeSurface(image_surface);
+        SDL_FreeSurface(screen_surface);
+    }
+    if(param == 2)
+    {
+        image_surface = load_image("my_image.jpg");
+        screen_surface = display_image(image_surface);
+        wait_for_keypressed();
         monochromatic(image_surface);
         screen_surface = display_image(image_surface);
-
         wait_for_keypressed();
-
+        SDL_FreeSurface(image_surface);
+        SDL_FreeSurface(screen_surface);
+    }
+    if(param == 3)
+    {
+        image_surface = load_image("my_image.jpg");
+        screen_surface = display_image(image_surface);
         wait_for_keypressed();
-
+        red(image_surface);
+        screen_surface = display_image(image_surface);
+        wait_for_keypressed();
+        SDL_FreeSurface(image_surface);
+        SDL_FreeSurface(screen_surface);
+    }
+    if(param == 4)
+    {
+        image_surface = load_image("my_image.jpg");
+        screen_surface = display_image(image_surface);
+        wait_for_keypressed();
+        green(image_surface);
+        screen_surface = display_image(image_surface);
+        wait_for_keypressed();
+        SDL_FreeSurface(image_surface);
+        SDL_FreeSurface(screen_surface);
+    }
+    if(param == 5)
+    {
+        image_surface = load_image("my_image.jpg");
+        screen_surface = display_image(image_surface);
+        wait_for_keypressed();
+        blue(image_surface);
+        screen_surface = display_image(image_surface);
+        wait_for_keypressed();
+        SDL_FreeSurface(image_surface);
+        SDL_FreeSurface(screen_surface);
+    }
+    if(param == 6)
+    {
+        image_surface = load_image("my_image.jpg");
+        screen_surface = display_image(image_surface);
+        wait_for_keypressed();
+        blur(image_surface,10);
+        screen_surface = display_image(image_surface);
+        wait_for_keypressed();
+        SDL_FreeSurface(image_surface);
+        SDL_FreeSurface(screen_surface);
+    }
+    if(param == 7)
+    {
+        image_surface = load_image("my_image.jpg");
+        screen_surface = display_image(image_surface);
+        wait_for_keypressed();
         border(image_surface);
         screen_surface = display_image(image_surface);
-
         wait_for_keypressed();
-        //SDL_SaveBMP(screen_surface, "savebmp.bmp");
+        SDL_FreeSurface(image_surface);
+        SDL_FreeSurface(screen_surface);
     }
-
-
-
-    else if(argc == 3)
+    if(param == 8)
     {
+        image_surface = load_image("my_image.jpg");
+        screen_surface = display_image(image_surface);
         wait_for_keypressed();
-        if (strcmp(argv[1], "filter") == 0)
-        {
-            char color = *argv[2];
-            filter(image_surface, color);
-            screen_surface = display_image(image_surface);
-        }
-        if (strcmp(argv[1], "saturation") == 0)
-        {
-            char level = *argv[2];
-            saturation_level(image_surface, level);
-            screen_surface = display_image(image_surface);
-        }
+        symh(image_surface);
+        screen_surface = display_image(image_surface);
         wait_for_keypressed();
-
-
+        SDL_FreeSurface(image_surface);
+        SDL_FreeSurface(screen_surface);
+    }
+    if(param == 9)
+    {
+        image_surface = load_image("my_image.jpg");
+        screen_surface = display_image(image_surface);
+        wait_for_keypressed();
+        symv(image_surface);
+        screen_surface = display_image(image_surface);
+        wait_for_keypressed();
+        SDL_FreeSurface(image_surface);
+        SDL_FreeSurface(screen_surface);
+    }
+    if(param == 10)
+    {
+        image_surface = load_image("my_image.jpg");
+        screen_surface = display_image(image_surface);
+        wait_for_keypressed();
+        saturation_level(image_surface,'1');
+        screen_surface = display_image(image_surface);
+        wait_for_keypressed();
+        SDL_FreeSurface(image_surface);
+        SDL_FreeSurface(screen_surface);
     }
 
-    SDL_FreeSurface(image_surface);
-    SDL_FreeSurface(screen_surface);
-
+    
     return 0;
 
 }

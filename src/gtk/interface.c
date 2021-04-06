@@ -33,10 +33,10 @@ typedef struct {
     GtkButton *blueButton;              // Button for blue
     GtkButton *blurButton;              // Button for blur
     GtkButton *borderButton;            // Button for border
-    GtkButton *symHor;            // Button for border
-    GtkButton *symVer;            // Button for border
-    GtkButton *satura;            // Button for border
-    GtkButton *rotat;            // Button for border
+    GtkButton *symHor;                  // Button for border
+    GtkButton *symVer;                  // Button for border
+    GtkButton *satura;                  // Button for border
+    GtkButton *rotat;                   // Button for border
     size_t number;                      // Count for CRTLZ(work in progress)
 
 } app_widgets;                          // Our struct for gtk
