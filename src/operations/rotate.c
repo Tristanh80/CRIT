@@ -17,7 +17,6 @@ SDL_Surface *rotate(SDL_Surface *img, char angle)
 
     /* Variables */
     Uint32 pixel;
-    Uint32 pixel_ni;
     Uint8 r;
     Uint8 g;
     Uint8 b;
