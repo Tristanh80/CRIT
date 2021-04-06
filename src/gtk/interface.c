@@ -102,7 +102,7 @@ void interface(int argc, char *argv[])
 // File --> Open
 void on_menuitm_open_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
 {
-    
+    if(menuitem) NULL;
     // Show the "Open Image" dialog box
     gtk_widget_show(app_wdgts->w_dlg_file_choose);
     
@@ -165,6 +165,7 @@ void copy_image_for_crtlz(app_widgets *app_wdgts)
 // Grayscale function
 void on_btn_grayscale_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
+	if(widget) NULL;
     SDL_Surface *image = load_image(app_wdgts->file_name);
     greyscale(image);
     SDL_SaveBMP(image,app_wdgts->file_name);
@@ -177,6 +178,7 @@ void on_btn_grayscale_clicked(GtkButton *widget,app_widgets *app_wdgts)
 // Monochromatic function
 void on_btn_monochromatic_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
+	if(widget) NULL;
     SDL_Surface *image = load_image(app_wdgts->file_name);
     monochromatic(image);
     SDL_SaveBMP(image,app_wdgts->file_name);
@@ -188,6 +190,7 @@ void on_btn_monochromatic_clicked(GtkButton *widget,app_widgets *app_wdgts)
 // Red function
 void on_btn_red_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
+	if(widget) NULL;
     SDL_Surface *image = load_image(app_wdgts->file_name);
     red(image);
     SDL_SaveBMP(image,app_wdgts->file_name);
@@ -199,6 +202,7 @@ void on_btn_red_clicked(GtkButton *widget,app_widgets *app_wdgts)
 // Green function
 void on_btn_green_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
+	if(widget) NULL;
     SDL_Surface *image = load_image(app_wdgts->file_name);
     green(image);
     SDL_SaveBMP(image,app_wdgts->file_name);
@@ -210,6 +214,7 @@ void on_btn_green_clicked(GtkButton *widget,app_widgets *app_wdgts)
 // Blue function
 void on_btn_blue_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
+	if(widget) NULL;
     SDL_Surface *image = load_image(app_wdgts->file_name);
     blue(image);
     SDL_SaveBMP(image,app_wdgts->file_name);
@@ -221,6 +226,7 @@ void on_btn_blue_clicked(GtkButton *widget,app_widgets *app_wdgts)
 // Blur function
 void on_btn_blur_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
+	if(widget) NULL;
     SDL_Surface *image = load_image(app_wdgts->file_name);
     blur(image,10);
     SDL_SaveBMP(image,app_wdgts->file_name);
@@ -232,6 +238,7 @@ void on_btn_blur_clicked(GtkButton *widget,app_widgets *app_wdgts)
 // Border function
 void on_btn_border_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
+	if(widget) NULL;
     SDL_Surface *image = load_image(app_wdgts->file_name);
     border(image);
     SDL_SaveBMP(image,app_wdgts->file_name);
@@ -243,6 +250,7 @@ void on_btn_border_clicked(GtkButton *widget,app_widgets *app_wdgts)
 // Symhor function
 void on_btn_symhor_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
+	if(widget) NULL;
     SDL_Surface *image = load_image(app_wdgts->file_name);
     symh(image);
     SDL_SaveBMP(image,app_wdgts->file_name);
@@ -254,6 +262,7 @@ void on_btn_symhor_clicked(GtkButton *widget,app_widgets *app_wdgts)
 // Symver function
 void on_btn_symver_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
+	if(widget) NULL;
     SDL_Surface *image = load_image(app_wdgts->file_name);
     symv(image);
     SDL_SaveBMP(image,app_wdgts->file_name);
@@ -265,6 +274,7 @@ void on_btn_symver_clicked(GtkButton *widget,app_widgets *app_wdgts)
 // Saturation function
 void on_btn_saturation_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
+	if(widget) NULL;
     SDL_Surface *image = load_image(app_wdgts->file_name);
     saturation_level(image,'1');
     SDL_SaveBMP(image,app_wdgts->file_name);
@@ -276,6 +286,7 @@ void on_btn_saturation_clicked(GtkButton *widget,app_widgets *app_wdgts)
 // rotate function
 void on_btn_rotate_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
+	if(widget) NULL;
     SDL_Surface *image = load_image(app_wdgts->file_name);
     image = rotate(image,'r');
     SDL_SaveBMP(image,app_wdgts->file_name);
@@ -287,6 +298,8 @@ void on_btn_rotate_clicked(GtkButton *widget,app_widgets *app_wdgts)
 // Work in progress: return one action before (CRTL+Z)
 void on_menuitm_return_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
 {
+	if(menuitem) NULL;
+	if(app_wdgts) NULL;
     char cmd[128];
     if(app_wdgts->number==0)
     {
@@ -307,6 +320,8 @@ void on_menuitm_return_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
 // File --> Quit
 void on_menuitm_close_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
 {
+	if(menuitem) NULL;
+	if(app_wdgts) NULL;
     gtk_main_quit();
 }
 
