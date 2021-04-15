@@ -32,6 +32,7 @@ typedef struct {
     GtkWidget *w_img_main;              // Pointer to image widget
     GtkWidget *ret;                     // For return
     GtkWidget *w_dlg_about;             // For about
+    GtkWidget *w_dlg_saturation_level;  // For saturation level
     gchar *file_name;                   // Path to the original file
     GtkButton *gScaleButton;            // Button for grayscale
     GtkButton *monochromaticButton;     // Button for monochromatic
@@ -78,6 +79,7 @@ void interface(int argc, char *argv[])
     widgets->filemaneSave = NULL;
     // End on WIP
     widgets->w_dlg_about = GTK_WIDGET(gtk_builder_get_object(builder,"dlg_about"));
+    widgets->w_dlg_saturation_level = GTK_WIDGET(gtk_builder_get_object(builder,"dlg_saturation_level"));
     widgets->ret = GTK_WIDGET(gtk_builder_get_object(builder, "menuitm_return"));
     widgets->gScaleButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_grayscale"));
     widgets->monochromaticButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_monochromatic"));
@@ -360,18 +362,11 @@ void on_btn_symver_clicked(GtkButton *widget,app_widgets *app_wdgts)
     gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name); // Set the image on application
 }
 
-// Saturation function
+// Saturation widget
 void on_btn_saturation_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
 	if(widget) NULL;
-    app_wdgts->file_name = nameOfFile(app_wdgts);               // Changing filename for temp value
-    SDL_Surface *image = load_image(app_wdgts->file_name);      // Loading image
-    saturation_level(image,'1');                                           // Applied function
-    copy_image_for_crtlz(app_wdgts);                            // Copy for return
-    app_wdgts->file_name = nameOfFile(app_wdgts);               // Update filename
-    SDL_SaveBMP(image,app_wdgts->file_name);                    // Save image wit good temp value
-    SDL_FreeSurface(image);                                     // Free sdl
-    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name); // Set the image on application
+    gtk_widget_show(app_wdgts->w_dlg_saturation_level);
 }
 
 // rotate function
@@ -426,12 +421,59 @@ void on_menuitm_about_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
     gtk_widget_show(app_wdgts->w_dlg_about);
 }
 
-
+// About hiding
 void on_btn_about_close_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
     if(widget) NULL;
     gtk_widget_hide(app_wdgts->w_dlg_about);
 }
+
+void on_btn_saturation0_clicked(GtkMenuItem *menuitem, app_widgets *app_wdgts)
+{
+	if(menuitem) NULL;
+	if(app_wdgts) NULL;
+    gtk_widget_hide(app_wdgts->w_dlg_saturation_level);
+    app_wdgts->file_name = nameOfFile(app_wdgts);               // Changing filename for temp value
+    SDL_Surface *image = load_image(app_wdgts->file_name);      // Loading image
+    saturation_level(image,'0');                                // Applied function
+    copy_image_for_crtlz(app_wdgts);                            // Copy for return
+    app_wdgts->file_name = nameOfFile(app_wdgts);               // Update filename
+    SDL_SaveBMP(image,app_wdgts->file_name);                    // Save image wit good temp value
+    SDL_FreeSurface(image);                                     // Free sdl
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name); // Set the image on application
+}
+
+void on_btn_saturation1_clicked(GtkMenuItem *menuitem, app_widgets *app_wdgts)
+{
+	if(menuitem) NULL;
+	if(app_wdgts) NULL;
+    gtk_widget_hide(app_wdgts->w_dlg_saturation_level);
+    app_wdgts->file_name = nameOfFile(app_wdgts);               // Changing filename for temp value
+    SDL_Surface *image = load_image(app_wdgts->file_name);      // Loading image
+    saturation_level(image,'1');                                // Applied function
+    copy_image_for_crtlz(app_wdgts);                            // Copy for return
+    app_wdgts->file_name = nameOfFile(app_wdgts);               // Update filename
+    SDL_SaveBMP(image,app_wdgts->file_name);                    // Save image wit good temp value
+    SDL_FreeSurface(image);                                     // Free sdl
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name); // Set the image on application
+}
+
+void on_btn_saturation2_clicked(GtkMenuItem *menuitem, app_widgets *app_wdgts)
+{
+	if(menuitem) NULL;
+	if(app_wdgts) NULL;
+    gtk_widget_hide(app_wdgts->w_dlg_saturation_level);
+    app_wdgts->file_name = nameOfFile(app_wdgts);               // Changing filename for temp value
+    SDL_Surface *image = load_image(app_wdgts->file_name);      // Loading image
+    saturation_level(image,'2');                                // Applied function
+    copy_image_for_crtlz(app_wdgts);                            // Copy for return
+    app_wdgts->file_name = nameOfFile(app_wdgts);               // Update filename
+    SDL_SaveBMP(image,app_wdgts->file_name);                    // Save image wit good temp value
+    SDL_FreeSurface(image);                                     // Free sdl
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name); // Set the image on application
+}
+
+
 
 // called when window is closed
 void on_window_main_destroy()
