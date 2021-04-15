@@ -26,11 +26,12 @@ GtkFileFilter *filterr;
 typedef struct {
     GtkWidget *window;
     GtkWidget *w_dlg_file_choose;       // Pointer to file chooser dialog box
-    GtkWidget *save_file_choose;
-    GtkEntry *bufferSave;
-    const gchar *filemaneSave;
+    GtkWidget *save_file_choose;        // For save(WIP)
+    GtkEntry *bufferSave;               // For save(WIP)
+    const gchar *filemaneSave;          // For save (WIP)
     GtkWidget *w_img_main;              // Pointer to image widget
-    GtkWidget *ret;
+    GtkWidget *ret;                     // For return
+    GtkWidget *w_dlg_about;             // For about
     gchar *file_name;                   // Path to the original file
     GtkButton *gScaleButton;            // Button for grayscale
     GtkButton *monochromaticButton;     // Button for monochromatic
@@ -43,7 +44,8 @@ typedef struct {
     GtkButton *symVer;                  // Button for border
     GtkButton *satura;                  // Button for border
     GtkButton *rotat;                   // Button for border
-    size_t number;                      // Count for CRTLZ(work in progress)
+    GtkButton *about_close;             // For closing about
+    size_t number;                      // Count for CRTLZ
 
 } app_widgets;                          // Our struct for gtk
 char* nameOfFile(app_widgets *app_wdgts);
@@ -71,8 +73,11 @@ void interface(int argc, char *argv[])
     // Initialize our variable
 	widgets->w_img_main = GTK_WIDGET(gtk_builder_get_object(builder, "img_main"));
     widgets->file_name = NULL;
+    // WIP
     widgets->bufferSave = GTK_ENTRY(gtk_builder_get_object(builder,"buffer_name"));
     widgets->filemaneSave = NULL;
+    // End on WIP
+    widgets->w_dlg_about = GTK_WIDGET(gtk_builder_get_object(builder,"dlg_about"));
     widgets->ret = GTK_WIDGET(gtk_builder_get_object(builder, "menuitm_return"));
     widgets->gScaleButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_grayscale"));
     widgets->monochromaticButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_monochromatic"));
@@ -85,6 +90,7 @@ void interface(int argc, char *argv[])
     widgets->symVer = GTK_BUTTON(gtk_builder_get_object(builder, "btn_symver"));
     widgets->satura = GTK_BUTTON(gtk_builder_get_object(builder, "btn_saturation"));
     widgets->rotat = GTK_BUTTON(gtk_builder_get_object(builder, "btn_rotate"));
+    widgets->about_close = GTK_BUTTON(gtk_builder_get_object(builder, "btn_about_close"));
     widgets->number=0;
 
     // Connect signals with builder
@@ -410,6 +416,20 @@ void on_menuitm_close_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
 	if(menuitem) NULL;
 	if(app_wdgts) NULL;
     gtk_main_quit();
+}
+
+// About function
+void on_menuitm_about_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
+{
+	if(menuitem) NULL;
+	if(app_wdgts) NULL;
+    gtk_widget_show(app_wdgts->w_dlg_about);
+}
+
+
+void on_btn_about_close_clicked(GtkButton *widget,app_widgets *app_wdgts)
+{
+    gtk_widget_hide(app_wdgts->w_dlg_about);
 }
 
 // called when window is closed

@@ -152,13 +152,13 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkImageMenuItem">
+                      <object class="GtkImageMenuItem" id="menuitm_about">
                         <property name="label">gtk-about</property>
                         <property name="visible">True</property>
-                        <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <signal name="activate" handler="on_menuitm_about_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -432,6 +432,68 @@
             <property name="fill">True</property>
             <property name="position">2</property>
           </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkAboutDialog" id="dlg_about">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">About Shotopof</property>
+    <property name="type_hint">dialog</property>
+    <property name="transient_for">window_main</property>
+    <property name="program_name">Shotopof</property>
+    <property name="version">1.0</property>
+    <property name="comments" translatable="yes">GUI developed with GTK and Glade.
+Image function developed with SDL and libsgd.
+Website developed with ReactJS.
+Documentation about our project.</property>
+    <property name="website">https://k4gos.github.io</property>
+    <property name="website_label" translatable="yes">Shotopof website</property>
+    <property name="authors">Romain Busani
+Tristan Hersent
+Come Paya
+Iony Rakotoson</property>
+    <property name="logo">img/shotopof114x114.png</property>
+    <property name="license_type">mit-x11</property>
+    <signal name="close" handler="on_btn_about_close_clicked" swapped="no"/>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <object class="GtkButton" id="btn_about_close">
+                <property name="label" translatable="yes">Close</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_btn_about_close_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
         </child>
       </object>
     </child>
