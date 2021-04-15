@@ -429,6 +429,7 @@ void on_menuitm_about_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
 
 void on_btn_about_close_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
+    if(widget) NULL;
     gtk_widget_hide(app_wdgts->w_dlg_about);
 }
 
