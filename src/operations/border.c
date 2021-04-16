@@ -8,7 +8,7 @@
 
 //gcc grey.c pixels.c main.c -lSDL -lSDL_image
 
-void border(SDL_Surface *img)
+void border(SDL_Surface *img, int border_width)
 {
     /* Variables */
     Uint32 pixel;
@@ -21,7 +21,7 @@ void border(SDL_Surface *img)
     w = img -> w;
     h = img -> h;
 
-    int border_width = 15;
+    // int border_width = 15;
     /* Iterate over each pixels concerned by the border */
     for(int i = 0; i < border_width; i++)
     {

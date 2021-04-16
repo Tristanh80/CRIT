@@ -5,6 +5,6 @@
 #include <SDL/SDL.h>
 #include "../import/import.h"
 
-void border(SDL_Surface *img);
+void border(SDL_Surface *img, int border_width);
 
 #endif
