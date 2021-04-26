@@ -913,6 +913,7 @@ Iony Rakotoson</property>
   </object>
   <object class="GtkWindow" id="dlg_doc">
     <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Website</property>
     <property name="default_width">1360</property>
     <property name="default_height">768</property>
     <property name="deletable">False</property>
