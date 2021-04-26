@@ -2,6 +2,7 @@
 <!-- Generated with glade 3.22.2 -->
 <interface>
   <requires lib="gtk+" version="3.24"/>
+  <requires lib="webkit2gtk" version="2.12"/>
   <object class="GtkAdjustment" id="adjustment_blur">
     <property name="lower">2</property>
     <property name="upper">100</property>
@@ -30,6 +31,11 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">img/Chromatic_classic_border.bmp</property>
+  </object>
+  <object class="GtkImage" id="img_doc">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-dialog-question</property>
   </object>
   <object class="GtkImage" id="img_grayscale">
     <property name="visible">True</property>
@@ -264,6 +270,16 @@
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_menuitm_about_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="menuitm_documentation">
+                        <property name="label">Website</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="image">img_doc</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate" handler="on_menuitm_documentation_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -888,6 +904,55 @@ Iony Rakotoson</property>
         </child>
         <child>
           <placeholder/>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="WebKitSettings" id="settings1">
+    <property name="user_agent">Mozilla/5.0 (X11; Ubuntu; Linux x86_64) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0 Safari/605.1.15</property>
+  </object>
+  <object class="GtkWindow" id="dlg_doc">
+    <property name="can_focus">False</property>
+    <property name="default_width">1360</property>
+    <property name="default_height">768</property>
+    <property name="deletable">False</property>
+    <property name="transient_for">window_main</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="WebKitWebView" id="webkit_webview">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="settings">settings1</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="btn_close_doc">
+            <property name="label" translatable="yes">Close</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_btn_close_doc_clicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
         </child>
       </object>
     </child>

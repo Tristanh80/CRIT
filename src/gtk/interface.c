@@ -14,6 +14,8 @@
 #include "../operations/rotate.h"
 #include <unistd.h>
 #include <sys/wait.h>
+#include <webkit2/webkit2.h>
+
 
 // Definition of GTK widget
 GtkBuilder *builder;
@@ -32,6 +34,8 @@ typedef struct {
     GtkWidget *w_img_main;              // Pointer to image widget
     GtkWidget *ret;                     // For return
     GtkWidget *w_dlg_about;             // For about
+    GtkWidget *w_dlg_doc;
+    GtkWidget *w_webkit_webview;
     GtkWidget *w_dlg_saturation_level;  // For saturation level
     gchar *file_name;                   // Path to the original file
     GtkButton *gScaleButton;            // Button for grayscale
@@ -64,6 +68,9 @@ void interface(int argc, char *argv[])
     // Init gtk
 	gtk_init(&argc, &argv);
 
+    webkit_web_view_get_type();
+    webkit_settings_get_type();
+
 	// Connecting glade file
 	builder = gtk_builder_new_from_file("src/gtk/interface.glade");
 	widgets->window = GTK_WIDGET(gtk_builder_get_object(builder, "window_main"));
@@ -85,6 +92,8 @@ void interface(int argc, char *argv[])
     widgets->filemaneSave = NULL;
     // End on WIP
     widgets->w_dlg_about = GTK_WIDGET(gtk_builder_get_object(builder,"dlg_about"));
+    widgets->w_dlg_doc = GTK_WIDGET(gtk_builder_get_object(builder,"dlg_doc"));
+    widgets->w_webkit_webview = GTK_WIDGET(gtk_builder_get_object(builder,"webkit_webview"));
     widgets->w_dlg_saturation_level = GTK_WIDGET(gtk_builder_get_object(builder,"dlg_saturation_level"));
     widgets->ret = GTK_WIDGET(gtk_builder_get_object(builder, "menuitm_return"));
     widgets->gScaleButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_grayscale"));
@@ -106,6 +115,8 @@ void interface(int argc, char *argv[])
     widgets->rotat = GTK_BUTTON(gtk_builder_get_object(builder, "btn_rotate"));
     widgets->about_close = GTK_BUTTON(gtk_builder_get_object(builder, "btn_about_close"));
     widgets->number=0;
+
+    webkit_web_view_load_uri(WEBKIT_WEB_VIEW(widgets->w_webkit_webview), "https://k4gos.github.io");
 
     // Connect signals with builder
 	gtk_builder_connect_signals(builder, widgets);
@@ -515,6 +526,20 @@ void on_btn_about_close_clicked(GtkButton *widget,app_widgets *app_wdgts)
     if(widget) NULL;
     gtk_widget_hide(app_wdgts->w_dlg_about);
 }
+
+void on_menuitm_documentation_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
+{
+    if(menuitem) NULL;
+	if(app_wdgts) NULL;
+    gtk_widget_show(app_wdgts->w_dlg_doc);
+}
+
+void on_btn_close_doc_clicked(GtkButton *widget,app_widgets *app_wdgts)
+{
+    if(widget) NULL;
+    gtk_widget_hide(app_wdgts->w_dlg_doc);
+}
+
 
 // called when window is closed
 void on_window_main_destroy()
