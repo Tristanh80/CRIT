@@ -14,9 +14,9 @@
 #include "../operations/rotate.h"
 #include <unistd.h>
 #include <sys/wait.h>
+
 // Definition of GTK widget
 GtkBuilder *builder;
-
 GtkWidget *image;
 GtkWidget *fileChooser;
 GtkFileFilter *filterr;
