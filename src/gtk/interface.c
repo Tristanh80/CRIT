@@ -36,6 +36,8 @@ typedef struct {
     gchar *file_name;                   // Path to the original file
     GtkButton *gScaleButton;            // Button for grayscale
     GtkButton *monochromaticButton;     // Button for monochromatic
+    GtkWidget *w_dlg_color;             // Widget for color
+    GtkButton *color;                   // Button for widget color
     GtkButton *redButton;               // Button for red
     GtkButton *greenButton;             // Button for green
     GtkButton *blueButton;              // Button for blue
@@ -87,6 +89,8 @@ void interface(int argc, char *argv[])
     widgets->ret = GTK_WIDGET(gtk_builder_get_object(builder, "menuitm_return"));
     widgets->gScaleButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_grayscale"));
     widgets->monochromaticButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_monochromatic"));
+    widgets->w_dlg_color = GTK_WIDGET(gtk_builder_get_object(builder, "dlg_color"));
+    widgets->color = GTK_BUTTON(gtk_builder_get_object(builder, "btn_color"));
     widgets->redButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_red"));
     widgets->greenButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_green"));
     widgets->blueButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_blue"));
@@ -162,6 +166,7 @@ void on_menuitm_open_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
         // Set all the widgets sensitive
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->gScaleButton),TRUE);
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->monochromaticButton),TRUE);
+        gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->color),TRUE);
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->redButton),TRUE);
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->greenButton),TRUE);
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->blueButton),TRUE);
@@ -272,10 +277,18 @@ void on_btn_monochromatic_clicked(GtkButton *widget,app_widgets *app_wdgts)
     gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name); // Set the image on application
 }
 
+void on_btn_color_clicked(GtkButton *widget,app_widgets *app_wdgts)
+{
+	if(widget) NULL;
+    gtk_widget_show(app_wdgts->w_dlg_color);
+}
+
+
 // Red function
 void on_btn_red_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
 	if(widget) NULL;
+    gtk_widget_hide(app_wdgts->w_dlg_color);
     app_wdgts->file_name = nameOfFile(app_wdgts);               // Changing filename for temp value
     SDL_Surface *image = load_image(app_wdgts->file_name);      // Loading image
     red(image);                                           // Applied function
@@ -290,6 +303,7 @@ void on_btn_red_clicked(GtkButton *widget,app_widgets *app_wdgts)
 void on_btn_green_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
 	if(widget) NULL;
+    gtk_widget_hide(app_wdgts->w_dlg_color);
     app_wdgts->file_name = nameOfFile(app_wdgts);               // Changing filename for temp value
     SDL_Surface *image = load_image(app_wdgts->file_name);      // Loading image
     green(image);                                           // Applied function
@@ -304,6 +318,7 @@ void on_btn_green_clicked(GtkButton *widget,app_widgets *app_wdgts)
 void on_btn_blue_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
 	if(widget) NULL;
+    gtk_widget_hide(app_wdgts->w_dlg_color);
     app_wdgts->file_name = nameOfFile(app_wdgts);               // Changing filename for temp value
     SDL_Surface *image = load_image(app_wdgts->file_name);      // Loading image
     blue(image);                                           // Applied function
