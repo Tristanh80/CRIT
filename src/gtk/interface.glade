@@ -25,12 +25,17 @@
   <object class="GtkImage" id="img_blur">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">img/Chromatic_classic_blur.bmp</property>
+    <property name="pixbuf">img/blur.bmp</property>
   </object>
   <object class="GtkImage" id="img_border">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">img/Chromatic_classic_border.bmp</property>
+  </object>
+  <object class="GtkImage" id="img_color">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">img/color.png</property>
   </object>
   <object class="GtkImage" id="img_doc">
     <property name="visible">True</property>
@@ -40,7 +45,7 @@
   <object class="GtkImage" id="img_grayscale">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">img/Chromatic_classic_grayscale.bmp</property>
+    <property name="pixbuf">img/grayscale.png</property>
   </object>
   <object class="GtkImage" id="img_green">
     <property name="visible">True</property>
@@ -50,103 +55,12 @@
   <object class="GtkImage" id="img_monochromatic">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">img/Chromatic_classic_blacknwhite.bmp</property>
+    <property name="pixbuf">img/monochromatic.bmp</property>
   </object>
   <object class="GtkImage" id="img_red">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">img/Chromatic_classic_red.bmp</property>
-  </object>
-  <object class="GtkDialog" id="dlg_color">
-    <property name="can_focus">False</property>
-    <property name="title" translatable="yes">Saturation level</property>
-    <property name="type_hint">dialog</property>
-    <property name="deletable">False</property>
-    <property name="transient_for">window_main</property>
-    <child type="titlebar">
-      <placeholder/>
-    </child>
-    <child internal-child="vbox">
-      <object class="GtkBox">
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
-        <child internal-child="action_area">
-          <object class="GtkButtonBox">
-            <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
-            <child>
-              <object class="GtkButton" id="btn_red">
-                <property name="label" translatable="yes">Red</property>
-                <property name="visible">True</property>
-                <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="hexpand">True</property>
-                <property name="image">img_red</property>
-                <property name="always_show_image">True</property>
-                <signal name="clicked" handler="on_btn_red_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="btn_blue">
-                <property name="label" translatable="yes">Blue</property>
-                <property name="visible">True</property>
-                <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="hexpand">True</property>
-                <property name="image">img_blue</property>
-                <property name="always_show_image">True</property>
-                <signal name="clicked" handler="on_btn_blue_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="btn_green">
-                <property name="label" translatable="yes">Green</property>
-                <property name="visible">True</property>
-                <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="hexpand">True</property>
-                <property name="image">img_green</property>
-                <property name="always_show_image">True</property>
-                <signal name="clicked" handler="on_btn_green_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-      </object>
-    </child>
   </object>
   <object class="GtkImage" id="img_return">
     <property name="visible">True</property>
@@ -226,6 +140,7 @@
                       <object class="GtkImageMenuItem" id="menuitm_saveas">
                         <property name="label">gtk-save-as</property>
                         <property name="visible">True</property>
+                        <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
@@ -300,74 +215,55 @@
             <property name="resize_mode">immediate</property>
             <child>
               <object class="GtkButton" id="btn_border">
-                <property name="label" translatable="yes">Border</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Apply border to your image</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
-                <property name="hexpand">True</property>
                 <property name="image">img_border</property>
+                <property name="relief">none</property>
                 <property name="always_show_image">True</property>
                 <signal name="clicked" handler="on_btn_border_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="left_attach">7</property>
+                <property name="left_attach">4</property>
                 <property name="top_attach">0</property>
               </packing>
             </child>
             <child>
               <object class="GtkButton" id="btn_blur">
-                <property name="label" translatable="yes">Blur</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Apply blur to your image</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
-                <property name="hexpand">True</property>
                 <property name="image">img_blur</property>
+                <property name="relief">none</property>
                 <property name="always_show_image">True</property>
                 <signal name="clicked" handler="on_btn_blur_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="left_attach">6</property>
+                <property name="left_attach">3</property>
                 <property name="top_attach">0</property>
               </packing>
             </child>
             <child>
               <object class="GtkButton" id="btn_monochromatic">
-                <property name="label" translatable="yes">Monochromatic</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Put monochromatic on your image</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
-                <property name="hexpand">True</property>
                 <property name="image">img_monochromatic</property>
+                <property name="relief">none</property>
                 <property name="always_show_image">True</property>
                 <signal name="clicked" handler="on_btn_monochromatic_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="left_attach">2</property>
-                <property name="top_attach">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="btn_grayscale">
-                <property name="label" translatable="yes">Grayscale</property>
-                <property name="visible">True</property>
-                <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="hexpand">True</property>
-                <property name="image">img_grayscale</property>
-                <property name="always_show_image">True</property>
-                <signal name="clicked" handler="on_btn_grayscale_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -375,14 +271,18 @@
               </packing>
             </child>
             <child>
-              <object class="GtkImage">
+              <object class="GtkButton" id="btn_grayscale">
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
-                <property name="can_focus">False</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Put greyscale on your image</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
-                <property name="hexpand">False</property>
-                <property name="pixbuf">img/Chromatic_classic.jpg</property>
+                <property name="image">img_grayscale</property>
+                <property name="relief">none</property>
+                <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_btn_grayscale_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -404,7 +304,7 @@
                 <signal name="clicked" handler="on_btn_symhor_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="left_attach">8</property>
+                <property name="left_attach">5</property>
                 <property name="top_attach">0</property>
               </packing>
             </child>
@@ -423,7 +323,7 @@
                 <signal name="clicked" handler="on_btn_symver_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="left_attach">9</property>
+                <property name="left_attach">6</property>
                 <property name="top_attach">0</property>
               </packing>
             </child>
@@ -442,7 +342,7 @@
                 <signal name="clicked" handler="on_btn_saturation_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="left_attach">10</property>
+                <property name="left_attach">7</property>
                 <property name="top_attach">0</property>
               </packing>
             </child>
@@ -461,23 +361,28 @@
                 <signal name="clicked" handler="on_btn_rotate_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="left_attach">11</property>
+                <property name="left_attach">8</property>
                 <property name="top_attach">0</property>
               </packing>
             </child>
             <child>
               <object class="GtkButton" id="btn_color">
-                <property name="label" translatable="yes">Color filters</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Filter your image by color</property>
+                <property name="image">img_color</property>
+                <property name="relief">none</property>
                 <signal name="clicked" handler="on_btn_color_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="left_attach">3</property>
+                <property name="left_attach">2</property>
                 <property name="top_attach">0</property>
               </packing>
+            </child>
+            <child>
+              <placeholder/>
             </child>
             <child>
               <placeholder/>
@@ -505,7 +410,7 @@
                   <object class="GtkImage" id="img_main">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="stock">gtk-discard</property>
+                    <property name="pixbuf">img/shotopof114x114.png</property>
                   </object>
                 </child>
               </object>
@@ -524,6 +429,7 @@
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">About Shotopof</property>
     <property name="type_hint">dialog</property>
+    <property name="deletable">False</property>
     <property name="transient_for">window_main</property>
     <property name="program_name">Shotopof</property>
     <property name="version">1.0</property>
@@ -694,6 +600,97 @@ Iony Rakotoson</property>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkDialog" id="dlg_color">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Saturation level</property>
+    <property name="type_hint">dialog</property>
+    <property name="deletable">False</property>
+    <property name="transient_for">window_main</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="btn_red">
+                <property name="label" translatable="yes">Red</property>
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="hexpand">True</property>
+                <property name="image">img_red</property>
+                <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_btn_red_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="btn_blue">
+                <property name="label" translatable="yes">Blue</property>
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="hexpand">True</property>
+                <property name="image">img_blue</property>
+                <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_btn_blue_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="btn_green">
+                <property name="label" translatable="yes">Green</property>
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="hexpand">True</property>
+                <property name="image">img_green</property>
+                <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_btn_green_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
               </packing>
             </child>
           </object>
@@ -906,6 +903,17 @@ Iony Rakotoson</property>
           <placeholder/>
         </child>
       </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="drawing_widget">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Draw on your image</property>
+    <property name="transient_for">window_main</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
     </child>
   </object>
   <object class="WebKitSettings" id="settings1">

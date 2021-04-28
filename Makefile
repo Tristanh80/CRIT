@@ -1,7 +1,7 @@
 CC=gcc
 
 CPPFLAGS= -Wall -Wextra -MMD
-CFLAGS= `pkg-config --cflags gtk+-3.0 webkit2gtk-4.0` -Wall -Wextra -std=c99 -O3 -lm -ldl 
+CFLAGS= `pkg-config --cflags gtk+-3.0 webkit2gtk-4.0` -Wall -Wextra -std=c99 -O3 -lm -ldl
 LDFLAGS=$(PTHREAD) $(GTKLIB) -export-dynamic
 LDLIBS= `pkg-config --libs gtk+-3.0 webkit2gtk-4.0` `pkg-config --libs sdl` -lm -lSDL_image
 
@@ -24,7 +24,6 @@ clean:
 	${RM} src/operations/*.d
 	${RM} src/gtk/*.d
 	${RM} src/gtk/*.o
-
-
+	${RM} -r imgmodify
 
 # END

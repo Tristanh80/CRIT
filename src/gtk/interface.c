@@ -82,7 +82,9 @@ void interface(int argc, char *argv[])
 	gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(widgets->w_dlg_file_choose),filterr);
 	gtk_file_filter_set_name(filterr,"image");
 	gtk_file_filter_add_pattern(filterr,"*.bmp");
-    // gtk_file_filter_add_pattern(filterr,"*.jpg");
+    gtk_file_filter_add_pattern(filterr,"*.jpg");
+    gtk_file_filter_add_pattern(filterr,"*.jpeg");
+    gtk_file_filter_add_pattern(filterr,"*.png");
 
     // Initialize our variable
 	widgets->w_img_main = GTK_WIDGET(gtk_builder_get_object(builder, "img_main"));
@@ -129,6 +131,15 @@ void interface(int argc, char *argv[])
     g_signal_connect(widgets->window,"destroy",G_CALLBACK(gtk_main_quit),NULL);
 	gtk_main();
 
+    //widgets->file_name = nameOfFile(widgets);               // Changing filename for temp value
+    int dir = system("mkdir imgmodify");
+    if(dir ==-1)
+    {
+        errx(1,"Could not create imgmodify directory");
+    }
+    SDL_Surface *image = load_image(widgets->file_name);      // Loading image
+    SDL_SaveBMP(image,"imgmodify/yourmodifyimage.bmp");
+    SDL_FreeSurface(image);
     // Free our struct
 	g_slice_free(app_widgets, widgets);
     
