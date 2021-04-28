@@ -6,5 +6,7 @@
 #include "../import/import.h"
 
 void border(SDL_Surface *img, int border_width);
+void dashborder(SDL_Surface *img, int border_width, int space);
+
 
 #endif

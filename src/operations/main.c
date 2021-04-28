@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
     unsigned long param = strtoul(argv[1],NULL,10);
-    if(param<1 || param>10)
+    if(param<1 || param>11)
     {
         usage();
         return EXIT_FAILURE;
@@ -117,7 +117,7 @@ int main(int argc, char* argv[])
         image_surface = load_image("my_image.jpg");
         screen_surface = display_image(image_surface);
         wait_for_keypressed();
-        border(image_surface);
+        border(image_surface, 10);
         screen_surface = display_image(image_surface);
         wait_for_keypressed();
         SDL_FreeSurface(image_surface);
@@ -157,7 +157,20 @@ int main(int argc, char* argv[])
         SDL_FreeSurface(screen_surface);
     }
 
-    
+    if(param == 11)
+    {
+        image_surface = load_image("my_image.jpg");
+        screen_surface = display_image(image_surface);
+        wait_for_keypressed();
+        dashborder(image_surface,10 ,20);
+        screen_surface = display_image(image_surface);
+        wait_for_keypressed();
+        SDL_FreeSurface(image_surface);
+        SDL_FreeSurface(screen_surface);
+    }
+
+
+
     return 0;
 
 }
