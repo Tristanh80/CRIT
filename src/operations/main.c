@@ -12,6 +12,7 @@
 #include <SDL/SDL_image.h>
 #include <err.h>
 #include <string.h>
+#include <gd.h>
 
 void usage(void)
 {
@@ -28,9 +29,22 @@ void usage(void)
     printf("./main 10 for saturation\n");
 }
 
+void gs(gdImagePtr img, FILE *fdout, char *path)
+{
+    fdout = fopen(path, "wimg");
+    gdImageGrayScale(img);
+    gdImagePng(img, fdout);
+    fclose(fdout);
+}
+
 int main(int argc, char* argv[])
 {
-    SDL_Surface* image_surface;
+    FILE *fd;
+    gdImagePtr img = gdImageCreateFromFile("my_image.jpg");
+    char *path = "my_image.jpg";
+    gs(img, &fd, path);
+
+    /*SDL_Surface* image_surface;
     SDL_Surface* screen_surface;
 
     void init_sdl();
@@ -169,7 +183,7 @@ int main(int argc, char* argv[])
         SDL_FreeSurface(screen_surface);
     }
 
-
+*/
 
     return 0;
 
