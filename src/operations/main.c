@@ -6,6 +6,7 @@
 #include "rotate.h"
 #include "sym.h"
 #include "saturation.h"
+#include "testgd.h"
 
 #include <stdlib.h>
 #include <SDL/SDL.h>
@@ -29,20 +30,14 @@ void usage(void)
     printf("./main 10 for saturation\n");
 }
 
-void gs(gdImagePtr img, FILE *fdout, char *path)
-{
-    fdout = fopen(path, "wimg");
-    gdImageGrayScale(img);
-    gdImagePng(img, fdout);
-    fclose(fdout);
-}
+
 
 int main(int argc, char* argv[])
 {
     FILE *fd=NULL;
     gdImagePtr img = gdImageCreateFromFile("smarties.jpg");
     char *path = "smarties2.png";
-    gs(img, fd, path);
+    negate(img, fd, path);
 
     /*SDL_Surface* image_surface;
     SDL_Surface* screen_surface;
