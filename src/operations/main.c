@@ -39,10 +39,10 @@ void gs(gdImagePtr img, FILE *fdout, char *path)
 
 int main(int argc, char* argv[])
 {
-    FILE *fd;
-    gdImagePtr img = gdImageCreateFromFile("my_image.jpg");
-    char *path = "my_image.jpg";
-    gs(img, &fd, path);
+    FILE *fd=NULL;
+    gdImagePtr img = gdImageCreateFromFile("smarties.jpg");
+    char *path = "smarties2.png";
+    gs(img, fd, path);
 
     /*SDL_Surface* image_surface;
     SDL_Surface* screen_surface;
