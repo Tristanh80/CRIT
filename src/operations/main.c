@@ -38,7 +38,8 @@ int main(int argc, char* argv[])
     gdImagePtr img = gdImageCreateFromFile("chromatic_circle.jpg");
     char *path = "testimg.bmp";
 
-    crop(img, fd, path);
+    sepia(img, fd, path);
+    //crop(img, fd, path, 100, 200);
     //negate(img, fd, path);
     //contrast(img, fd, path, -50);
     //emboss(img, fd, path);
