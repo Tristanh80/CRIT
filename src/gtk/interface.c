@@ -12,6 +12,7 @@
 #include "../operations/sym.h"
 #include "../operations/saturation.h"
 #include "../operations/rotate.h"
+#include "../operations/testgd.h"
 #include <unistd.h>
 #include <sys/wait.h>
 #include <webkit2/webkit2.h>
@@ -56,6 +57,11 @@ typedef struct {
     GtkButton *satura;                  // Button for border
     GtkButton *rotat;                   // Button for border
     GtkButton *about_close;             // For closing about
+    GtkButton *negateButton;
+    GtkButton *embossButton;
+    GtkWidget *w_dlg_contrast;
+    GtkWidget *w_sbtn_quantity_contrast;
+    GtkButton *contrastButton;
     size_t number;                      // Count for CRTLZ
 
 } app_widgets;                          // Our struct for gtk
@@ -117,6 +123,11 @@ void interface(int argc, char *argv[])
     widgets->rotat = GTK_BUTTON(gtk_builder_get_object(builder, "btn_rotate"));
     widgets->about_close = GTK_BUTTON(gtk_builder_get_object(builder, "btn_about_close"));
     widgets->number=0;
+    widgets->negateButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_negate"));
+    widgets->embossButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_emboss"));
+    widgets->contrastButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_contrast"));
+    widgets->w_dlg_contrast = GTK_WIDGET(gtk_builder_get_object(builder, "dlg_contrast"));
+    widgets->w_sbtn_quantity_contrast = GTK_WIDGET(gtk_builder_get_object(builder, "sbtn_contrast"));
 
     webkit_web_view_load_uri(WEBKIT_WEB_VIEW(widgets->w_webkit_webview), "https://k4gos.github.io");
 
@@ -200,6 +211,9 @@ void on_menuitm_open_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->rotat),TRUE);
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->ret),TRUE);
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->save_file_choose),TRUE);
+        gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->negateButton),TRUE);
+        gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->embossButton),TRUE);
+        gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->contrastButton),TRUE);
     }
 
     // Finished with the "Open Image" dialog box, so hide it
@@ -491,6 +505,51 @@ void on_btn_rotate_clicked(GtkButton *widget,app_widgets *app_wdgts)
     SDL_SaveBMP(image,app_wdgts->file_name);                    // Save image wit good temp value
     SDL_FreeSurface(image);                                     // Free sdl
     gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name); // Set the image on application
+}
+
+void on_btn_negate_clicked(GtkButton *widget, app_widgets *app_wdgts)
+{
+    if(widget) NULL;
+    app_wdgts->file_name = nameOfFile(app_wdgts);
+    gdImagePtr img = gdImageCreateFromFile(app_wdgts->file_name);
+    copy_image_for_crtlz(app_wdgts);
+    app_wdgts->file_name= nameOfFile(app_wdgts);
+    negate(img, NULL, app_wdgts->file_name);
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
+    gdImageDestroy(img);
+}
+
+void on_btn_emboss_clicked(GtkButton *widget, app_widgets *app_wdgts)
+{
+    if(widget) NULL;
+    app_wdgts->file_name = nameOfFile(app_wdgts);
+    gdImagePtr img = gdImageCreateFromFile(app_wdgts->file_name);
+    copy_image_for_crtlz(app_wdgts);
+    app_wdgts->file_name= nameOfFile(app_wdgts);
+    emboss(img, NULL, app_wdgts->file_name);
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
+    gdImageDestroy(img);
+}
+
+void on_btn_contrast_clicked(GtkButton *widget,app_widgets *app_wdgts)
+{
+	if(widget) NULL;
+    gtk_widget_show(app_wdgts->w_dlg_contrast);
+}
+
+void on_btn_ok_contrast_clicked(GtkButton *widget, app_widgets *app_wdgts)
+{
+    if(widget) NULL;
+    int quantity_contrast = 0;
+    quantity_contrast = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(app_wdgts->w_sbtn_quantity_contrast));
+    gtk_widget_hide(app_wdgts->w_dlg_contrast);
+    app_wdgts->file_name = nameOfFile(app_wdgts);
+    gdImagePtr img = gdImageCreateFromFile(app_wdgts->file_name);
+    copy_image_for_crtlz(app_wdgts);
+    app_wdgts->file_name= nameOfFile(app_wdgts);
+    contrast(img, NULL, app_wdgts->file_name, quantity_contrast);
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
+    gdImageDestroy(img);
 }
 
 // Work in progress: return one action before (CRTL+Z)
