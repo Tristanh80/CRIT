@@ -37,9 +37,14 @@ int main(int argc, char* argv[])
     FILE *fd=NULL;
     gdImagePtr img = gdImageCreateFromFile("chromatic_circle.jpg");
     char *path = "testimg.bmp";
-    negate(img, fd, path);
+
+    sepia(img, fd, path);
+    //crop(img, fd, path, 100, 200);
+    //negate(img, fd, path);
     //contrast(img, fd, path, -50);
     //emboss(img, fd, path);
+
+    gdFree(img);
 
     /*SDL_Surface* image_surface;
     SDL_Surface* screen_surface;
