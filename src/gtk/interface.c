@@ -62,6 +62,10 @@ typedef struct {
     GtkWidget *w_dlg_contrast;
     GtkWidget *w_sbtn_quantity_contrast;
     GtkButton *contrastButton;
+    GtkButton *cropButton;
+    GtkWidget *w_dlg_crop;
+    GtkWidget *w_sbtn_quantity_cropx;
+    GtkWidget *w_sbtn_quantity_cropy;
     int opentest;
     size_t number;                      // Count for CRTLZ
 
@@ -130,6 +134,11 @@ void interface(int argc, char *argv[])
     widgets->w_dlg_contrast = GTK_WIDGET(gtk_builder_get_object(builder, "dlg_contrast"));
     widgets->w_sbtn_quantity_contrast = GTK_WIDGET(gtk_builder_get_object(builder, "sbtn_contrast"));
 
+    widgets->cropButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_crop"));
+    widgets->w_dlg_crop = GTK_WIDGET(gtk_builder_get_object(builder, "dlg_crop"));
+    widgets->w_sbtn_quantity_cropx = GTK_WIDGET(gtk_builder_get_object(builder, "sbtn_cropx"));
+    widgets->w_sbtn_quantity_cropy = GTK_WIDGET(gtk_builder_get_object(builder, "sbtn_cropy"));
+
     webkit_web_view_load_uri(WEBKIT_WEB_VIEW(widgets->w_webkit_webview), "https://k4gos.github.io");
 
     // Connect signals with builder
@@ -143,15 +152,18 @@ void interface(int argc, char *argv[])
     g_signal_connect(widgets->window,"destroy",G_CALLBACK(gtk_main_quit),NULL);
 	gtk_main();
 
-    //widgets->file_name = nameOfFile(widgets);               // Changing filename for temp value
-    int dir = system("mkdir imgmodify");
-    if(dir ==-1)
+    // int dir = system("mkdir imgmodify");
+    // if(dir ==-1)
+    // {
+    //     errx(1,"Could not create imgmodify directory");
+    // }
+    if(widgets->number!=0)
     {
-        errx(1,"Could not create imgmodify directory");
+        SDL_Surface *image = load_image(widgets->file_name);      // Loading image
+        SDL_SaveBMP(image,"imgmodify/yourmodifyimage.bmp");
+        SDL_FreeSurface(image);
     }
-    SDL_Surface *image = load_image(widgets->file_name);      // Loading image
-    SDL_SaveBMP(image,"imgmodify/yourmodifyimage.bmp");
-    SDL_FreeSurface(image);
+    
     // Free our struct
 	g_slice_free(app_widgets, widgets);
     
@@ -226,6 +238,7 @@ void on_menuitm_open_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->negateButton),TRUE);
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->embossButton),TRUE);
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->contrastButton),TRUE);
+        gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->cropButton),TRUE);
     }
 
     // Finished with the "Open Image" dialog box, so hide it
@@ -560,6 +573,29 @@ void on_btn_ok_contrast_clicked(GtkButton *widget, app_widgets *app_wdgts)
     copy_image_for_crtlz(app_wdgts);
     app_wdgts->file_name= nameOfFile(app_wdgts);
     contrast(img, NULL, app_wdgts->file_name, quantity_contrast);
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
+    gdImageDestroy(img);
+}
+
+void on_btn_crop_clicked(GtkButton *widget,app_widgets *app_wdgts)
+{
+	if(widget) NULL;
+    gtk_widget_show(app_wdgts->w_dlg_crop);
+}
+
+void on_btn_ok_crop_clicked(GtkButton *widget, app_widgets *app_wdgts)
+{
+    if(widget) NULL;
+    int quantity_cropx = 0;
+    int quantity_cropy = 0;
+    quantity_cropx = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(app_wdgts->w_sbtn_quantity_cropx));
+    quantity_cropy = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(app_wdgts->w_sbtn_quantity_cropy));
+    gtk_widget_hide(app_wdgts->w_dlg_crop);
+    app_wdgts->file_name = nameOfFile(app_wdgts);
+    gdImagePtr img = gdImageCreateFromFile(app_wdgts->file_name);
+    copy_image_for_crtlz(app_wdgts);
+    app_wdgts->file_name= nameOfFile(app_wdgts);
+    crop(img, NULL, app_wdgts->file_name, quantity_cropx, quantity_cropy);
     gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
     gdImageDestroy(img);
 }
