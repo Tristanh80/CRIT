@@ -62,6 +62,7 @@ typedef struct {
     GtkWidget *w_dlg_contrast;
     GtkWidget *w_sbtn_quantity_contrast;
     GtkButton *contrastButton;
+    int opentest;
     size_t number;                      // Count for CRTLZ
 
 } app_widgets;                          // Our struct for gtk
@@ -166,6 +167,16 @@ void interface(int argc, char *argv[])
 void on_menuitm_open_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
 {
     if(menuitem) NULL;
+    if(app_wdgts->opentest != 0)
+    {
+        app_wdgts-> opentest = 0;
+        app_wdgts->number = 0;
+        int tst = system("rm -rf .tmp");
+        if(tst==-1)
+        {
+            errx(1,"remove tmp dir");
+        }
+    }
     // Show the "Open Image" dialog box
     gtk_widget_show(app_wdgts->w_dlg_file_choose);
     
@@ -196,6 +207,7 @@ void on_menuitm_open_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
         
         app_wdgts->file_name = nameOfFile(app_wdgts);
         gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
+        app_wdgts->opentest+=1;
         // Set all the widgets sensitive
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->gScaleButton),TRUE);
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->monochromaticButton),TRUE);

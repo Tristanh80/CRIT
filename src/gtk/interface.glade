@@ -76,7 +76,7 @@
   <object class="GtkImage" id="img_rotater">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">img/chromatic_classic_rotater.bmp</property>
+    <property name="pixbuf">img/rotate.png</property>
   </object>
   <object class="GtkImage" id="img_rotater1">
     <property name="visible">True</property>
@@ -101,12 +101,12 @@
   <object class="GtkImage" id="img_symh">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">img/chromatic_classic_symh.bmp</property>
+    <property name="pixbuf">img/horizontalsymetry.png</property>
   </object>
   <object class="GtkImage" id="img_symv">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">img/chromatic_classic_symv.bmp</property>
+    <property name="pixbuf">img/verticalsymetry.bmp</property>
   </object>
   <object class="GtkWindow" id="window_main">
     <property name="can_focus">False</property>
