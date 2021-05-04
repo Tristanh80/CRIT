@@ -4,6 +4,7 @@
 #include <gd.h>
 
 void negate(gdImagePtr img, FILE *fdout, char *path);
+void edges(gdImagePtr img, FILE *fdout, char *path);
 void emboss(gdImagePtr img, FILE *fdout, char *path);
 void contrast(gdImagePtr img, FILE *fdout, char *path, int val);
 void crop(gdImagePtr img, FILE *fdout, char *path, int a, int b);

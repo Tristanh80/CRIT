@@ -12,6 +12,13 @@ void negate(gdImagePtr img, FILE *fdout, char *path)
     fclose(fdout);
 }
 
+void edges(gdImagePtr img, FILE *fdout, char *path)
+{
+  fdout = fopen(path, "wb");
+  gdImageEdgeDetectQuick(img);
+  gdImageBmp(img, fdout, 0);
+  fclose(fdout);
+}
 void emboss(gdImagePtr img, FILE *fdout, char *path)
 {
     fdout = fopen(path, "wb");

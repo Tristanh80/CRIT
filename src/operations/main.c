@@ -31,6 +31,7 @@ void usage(void)
     printf("./main 10 for saturation\n");
     printf("./main 11 for dashborder\n");
     printf("./main 12 for sepia\n");
+    printf("./main 13 for edges\n");
 }
 
 
@@ -49,10 +50,13 @@ int main(int argc, char* argv[])
 
     img = gdImageCreateFromFile("my_image.jpg");
     contrast(img, fd, "test2.bmp", -50);
-
+    
     img = gdImageCreateFromFile("my_image.jpg");
     emboss(img, fd, "test3.bmp");
 
+    img = gdImageCreateFromFile("my_image.jpg");
+    edges(img, fd, "test4.bmp");
+    
     gdFree(img);
 
 
