@@ -6,6 +6,7 @@
 #include "rotate.h"
 #include "sym.h"
 #include "saturation.h"
+#include "sepia.h"
 #include "gdfct.h"
 
 #include <stdlib.h>
@@ -28,25 +29,33 @@ void usage(void)
     printf("./main 8 for symh\n");
     printf("./main 9 for symv\n");
     printf("./main 10 for saturation\n");
+    printf("./main 11 for dashborder\n");
+    printf("./main 12 for sepia\n");
 }
 
 
 
 int main(int argc, char* argv[])
 {
-    FILE *fd=NULL;
-    gdImagePtr img = gdImageCreateFromFile("chromatic_circle.jpg");
-    char *path = "testimg.bmp";
+    /*FILE *fd=NULL;
+      gdImagePtr img = gdImageCreateFromFile("my_image.jpg");
+    //sepia(img, fd, );
 
-    //sepia(img, fd, path);
-    crop(img, fd, path, 100, 200);
-    //negate(img, fd, path);
-    //contrast(img, fd, path, -50);
-    //emboss(img, fd, path);
+    img = gdImageCreateFromFile("my_image.jpg");
+    crop(img, fd, "test0.bmp", 100, 50);
 
-    gdFree(img);
+    img = gdImageCreateFromFile("my_image.jpg");
+    negate(img, fd, "test1.bmp");
 
-    /*SDL_Surface* image_surface;
+    img = gdImageCreateFromFile("my_image.jpg");
+    contrast(img, fd, "test2.bmp", -50);
+
+    img = gdImageCreateFromFile("my_image.jpg");
+    emboss(img, fd, "test3.bmp");
+
+    gdFree(img);*/
+
+    SDL_Surface* image_surface;
     SDL_Surface* screen_surface;
 
     void init_sdl();
@@ -57,12 +66,12 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
     unsigned long param = strtoul(argv[1],NULL,10);
-    if(param<1 || param>11)
+    if(param<1 || param>12)
     {
         usage();
         return EXIT_FAILURE;
     }
-    if(param == 1)
+    else if(param == 1)
     {
         image_surface = load_image("my_image.jpg");
         screen_surface = display_image(image_surface);
@@ -73,7 +82,7 @@ int main(int argc, char* argv[])
         SDL_FreeSurface(image_surface);
         SDL_FreeSurface(screen_surface);
     }
-    if(param == 2)
+    else if(param == 2)
     {
         image_surface = load_image("my_image.jpg");
         screen_surface = display_image(image_surface);
@@ -84,7 +93,7 @@ int main(int argc, char* argv[])
         SDL_FreeSurface(image_surface);
         SDL_FreeSurface(screen_surface);
     }
-    if(param == 3)
+    else if(param == 3)
     {
         image_surface = load_image("my_image.jpg");
         screen_surface = display_image(image_surface);
@@ -95,7 +104,7 @@ int main(int argc, char* argv[])
         SDL_FreeSurface(image_surface);
         SDL_FreeSurface(screen_surface);
     }
-    if(param == 4)
+    else if(param == 4)
     {
         image_surface = load_image("my_image.jpg");
         screen_surface = display_image(image_surface);
@@ -106,7 +115,7 @@ int main(int argc, char* argv[])
         SDL_FreeSurface(image_surface);
         SDL_FreeSurface(screen_surface);
     }
-    if(param == 5)
+    else if(param == 5)
     {
         image_surface = load_image("my_image.jpg");
         screen_surface = display_image(image_surface);
@@ -117,7 +126,7 @@ int main(int argc, char* argv[])
         SDL_FreeSurface(image_surface);
         SDL_FreeSurface(screen_surface);
     }
-    if(param == 6)
+    else if(param == 6)
     {
         image_surface = load_image("my_image.jpg");
         screen_surface = display_image(image_surface);
@@ -128,7 +137,7 @@ int main(int argc, char* argv[])
         SDL_FreeSurface(image_surface);
         SDL_FreeSurface(screen_surface);
     }
-    if(param == 7)
+    else if(param == 7)
     {
         image_surface = load_image("my_image.jpg");
         screen_surface = display_image(image_surface);
@@ -139,7 +148,7 @@ int main(int argc, char* argv[])
         SDL_FreeSurface(image_surface);
         SDL_FreeSurface(screen_surface);
     }
-    if(param == 8)
+    else if(param == 8)
     {
         image_surface = load_image("my_image.jpg");
         screen_surface = display_image(image_surface);
@@ -150,7 +159,7 @@ int main(int argc, char* argv[])
         SDL_FreeSurface(image_surface);
         SDL_FreeSurface(screen_surface);
     }
-    if(param == 9)
+    else if(param == 9)
     {
         image_surface = load_image("my_image.jpg");
         screen_surface = display_image(image_surface);
@@ -161,7 +170,7 @@ int main(int argc, char* argv[])
         SDL_FreeSurface(image_surface);
         SDL_FreeSurface(screen_surface);
     }
-    if(param == 10)
+    else if(param == 10)
     {
         image_surface = load_image("my_image.jpg");
         screen_surface = display_image(image_surface);
@@ -173,7 +182,7 @@ int main(int argc, char* argv[])
         SDL_FreeSurface(screen_surface);
     }
 
-    if(param == 11)
+    else if(param == 11)
     {
         image_surface = load_image("my_image.jpg");
         screen_surface = display_image(image_surface);
@@ -185,7 +194,20 @@ int main(int argc, char* argv[])
         SDL_FreeSurface(screen_surface);
     }
 
-*/
+    else if(param == 12)
+    {
+        image_surface = load_image("my_image.jpg");
+        screen_surface = display_image(image_surface);
+        wait_for_keypressed();
+        sepia(image_surface);
+        screen_surface = display_image(image_surface);
+        wait_for_keypressed();
+        SDL_FreeSurface(image_surface);
+        SDL_FreeSurface(screen_surface);
+    }
+
+
+
 
     return 0;
 
