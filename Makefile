@@ -24,6 +24,6 @@ clean:
 	${RM} src/operations/*.d
 	${RM} src/gtk/*.d
 	${RM} src/gtk/*.o
-	${RM} -r imgmodify
+	${RM} -r imgmodify/yourmodifyimage.bmp
 
 # END
