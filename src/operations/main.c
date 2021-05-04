@@ -6,7 +6,7 @@
 #include "rotate.h"
 #include "sym.h"
 #include "saturation.h"
-#include "testgd.h"
+#include "gdfct.h"
 
 #include <stdlib.h>
 #include <SDL/SDL.h>
@@ -38,8 +38,8 @@ int main(int argc, char* argv[])
     gdImagePtr img = gdImageCreateFromFile("chromatic_circle.jpg");
     char *path = "testimg.bmp";
 
-    sepia(img, fd, path);
-    //crop(img, fd, path, 100, 200);
+    //sepia(img, fd, path);
+    crop(img, fd, path, 100, 200);
     //negate(img, fd, path);
     //contrast(img, fd, path, -50);
     //emboss(img, fd, path);

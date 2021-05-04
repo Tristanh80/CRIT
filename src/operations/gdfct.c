@@ -53,7 +53,7 @@ void crop(gdImagePtr img, FILE *fdout, char *path, int a, int b)
     gdFree(rect);
 }
 
-
+/*
 
 void limit(int rgb)
 {
@@ -91,4 +91,4 @@ void sepia(gdImagePtr img, FILE *fdout, char *path)
     gdImageBmp(img, fdout, 0);
     fclose(fdout);
 
-}
+}*/

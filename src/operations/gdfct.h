@@ -1,5 +1,5 @@
-#ifndef TESTGD_H
-#define TESTGD_H
+#ifndef GDFCT_H
+#define GDFCT_H
 
 #include <gd.h>
 
