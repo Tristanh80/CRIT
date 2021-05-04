@@ -9,6 +9,7 @@
 #include "../operations/filters.h"
 #include "../operations/blur.h"
 #include "../operations/border.h"
+#include "../operations/sepia.h"
 #include "../operations/sym.h"
 #include "../operations/saturation.h"
 #include "../operations/rotate.h"
@@ -49,8 +50,6 @@ typedef struct {
     GtkButton *blurButton;              // Button for blur
     GtkWidget *w_dlg_blur;
     GtkWidget *w_sbtn_quantity_blur;
-    GtkWidget *w_dlg_border;
-    GtkWidget *w_sbtn_quantity_border;
     GtkButton *borderButton;            // Button for border
     GtkButton *symHor;                  // Button for border
     GtkButton *symVer;                  // Button for border
@@ -66,6 +65,16 @@ typedef struct {
     GtkWidget *w_dlg_crop;
     GtkWidget *w_sbtn_quantity_cropx;
     GtkWidget *w_sbtn_quantity_cropy;
+    GtkButton *sepiaButton;
+    GtkButton *edgeButton;
+    GtkWidget *w_dlg_border_choose;
+
+    GtkWidget *w_dlg_border_without_space;
+    GtkWidget *w_sbtn_quantity_border;
+
+    GtkWidget *w_dlg_border_space;
+    GtkWidget *w_sbtn_quantity_border1;
+    GtkWidget *w_sbtn_quantity_border_space;
     int opentest;
     size_t number;                      // Count for CRTLZ
 
@@ -119,9 +128,18 @@ void interface(int argc, char *argv[])
     widgets->blurButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_blur"));
     widgets->w_dlg_blur = GTK_WIDGET(gtk_builder_get_object(builder, "dlg_blur"));
     widgets->w_sbtn_quantity_blur = GTK_WIDGET(gtk_builder_get_object(builder, "sbtn_blur"));
-    widgets->w_dlg_border = GTK_WIDGET(gtk_builder_get_object(builder, "dlg_border"));
-    widgets->w_sbtn_quantity_border = GTK_WIDGET(gtk_builder_get_object(builder, "sbtn_border"));
+
     widgets->borderButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_border"));
+    widgets->w_dlg_border_choose = GTK_WIDGET(gtk_builder_get_object(builder, "dlg_border_choose"));
+
+    widgets->w_dlg_border_without_space = GTK_WIDGET(gtk_builder_get_object(builder, "dlg_border"));
+    widgets->w_sbtn_quantity_border = GTK_WIDGET(gtk_builder_get_object(builder, "sbtn_border"));
+
+    
+    widgets->w_dlg_border_space = GTK_WIDGET(gtk_builder_get_object(builder, "dlg_border_space"));
+    widgets->w_sbtn_quantity_border1 = GTK_WIDGET(gtk_builder_get_object(builder, "sbtn_border2"));
+    widgets->w_sbtn_quantity_border_space = GTK_WIDGET(gtk_builder_get_object(builder, "sbtn_border_space"));
+
     widgets->symHor = GTK_BUTTON(gtk_builder_get_object(builder, "btn_symhor"));
     widgets->symVer = GTK_BUTTON(gtk_builder_get_object(builder, "btn_symver"));
     widgets->satura = GTK_BUTTON(gtk_builder_get_object(builder, "btn_saturation"));
@@ -138,6 +156,8 @@ void interface(int argc, char *argv[])
     widgets->w_dlg_crop = GTK_WIDGET(gtk_builder_get_object(builder, "dlg_crop"));
     widgets->w_sbtn_quantity_cropx = GTK_WIDGET(gtk_builder_get_object(builder, "sbtn_cropx"));
     widgets->w_sbtn_quantity_cropy = GTK_WIDGET(gtk_builder_get_object(builder, "sbtn_cropy"));
+    widgets->sepiaButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_sepia"));
+    widgets->edgeButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_edge"));
 
     webkit_web_view_load_uri(WEBKIT_WEB_VIEW(widgets->w_webkit_webview), "https://k4gos.github.io");
 
@@ -239,6 +259,8 @@ void on_menuitm_open_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->embossButton),TRUE);
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->contrastButton),TRUE);
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->cropButton),TRUE);
+        gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->sepiaButton),TRUE);
+        gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->edgeButton),TRUE);
     }
 
     // Finished with the "Open Image" dialog box, so hide it
@@ -418,16 +440,49 @@ void on_btn_ok_blur_clicked(GtkMenuItem *menuitem, app_widgets *app_wdgts)
 void on_btn_border_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
 	if(widget) NULL;
-    gtk_widget_show(app_wdgts->w_dlg_border);
+    gtk_widget_show(app_wdgts->w_dlg_border_choose);
 }
 
+void on_btn_border_without_space_clicked(GtkButton *widget,app_widgets *app_wdgts)
+{
+	if(widget) NULL;
+    gtk_widget_hide(app_wdgts->w_dlg_border_choose);
+    gtk_widget_show(app_wdgts->w_dlg_border_without_space);
+}
+
+void on_btn_border_with_space_clicked(GtkButton *widget,app_widgets *app_wdgts)
+{
+	if(widget) NULL;
+    gtk_widget_hide(app_wdgts->w_dlg_border_choose);
+    gtk_widget_show(app_wdgts->w_dlg_border_space);
+}
+
+
+
+void on_btn_ok_border1_clicked(GtkButton *widget,app_widgets *app_wdgts)
+{
+	if(widget) NULL;
+    int quantity_border = 0;
+    int quantity_border_space = 0;
+    quantity_border = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(app_wdgts->w_sbtn_quantity_border1));
+    quantity_border_space = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(app_wdgts->w_sbtn_quantity_border_space));
+    gtk_widget_hide(app_wdgts->w_dlg_border_space);
+    app_wdgts->file_name = nameOfFile(app_wdgts);               // Changing filename for temp value
+    SDL_Surface *image = load_image(app_wdgts->file_name);      // Loading image
+    dashborder(image,quantity_border,quantity_border_space);                                           // Applied function
+    copy_image_for_crtlz(app_wdgts);                            // Copy for return
+    app_wdgts->file_name = nameOfFile(app_wdgts);               // Update filename
+    SDL_SaveBMP(image,app_wdgts->file_name);                    // Save image wit good temp value
+    SDL_FreeSurface(image);                                     // Free sdl
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name); // Set the image on application
+}
 
 void on_btn_ok_border_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
 	if(widget) NULL;
     int quantity_border = 0;
     quantity_border = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(app_wdgts->w_sbtn_quantity_border));
-    gtk_widget_hide(app_wdgts->w_dlg_border);
+    gtk_widget_hide(app_wdgts->w_dlg_border_without_space);
     app_wdgts->file_name = nameOfFile(app_wdgts);               // Changing filename for temp value
     SDL_Surface *image = load_image(app_wdgts->file_name);      // Loading image
     border(image,quantity_border);                                           // Applied function
@@ -596,6 +651,31 @@ void on_btn_ok_crop_clicked(GtkButton *widget, app_widgets *app_wdgts)
     copy_image_for_crtlz(app_wdgts);
     app_wdgts->file_name= nameOfFile(app_wdgts);
     crop(img, NULL, app_wdgts->file_name, quantity_cropx, quantity_cropy);
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
+    gdImageDestroy(img);
+}
+
+void on_btn_sepia_clicked(GtkButton *widget,app_widgets *app_wdgts)
+{
+	if(widget) NULL;
+    app_wdgts->file_name = nameOfFile(app_wdgts);               // Changing filename for temp value
+    SDL_Surface *image = load_image(app_wdgts->file_name);      // Loading image
+    sepia(image);                                           // Applied function
+    copy_image_for_crtlz(app_wdgts);                            // Copy for return
+    app_wdgts->file_name = nameOfFile(app_wdgts);               // Update filename
+    SDL_SaveBMP(image,app_wdgts->file_name);                    // Save image wit good temp value
+    SDL_FreeSurface(image);                                     // Free sdl
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name); // Set the image on application
+}
+
+void on_btn_edge_clicked(GtkButton *widget, app_widgets *app_wdgts)
+{
+    if(widget) NULL;
+    app_wdgts->file_name = nameOfFile(app_wdgts);
+    gdImagePtr img = gdImageCreateFromFile(app_wdgts->file_name);
+    copy_image_for_crtlz(app_wdgts);
+    app_wdgts->file_name= nameOfFile(app_wdgts);
+    edges(img, NULL, app_wdgts->file_name);
     gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
     gdImageDestroy(img);
 }
