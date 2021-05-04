@@ -37,9 +37,9 @@ void usage(void)
 
 int main(int argc, char* argv[])
 {
-    /*FILE *fd=NULL;
-      gdImagePtr img = gdImageCreateFromFile("my_image.jpg");
-    //sepia(img, fd, );
+    FILE *fd=NULL;
+    gdImagePtr img = gdImageCreateFromFile("my_image.jpg");
+    brightness(img, fd, "test.bmp", 80);
 
     img = gdImageCreateFromFile("my_image.jpg");
     crop(img, fd, "test0.bmp", 100, 50);
@@ -53,8 +53,10 @@ int main(int argc, char* argv[])
     img = gdImageCreateFromFile("my_image.jpg");
     emboss(img, fd, "test3.bmp");
 
-    gdFree(img);*/
+    gdFree(img);
 
+
+/*
     SDL_Surface* image_surface;
     SDL_Surface* screen_surface;
 
@@ -206,7 +208,7 @@ int main(int argc, char* argv[])
         SDL_FreeSurface(screen_surface);
     }
 
-
+*/
 
 
     return 0;
