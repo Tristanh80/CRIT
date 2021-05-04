@@ -5,7 +5,7 @@ CFLAGS= `pkg-config --cflags gtk+-3.0 webkit2gtk-4.0` -Wall -Wextra -std=c99 -O3
 LDFLAGS=$(PTHREAD) $(GTKLIB) -export-dynamic
 LDLIBS= `pkg-config --libs gtk+-3.0 webkit2gtk-4.0` `pkg-config --libs sdl` -lm -lSDL_image -lgd -lpng -lz -ljpeg -lfreetype
 
-SRC= src/main.c src/import/import.c src/operations/blur.c src/gtk/interface.c src/operations/border.c src/operations/filters.c src/operations/grey.c src/operations/rotate.c src/operations/saturation.c src/operations/sym.c src/operations/testgd.c
+SRC= src/main.c src/import/import.c src/operations/blur.c src/gtk/interface.c src/operations/border.c src/operations/filters.c src/operations/grey.c src/operations/rotate.c src/operations/saturation.c src/operations/sym.c src/operations/gdfct.c
 OBJ= ${SRC:.c=.o}
 DEP= ${SRC:.c=.d}
 
