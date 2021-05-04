@@ -40,23 +40,23 @@ int main(int argc, char* argv[])
 {
     FILE *fd=NULL;
     gdImagePtr img = gdImageCreateFromFile("my_image.jpg");
-    brightness(img, fd, "test.bmp", 80);
+    brightness(img, fd, "brightness.bmp", 80);
 
     img = gdImageCreateFromFile("my_image.jpg");
-    crop(img, fd, "test0.bmp", 100, 50);
+    crop(img, fd, "crop.bmp", 100, 50);
 
     img = gdImageCreateFromFile("my_image.jpg");
-    negate(img, fd, "test1.bmp");
+    negate(img, fd, "negate.bmp");
 
     img = gdImageCreateFromFile("my_image.jpg");
-    contrast(img, fd, "test2.bmp", -50);
-    
-    img = gdImageCreateFromFile("my_image.jpg");
-    emboss(img, fd, "test3.bmp");
+    contrast(img, fd, "contrast.bmp", -50);
 
     img = gdImageCreateFromFile("my_image.jpg");
-    edges(img, fd, "test4.bmp");
-    
+    emboss(img, fd, "emboss.bmp");
+
+    img = gdImageCreateFromFile("my_image.jpg");
+    edges(img, fd, "edges.bmp");
+
     gdFree(img);
 
 
