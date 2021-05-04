@@ -13,88 +13,6 @@
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
-  <object class="GtkDialog" id="dlg_crop">
-    <property name="can_focus">False</property>
-    <property name="title" translatable="yes">Crop</property>
-    <property name="type_hint">dialog</property>
-    <property name="deletable">False</property>
-    <property name="transient_for">window_main</property>
-    <child type="titlebar">
-      <placeholder/>
-    </child>
-    <child internal-child="vbox">
-      <object class="GtkBox">
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
-        <child internal-child="action_area">
-          <object class="GtkButtonBox">
-            <property name="can_focus">False</property>
-            <property name="orientation">vertical</property>
-            <property name="layout_style">end</property>
-            <child>
-              <object class="GtkSpinButton" id="sbtn_cropx">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="tooltip_text" translatable="yes">Crop in x</property>
-                <property name="max_length">3</property>
-                <property name="width_chars">10</property>
-                <property name="max_width_chars">2</property>
-                <property name="text" translatable="yes">2</property>
-                <property name="adjustment">adjustement_cropx</property>
-                <property name="numeric">True</property>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSpinButton" id="sbtn_cropy">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="tooltip_text" translatable="yes">Crop in y</property>
-                <property name="max_length">3</property>
-                <property name="width_chars">10</property>
-                <property name="max_width_chars">2</property>
-                <property name="text" translatable="yes">2</property>
-                <property name="adjustment">adjustement_cropy</property>
-                <property name="numeric">True</property>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="btn_ok_crop">
-                <property name="label" translatable="yes">OK</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_btn_ok_crop_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-      </object>
-    </child>
-  </object>
   <object class="GtkAdjustment" id="adjustment_blur">
     <property name="lower">2</property>
     <property name="upper">100</property>
@@ -130,20 +48,30 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">img/Chromatic_classic_border.bmp</property>
   </object>
-  <object class="GtkImage" id="img_border1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">img/Chromatic_classic_border.bmp</property>
-  </object>
   <object class="GtkImage" id="img_color">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">img/color.png</property>
   </object>
+  <object class="GtkImage" id="img_contrast">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">img/contrast.bmp</property>
+  </object>
+  <object class="GtkImage" id="img_crop">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">img/crop.bmp</property>
+  </object>
   <object class="GtkImage" id="img_doc">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-dialog-question</property>
+  </object>
+  <object class="GtkImage" id="img_emboss">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">img/emboss.bmp</property>
   </object>
   <object class="GtkImage" id="img_grayscale">
     <property name="visible">True</property>
@@ -160,6 +88,11 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">img/monochromatic.bmp</property>
   </object>
+  <object class="GtkImage" id="img_negate">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">img/negate.bmp</property>
+  </object>
   <object class="GtkImage" id="img_red">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -174,21 +107,6 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">img/rotate.png</property>
-  </object>
-  <object class="GtkImage" id="img_rotater1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">img/chromatic_classic_rotater.bmp</property>
-  </object>
-  <object class="GtkImage" id="img_rotater2">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">img/chromatic_classic_rotater.bmp</property>
-  </object>
-  <object class="GtkImage" id="img_rotater3">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">img/chromatic_classic_rotater.bmp</property>
   </object>
   <object class="GtkImage" id="img_saturation">
     <property name="visible">True</property>
@@ -509,7 +427,7 @@
                 <property name="tooltip_text" translatable="yes">Apply rotate right</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
-                <property name="image">img_rotater1</property>
+                <property name="image">img_negate</property>
                 <property name="relief">none</property>
                 <property name="always_show_image">True</property>
                 <signal name="clicked" handler="on_btn_negate_clicked" swapped="no"/>
@@ -529,7 +447,7 @@
                 <property name="tooltip_text" translatable="yes">Apply rotate right</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
-                <property name="image">img_rotater2</property>
+                <property name="image">img_emboss</property>
                 <property name="relief">none</property>
                 <property name="always_show_image">True</property>
                 <signal name="clicked" handler="on_btn_emboss_clicked" swapped="no"/>
@@ -549,7 +467,7 @@
                 <property name="tooltip_text" translatable="yes">Apply rotate right</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
-                <property name="image">img_rotater3</property>
+                <property name="image">img_contrast</property>
                 <property name="relief">none</property>
                 <property name="always_show_image">True</property>
                 <signal name="clicked" handler="on_btn_contrast_clicked" swapped="no"/>
@@ -569,7 +487,7 @@
                 <property name="tooltip_text" translatable="yes">Apply border to your image</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
-                <property name="image">img_border1</property>
+                <property name="image">img_crop</property>
                 <property name="relief">none</property>
                 <property name="always_show_image">True</property>
                 <signal name="clicked" handler="on_btn_crop_clicked" swapped="no"/>
@@ -943,6 +861,88 @@ Iony Rakotoson</property>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkDialog" id="dlg_crop">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Crop</property>
+    <property name="type_hint">dialog</property>
+    <property name="deletable">False</property>
+    <property name="transient_for">window_main</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkSpinButton" id="sbtn_cropx">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="tooltip_text" translatable="yes">Crop in x</property>
+                <property name="max_length">3</property>
+                <property name="width_chars">10</property>
+                <property name="max_width_chars">2</property>
+                <property name="text" translatable="yes">2</property>
+                <property name="adjustment">adjustement_cropx</property>
+                <property name="numeric">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSpinButton" id="sbtn_cropy">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="tooltip_text" translatable="yes">Crop in y</property>
+                <property name="max_length">3</property>
+                <property name="width_chars">10</property>
+                <property name="max_width_chars">2</property>
+                <property name="text" translatable="yes">2</property>
+                <property name="adjustment">adjustement_cropy</property>
+                <property name="numeric">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="btn_ok_crop">
+                <property name="label" translatable="yes">OK</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_btn_ok_crop_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
               </packing>
             </child>
           </object>

@@ -12,7 +12,7 @@
 #include "../operations/sym.h"
 #include "../operations/saturation.h"
 #include "../operations/rotate.h"
-#include "../operations/testgd.h"
+#include "../operations/gdfct.h"
 #include <unistd.h>
 #include <sys/wait.h>
 #include <webkit2/webkit2.h>
@@ -600,7 +600,7 @@ void on_btn_ok_crop_clicked(GtkButton *widget, app_widgets *app_wdgts)
     gdImageDestroy(img);
 }
 
-// Work in progress: return one action before (CRTL+Z)
+// Return one action before (CRTL+Z)
 void on_menuitm_return_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
 {
 	if(menuitem) NULL;
