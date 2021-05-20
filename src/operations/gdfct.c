@@ -7,7 +7,26 @@
 void negate(gdImagePtr img, FILE *fdout, char *path)
 {
     fdout = fopen(path, "wb");
-    gdImageNegate(img);
+    //gdImageNegate(img);
+
+
+    //TESTS A ENLEVER
+    /*for(int x = 16770000; x<16777215; x++)
+    {
+        gdImageColorReplace(img,x,16711680);
+    }
+    gdImageFile(img, "testColor.jpg");*/
+
+    /*
+    gdImageBoundsSafe(img, 100, 100);
+    gdImageFile(img, "testBounds.jpg");
+    */
+
+    /*
+    gdImageChar(img, NULL, 100, 100, 64, 0);
+    gdImageFile(img, "testChar.jpg");
+    */
+
     gdImageBmp(img, fdout, 0);
     fclose(fdout);
 }
@@ -19,6 +38,7 @@ void edges(gdImagePtr img, FILE *fdout, char *path)
   gdImageBmp(img, fdout, 0);
   fclose(fdout);
 }
+
 void emboss(gdImagePtr img, FILE *fdout, char *path)
 {
     fdout = fopen(path, "wb");
@@ -62,4 +82,14 @@ void crop(gdImagePtr img, FILE *fdout, char *path, int a, int b)
     fclose(fdout);
     gdFree(rect);
 }
+
+
+/*
+void draw(gdImagePtr img, FILE *fdout, char *path, int x, int y, int color)
+{
+    fdout = fopen(path, img);
+    gdImageSetPixel(img, x, y, color);
+    dgImageBmp(img, fdout, 0);
+    fclose(fdout);
+}*/
 
