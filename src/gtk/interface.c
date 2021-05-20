@@ -4,6 +4,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <err.h>
+#include <limits.h>
 #include "../import/import.h"
 #include "../operations/grey.h"
 #include "../operations/filters.h"
@@ -22,6 +23,7 @@
 // Definition of GTK widget
 GtkBuilder *builder;
 GtkWidget *image;
+GtkWidget *draw1;
 GtkWidget *fileChooser;
 GtkFileFilter *filterr;
 
@@ -75,10 +77,32 @@ typedef struct {
     GtkWidget *w_dlg_border_space;
     GtkWidget *w_sbtn_quantity_border1;
     GtkWidget *w_sbtn_quantity_border_space;
+
+    GtkWidget *drawing_widget;
+    GtkButton *drawButton;
+    GtkButton *drawClose;
+    // GtkWidget *draw1;
+    GtkButton *clearDrawButton;
+    GtkButton *redDrawButton;
+    GtkButton *greenDrawButton;
+    GtkButton *blueDrawButton;
+    GtkButton *whiteDrawButton;
+
+
     int opentest;
     size_t number;                      // Count for CRTLZ
 
 } app_widgets;                          // Our struct for gtk
+
+static void draw_brush (GtkWidget *widget, gdouble x, gdouble y);
+struct Point {
+    int x;
+    int y;
+    double red, green, blue;
+    struct Point *next;
+} *p1, *p2, *start;
+
+double redd, greenn, bluee;
 char* nameOfFile(app_widgets *app_wdgts);
 
 void interface(int argc, char *argv[])
@@ -90,6 +114,9 @@ void interface(int argc, char *argv[])
 
     webkit_web_view_get_type();
     webkit_settings_get_type();
+
+    p1 = p2 = start = NULL;
+    redd = greenn = bluee = 0.0;
 
 	// Connecting glade file
 	builder = gtk_builder_new_from_file("src/gtk/interface.glade");
@@ -159,7 +186,18 @@ void interface(int argc, char *argv[])
     widgets->sepiaButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_sepia"));
     widgets->edgeButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_edge"));
 
+    widgets->drawButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_draw"));
+    widgets->drawClose = GTK_BUTTON(gtk_builder_get_object(builder, "btn_close_draw"));
+    widgets->drawing_widget = GTK_WIDGET(gtk_builder_get_object(builder, "drawing_widget"));
+    draw1 = GTK_WIDGET(gtk_builder_get_object(builder, "draw1"));
+    widgets->clearDrawButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_draw_clear"));
+    widgets->redDrawButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_draw_red"));
+    widgets->greenDrawButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_draw_green"));
+    widgets->blueDrawButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_draw_blue"));
+    widgets->whiteDrawButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_draw_white"));
     webkit_web_view_load_uri(WEBKIT_WEB_VIEW(widgets->w_webkit_webview), "https://k4gos.github.io");
+
+    gtk_widget_set_events(draw1, GDK_BUTTON_MOTION_MASK | GDK_BUTTON_PRESS_MASK);
 
     // Connect signals with builder
 	gtk_builder_connect_signals(builder, widgets);
@@ -177,12 +215,12 @@ void interface(int argc, char *argv[])
     // {
     //     errx(1,"Could not create imgmodify directory");
     // }
-    if(widgets->number!=0)
-    {
-        SDL_Surface *image = load_image(widgets->file_name);      // Loading image
-        SDL_SaveBMP(image,"imgmodify/yourmodifyimage.bmp");
-        SDL_FreeSurface(image);
-    }
+    // if(widgets->number!=0)
+    // {
+    //     SDL_Surface *image = load_image(widgets->file_name);      // Loading image
+    //     SDL_SaveBMP(image,"imgmodify/yourmodifyimage.bmp");
+    //     SDL_FreeSurface(image);
+    // }
     
     // Free our struct
 	g_slice_free(app_widgets, widgets);
@@ -261,6 +299,7 @@ void on_menuitm_open_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->cropButton),TRUE);
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->sepiaButton),TRUE);
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->edgeButton),TRUE);
+        gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->drawButton),TRUE);
     }
 
     // Finished with the "Open Image" dialog box, so hide it
@@ -295,27 +334,40 @@ void on_menuitm_saveas_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
 
 char* nameOfFile(app_widgets *app_wdgts)
 {
-    char buffer[64];
     char temp[32];
-    FILE *fp;
-    fp = popen("pwd","r");
-
-    if(fgets(buffer, 64, fp) == NULL)
-    {
-        errx(1,"Error fgets in nameOfFile");
-    };
+    char pathbefore[64];
+    sprintf(pathbefore,".tmp");
+    char *path = pathbefore;
+    char actualpath[PATH_MAX+1];
+    char *ptr;
+    ptr = realpath(path,actualpath);
+    sprintf(temp,"/temp%li.bmp",app_wdgts->number);
+    strcat(ptr,temp);
+    // printf("realpath ptr = %s\n",ptr);
+    return ptr;
+    // printf("path = %s\n",path);
     
-    pclose(fp);
-    int i = 0;
-    char *test = (char *)malloc(sizeof(char)*64);
-    while(buffer[i] !=10)
-    {
-        test[i] = buffer[i];
-        i++;
-    }
-    sprintf(temp,"/.tmp/temp%li.bmp",app_wdgts->number);
-    strcat(test,temp);
-    return test;
+    // printf("realpath actualpath = %s\n",actualpath);
+    
+    // FILE *fp;
+    // fp = popen("pwd","r");
+
+    // if(fgets(buffer, 64, fp) == NULL)
+    // {
+    //     errx(1,"Error fgets in nameOfFile");
+    // };
+    
+    // pclose(fp);
+    // int i = 0;
+    // char *test = (char *)malloc(sizeof(char)*64);
+    // while(buffer[i] !=10)
+    // {
+    //     test[i] = buffer[i];
+    //     i++;
+    // }
+    // sprintf(temp,"/.tmp/temp%li.bmp",app_wdgts->number);
+    // strcat(test,temp);
+    // return test;
 }
 
 // Copy image when one action is made
@@ -679,6 +731,87 @@ void on_btn_edge_clicked(GtkButton *widget, app_widgets *app_wdgts)
     gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
     gdImageDestroy(img);
 }
+
+void on_btn_draw_clicked(GtkButton *widget, app_widgets *app_wdgts)
+{
+    if(widget) NULL;
+    gtk_widget_show(app_wdgts->drawing_widget);
+}
+
+void on_btn_close_draw_clicked(GtkButton *widget, app_widgets *app_wdgts)
+{
+    if(widget) NULL;
+    gtk_widget_hide(app_wdgts->drawing_widget);
+}
+
+gboolean on_draw1_draw(GtkWidget *widget, cairo_t *cr, gpointer data) {
+    if (data) NULL;
+    // guint width, height;
+
+    // width = gtk_widget_get_allocated_width(widget);
+    // height = gtk_widget_get_allocated_height(widget);
+    if(widget) NULL;
+
+    cairo_set_line_width(cr, 1.0);
+
+    if (start == NULL) return FALSE;
+
+    int old_x = start->x;
+    int old_y = start->y;
+    
+    p1 = start->next;
+
+    while (p1!= NULL) {
+        cairo_set_source_rgb(cr,p1->red, p1->green, p1->blue);
+
+        cairo_move_to(cr, (double) old_x, (double) old_y);
+        cairo_line_to(cr, (double) p1->x, (double) p1->y);
+        cairo_stroke(cr);
+
+        old_x = p1->x;
+        old_y = p1->y;
+        p1 = p1->next;
+    }
+    return FALSE;
+}
+
+gboolean on_draw1_button_press_event(GtkWidget *widget, GdkEventButton *event) {
+    draw_brush(widget, event->x, event->y);
+    return TRUE;
+}
+
+void on_btn_draw_clear_clicked(GtkWidget *b1) {
+    if(b1) NULL;
+    p1 = start;
+    while (p1) { p2 = p1->next; free(p1); p1=p2;}
+    start = NULL;
+    gtk_widget_queue_draw(draw1);
+}
+
+void on_draw1_motion_notify_event(GtkWidget *widget, GdkEventMotion *event, gpointer data) {
+    if (data) NULL;
+    if(event->state & GDK_BUTTON1_MASK) draw_brush(widget, event->x, event->y);
+    // return true;
+}
+
+static void draw_brush(GtkWidget *widget, gdouble x, gdouble y) {
+    if (widget) NULL;
+    p1 = malloc(sizeof(struct Point));
+    if (p1==NULL) { printf("Out of memory\n"); abort();}
+    p1->x = x;
+    p1->y = y;
+    p1->red = redd;
+    p1->green = greenn;
+    p1->blue = bluee;
+    p1->next = start;
+    start = p1;
+    gtk_widget_queue_draw(draw1);
+}
+
+void on_btn_draw_red_clicked(GtkWidget *b1) {if (b1) NULL; redd = 1.0; greenn = 0.0; bluee = 0.0;}
+void on_btn_draw_green_clicked(GtkWidget *b1) {if (b1) NULL; redd = 0.0; greenn = 1.0; bluee = 0.0;}
+void on_btn_draw_blue_clicked(GtkWidget *b1) {if (b1) NULL; redd = 0.0; greenn = 0.0; bluee = 1.0;}
+void on_btn_draw_white_clicked(GtkWidget *b1) {if (b1) NULL; redd = 1.0; greenn = 1.0; bluee = 1.0;}
 
 // Return one action before (CRTL+Z)
 void on_menuitm_return_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
