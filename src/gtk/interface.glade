@@ -191,7 +191,7 @@
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="menuitm_return">
-                        <property name="label">Return</property>
+                        <property name="label">Undo</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="image">img_return</property>
@@ -1383,8 +1383,6 @@ Iony Rakotoson</property>
   <object class="GtkWindow" id="drawing_widget">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Draw on your image</property>
-    <property name="default_width">1360</property>
-    <property name="default_height">768</property>
     <property name="deletable">False</property>
     <property name="transient_for">window_main</property>
     <child type="titlebar">
@@ -1401,6 +1399,7 @@ Iony Rakotoson</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
             <signal name="button-press-event" handler="on_draw1_button_press_event" swapped="no"/>
+            <signal name="button-release-event" handler="on_draw1_button_release_event" swapped="no"/>
             <signal name="draw" handler="on_draw1_draw" swapped="no"/>
             <signal name="motion-notify-event" handler="on_draw1_motion_notify_event" swapped="no"/>
           </object>
@@ -1428,12 +1427,11 @@ Iony Rakotoson</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkButton" id="btn_draw_clear">
-                <property name="label" translatable="yes">Clear</property>
-                <property name="visible">True</property>
+              <object class="GtkButton" id="btn_draw_undo">
+                <property name="label" translatable="yes">Undo</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_btn_draw_clear_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_btn_draw_undo_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>

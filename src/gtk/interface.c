@@ -94,12 +94,16 @@ typedef struct {
     int height;
 
 
+    gdImagePtr imggd;       // For Drawing and save actions
+    int colorForDraw;
+
     int opentest;
     size_t number;                      // Count for CRTLZ
 
 } app_widgets;                          // Our struct for gtk
 
 static void draw_brush (GtkWidget *widget, gdouble x, gdouble y);
+void on_btn_draw_clear_clicked(GtkWidget *b1);
 struct Point {
     int x;
     int y;
@@ -788,6 +792,7 @@ void on_btn_draw_clicked(GtkButton *widget, app_widgets *app_wdgts)
 {
     if(widget) NULL;
     gtk_window_set_default_size(GTK_WINDOW(app_wdgts->drawing_widget),(gint) app_wdgts->width, (gint) app_wdgts->height+70);
+    // app_wdgts->imggd = gdImageCreateFromFile(app_wdgts->file_name);
     gtk_widget_show(app_wdgts->drawing_widget);
 }
 
@@ -796,10 +801,7 @@ void on_btn_close_draw_clicked(GtkButton *widget, app_widgets *app_wdgts)
     if(widget) NULL;
     gtk_widget_hide(app_wdgts->drawing_widget);
     app_wdgts->file_name = nameOfFile(app_wdgts);
-    copy_image_for_crtlz(app_wdgts);
-    // app_wdgts->file_name = nameOfFilewithoutbmp(app_wdgts);
-    app_wdgts->tmp_img = gdk_pixbuf_scale_simple(app_wdgts->tmp_img, app_wdgts->width, app_wdgts->height, GDK_INTERP_NEAREST);
-    gdk_pixbuf_savev(app_wdgts->tmp_img,app_wdgts->file_name,"bmp",NULL,NULL,NULL);
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
 }
 
 gboolean on_draw1_draw(GtkWidget *widget, cairo_t *cr, app_widgets *app_wdgts) {
@@ -807,6 +809,7 @@ gboolean on_draw1_draw(GtkWidget *widget, cairo_t *cr, app_widgets *app_wdgts) {
     app_wdgts->tmp_img = gdk_pixbuf_new_from_file(app_wdgts->file_name,NULL);
     gdk_cairo_set_source_pixbuf(cr, app_wdgts->tmp_img,0,0);
     cairo_paint(cr);
+    
     if(widget) NULL;
 
     cairo_set_line_width(cr, 1.0);
@@ -817,32 +820,77 @@ gboolean on_draw1_draw(GtkWidget *widget, cairo_t *cr, app_widgets *app_wdgts) {
     int old_y = start->y;
     
     p1 = start->next;
+    app_wdgts->file_name = nameOfFile(app_wdgts);
+    app_wdgts->imggd = gdImageCreateFromFile(app_wdgts->file_name);
+    // copy_image_for_crtlz(app_wdgts);
 
     while (p1!= NULL) {
-        cairo_set_source_rgb(cr,p1->red, p1->green, p1->blue);
+        // cairo_set_source_rgb(cr,p1->red, p1->green, p1->blue);
 
-        cairo_move_to(cr, (double) old_x, (double) old_y);
-        cairo_line_to(cr, (double) p1->x, (double) p1->y);
-        cairo_stroke(cr);
+        // cairo_move_to(cr, (double) old_x, (double) old_y);
+        // cairo_line_to(cr, (double) p1->x, (double) p1->y);
+        // cairo_stroke(cr);
+        app_wdgts->colorForDraw = gdImageColorAllocate(app_wdgts->imggd,(int)redd,(int)greenn,(int)bluee);
+        // printf("redd = %f\ngreenn = %f\nbluee = %f\nColor = %i\n",redd,greenn,bluee,app_wdgts->colorForDraw);
+        gdImageLine(app_wdgts->imggd,old_x,old_y,p1->x,p1->y,app_wdgts->colorForDraw);
 
         old_x = p1->x;
         old_y = p1->y;
         p1 = p1->next;
     }
+    FILE *fdout = fopen(app_wdgts->file_name, "wb");
+    gdImageBmp(app_wdgts->imggd,fdout,0);
+    fclose(fdout);
+    gdImageDestroy(app_wdgts->imggd);
     return FALSE;
 }
 
-gboolean on_draw1_button_press_event(GtkWidget *widget, GdkEventButton *event) {
+gboolean on_draw1_button_press_event(GtkWidget *widget, GdkEventButton *event,app_widgets *app_wdgts) {
+    on_btn_draw_clear_clicked(widget);
     draw_brush(widget, event->x, event->y);
+    app_wdgts->file_name = nameOfFile(app_wdgts);
+    gdImagePtr img = gdImageCreateFromFile(app_wdgts->file_name);
+    copy_image_for_crtlz(app_wdgts);
+    gdImageDestroy(img);
     return TRUE;
 }
 
-void on_btn_draw_clear_clicked(GtkWidget *b1) {
+
+gboolean on_draw1_button_release_event(GtkWidget *widget, GdkEventButton *event) {
+    if (event) NULL;
+    on_btn_draw_clear_clicked(widget);
+    // app_wdgts->file_name = nameOfFile(app_wdgts);
+    // gdImagePtr img = gdImageCreateFromFile(app_wdgts->file_name);
+    // copy_image_for_crtlz(app_wdgts);
+    // gdImageDestroy(img);
+    return TRUE;
+}
+
+
+void on_btn_draw_clear_clicked(GtkWidget *b1) { // For free the point struct
     if(b1) NULL;
     p1 = start;
     while (p1) { p2 = p1->next; free(p1); p1=p2;}
     start = NULL;
     gtk_widget_queue_draw(draw1);
+}
+
+void on_btn_draw_undo_clicked(GtkWidget *widget, app_widgets *app_wdgts) {
+    if (widget) NULL;
+    if(app_wdgts->number==0)
+    {
+        GtkWidget* dialog = gtk_message_dialog_new_with_markup(GTK_WINDOW(app_wdgts->drawing_widget),GTK_DIALOG_MODAL,GTK_MESSAGE_INFO,GTK_BUTTONS_CLOSE,"You haven't done any actions\n <b>Return impossible. </b>");
+		gtk_window_set_title(GTK_WINDOW (dialog), "Problem");
+		gtk_dialog_run(GTK_DIALOG (dialog));
+		gtk_widget_destroy(dialog);
+    }
+    else
+    {
+        app_wdgts->number-=1;
+        app_wdgts->file_name = nameOfFile(app_wdgts);
+        app_wdgts->tmp_img = gdk_pixbuf_new_from_file(app_wdgts->file_name,NULL);
+        
+    }
 }
 
 gboolean on_draw1_motion_notify_event(GtkWidget *widget, GdkEventMotion *event, gpointer data) {
@@ -866,10 +914,10 @@ static void draw_brush(GtkWidget *widget, gdouble x, gdouble y) {
     gtk_widget_queue_draw(draw1);
 }
 
-void on_btn_draw_red_clicked(GtkWidget *b1) {if (b1) NULL; redd = 1.0; greenn = 0.0; bluee = 0.0;}
-void on_btn_draw_green_clicked(GtkWidget *b1) {if (b1) NULL; redd = 0.0; greenn = 1.0; bluee = 0.0;}
-void on_btn_draw_blue_clicked(GtkWidget *b1) {if (b1) NULL; redd = 0.0; greenn = 0.0; bluee = 1.0;}
-void on_btn_draw_white_clicked(GtkWidget *b1) {if (b1) NULL; redd = 1.0; greenn = 1.0; bluee = 1.0;}
+void on_btn_draw_red_clicked(GtkWidget *b1) {if (b1) NULL; redd = 255.0; greenn = 0.0; bluee = 0.0; on_btn_draw_clear_clicked(b1);}
+void on_btn_draw_green_clicked(GtkWidget *b1) {if (b1) NULL; redd = 0.0; greenn = 255.0; bluee = 0.0;on_btn_draw_clear_clicked(b1);}
+void on_btn_draw_blue_clicked(GtkWidget *b1) {if (b1) NULL; redd = 0.0; greenn = 0.0; bluee = 255.0;on_btn_draw_clear_clicked(b1);}
+void on_btn_draw_white_clicked(GtkWidget *b1) {if (b1) NULL; redd = 255.0; greenn = 255.0; bluee = 255.0;on_btn_draw_clear_clicked(b1);}
 
 // Return one action before (CRTL+Z)
 void on_menuitm_return_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
