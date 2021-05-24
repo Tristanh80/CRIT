@@ -15,6 +15,7 @@
 #include "../operations/saturation.h"
 #include "../operations/rotate.h"
 #include "../operations/gdfct.h"
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <webkit2/webkit2.h>
@@ -87,6 +88,10 @@ typedef struct {
     GtkButton *greenDrawButton;
     GtkButton *blueDrawButton;
     GtkButton *whiteDrawButton;
+
+    GdkPixbuf *tmp_img;
+    int width;
+    int height;
 
 
     int opentest;
@@ -197,7 +202,7 @@ void interface(int argc, char *argv[])
     widgets->whiteDrawButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_draw_white"));
     webkit_web_view_load_uri(WEBKIT_WEB_VIEW(widgets->w_webkit_webview), "https://k4gos.github.io");
 
-    gtk_widget_set_events(draw1, GDK_BUTTON_MOTION_MASK | GDK_BUTTON_PRESS_MASK);
+    gtk_widget_set_events(draw1, GDK_BUTTON_MOTION_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
 
     // Connect signals with builder
 	gtk_builder_connect_signals(builder, widgets);
@@ -210,17 +215,43 @@ void interface(int argc, char *argv[])
     g_signal_connect(widgets->window,"destroy",G_CALLBACK(gtk_main_quit),NULL);
 	gtk_main();
 
-    // int dir = system("mkdir imgmodify");
-    // if(dir ==-1)
-    // {
-    //     errx(1,"Could not create imgmodify directory");
-    // }
-    // if(widgets->number!=0)
-    // {
-    //     SDL_Surface *image = load_image(widgets->file_name);      // Loading image
-    //     SDL_SaveBMP(image,"imgmodify/yourmodifyimage.bmp");
-    //     SDL_FreeSurface(image);
-    // }
+    char pathbefore[64];
+    sprintf(pathbefore,"imgmodify");
+    char *path = pathbefore;
+    char actualpath[PATH_MAX+1];
+    char *ptr;
+    ptr = realpath(path,actualpath);
+
+    if (ptr == NULL)
+    {
+        int dir = system("mkdir imgmodify");
+        if(dir ==-1)
+        {
+            errx(1,"Could not create imgmodify directory");
+        }
+    }
+    else
+    {
+        int dir = system("rm -rf imgmodify");
+        if(dir ==-1)
+        {
+            errx(1,"Could not delete imgmodify directory");
+        }
+        dir = system("mkdir imgmodify");
+        if(dir ==-1)
+        {
+            errx(1,"Could not create imgmodify directory");
+        }
+    }
+
+    
+    if(widgets->number!=0)
+    {
+        widgets->file_name = nameOfFile(widgets);
+        SDL_Surface *image = load_image(widgets->file_name);      // Loading image
+        SDL_SaveBMP(image,"imgmodify/yourmodifyimage.bmp");
+        SDL_FreeSurface(image);
+    }
     
     // Free our struct
 	g_slice_free(app_widgets, widgets);
@@ -275,6 +306,12 @@ void on_menuitm_open_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
             errx(1,"mv in tmp directory");
         }
         
+        
+        app_wdgts->file_name = nameOfFile(app_wdgts);
+        GdkPixbuf *pix = gdk_pixbuf_new_from_file(app_wdgts->file_name, NULL);
+        app_wdgts->width = gdk_pixbuf_get_width(pix);
+        app_wdgts->height = gdk_pixbuf_get_height(pix);
+        g_object_unref(pix);
         app_wdgts->file_name = nameOfFile(app_wdgts);
         gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
         app_wdgts->opentest+=1;
@@ -368,6 +405,21 @@ char* nameOfFile(app_widgets *app_wdgts)
     // sprintf(temp,"/.tmp/temp%li.bmp",app_wdgts->number);
     // strcat(test,temp);
     // return test;
+}
+
+char* nameOfFilewithoutbmp(app_widgets *app_wdgts)
+{
+    char temp[32];
+    char pathbefore[64];
+    sprintf(pathbefore,".tmp");
+    char *path = pathbefore;
+    char actualpath[PATH_MAX+1];
+    char *ptr;
+    ptr = realpath(path,actualpath);
+    sprintf(temp,"/temp%li",app_wdgts->number);
+    strcat(ptr,temp);
+    return ptr;
+
 }
 
 // Copy image when one action is made
@@ -735,6 +787,7 @@ void on_btn_edge_clicked(GtkButton *widget, app_widgets *app_wdgts)
 void on_btn_draw_clicked(GtkButton *widget, app_widgets *app_wdgts)
 {
     if(widget) NULL;
+    gtk_window_set_default_size(GTK_WINDOW(app_wdgts->drawing_widget),(gint) app_wdgts->width, (gint) app_wdgts->height+70);
     gtk_widget_show(app_wdgts->drawing_widget);
 }
 
@@ -742,14 +795,18 @@ void on_btn_close_draw_clicked(GtkButton *widget, app_widgets *app_wdgts)
 {
     if(widget) NULL;
     gtk_widget_hide(app_wdgts->drawing_widget);
+    app_wdgts->file_name = nameOfFile(app_wdgts);
+    copy_image_for_crtlz(app_wdgts);
+    // app_wdgts->file_name = nameOfFilewithoutbmp(app_wdgts);
+    app_wdgts->tmp_img = gdk_pixbuf_scale_simple(app_wdgts->tmp_img, app_wdgts->width, app_wdgts->height, GDK_INTERP_NEAREST);
+    gdk_pixbuf_savev(app_wdgts->tmp_img,app_wdgts->file_name,"bmp",NULL,NULL,NULL);
 }
 
-gboolean on_draw1_draw(GtkWidget *widget, cairo_t *cr, gpointer data) {
-    if (data) NULL;
-    // guint width, height;
-
-    // width = gtk_widget_get_allocated_width(widget);
-    // height = gtk_widget_get_allocated_height(widget);
+gboolean on_draw1_draw(GtkWidget *widget, cairo_t *cr, app_widgets *app_wdgts) {
+    app_wdgts->file_name = nameOfFile(app_wdgts);
+    app_wdgts->tmp_img = gdk_pixbuf_new_from_file(app_wdgts->file_name,NULL);
+    gdk_cairo_set_source_pixbuf(cr, app_wdgts->tmp_img,0,0);
+    cairo_paint(cr);
     if(widget) NULL;
 
     cairo_set_line_width(cr, 1.0);
@@ -788,16 +845,17 @@ void on_btn_draw_clear_clicked(GtkWidget *b1) {
     gtk_widget_queue_draw(draw1);
 }
 
-void on_draw1_motion_notify_event(GtkWidget *widget, GdkEventMotion *event, gpointer data) {
+gboolean on_draw1_motion_notify_event(GtkWidget *widget, GdkEventMotion *event, gpointer data) {
     if (data) NULL;
     if(event->state & GDK_BUTTON1_MASK) draw_brush(widget, event->x, event->y);
-    // return true;
+    return TRUE;
 }
 
 static void draw_brush(GtkWidget *widget, gdouble x, gdouble y) {
     if (widget) NULL;
     p1 = malloc(sizeof(struct Point));
     if (p1==NULL) { printf("Out of memory\n"); abort();}
+    // printf("x = %f, y = %f\n",x,y);
     p1->x = x;
     p1->y = y;
     p1->red = redd;
