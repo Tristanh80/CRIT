@@ -16,6 +16,7 @@
 #include "../operations/rotate.h"
 #include "../operations/gdfct.h"
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gdk/gdk.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <webkit2/webkit2.h>
@@ -88,6 +89,16 @@ typedef struct {
     GtkButton *greenDrawButton;
     GtkButton *blueDrawButton;
     GtkButton *whiteDrawButton;
+    GtkButton *drawChooseColor;
+
+    GtkWidget *color_widget;
+    GtkColorChooser *colorChooser;
+    GtkButton *drawOkColor;
+
+    GtkRange *scaleThickness;
+    
+
+    
 
     GdkPixbuf *tmp_img;
     int width;
@@ -101,6 +112,8 @@ typedef struct {
     size_t number;                      // Count for CRTLZ
 
 } app_widgets;                          // Our struct for gtk
+
+GdkRGBA colorDraw;
 
 static void draw_brush (GtkWidget *widget, gdouble x, gdouble y);
 void on_btn_draw_clear_clicked(GtkWidget *b1);
@@ -204,6 +217,14 @@ void interface(int argc, char *argv[])
     widgets->greenDrawButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_draw_green"));
     widgets->blueDrawButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_draw_blue"));
     widgets->whiteDrawButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_draw_white"));
+    widgets->drawChooseColor = GTK_BUTTON(gtk_builder_get_object(builder, "btn_choose_color"));
+
+    widgets->color_widget = GTK_WIDGET(gtk_builder_get_object(builder, "color_widget"));
+    widgets->colorChooser = GTK_COLOR_CHOOSER(gtk_builder_get_object(builder, "color_draw_chooser"));
+    widgets->drawOkColor = GTK_BUTTON(gtk_builder_get_object(builder, "btn_color_draw"));
+    
+    widgets->scaleThickness = GTK_RANGE(gtk_builder_get_object(builder, "draw_thickness"));
+
     webkit_web_view_load_uri(WEBKIT_WEB_VIEW(widgets->w_webkit_webview), "https://k4gos.github.io");
 
     gtk_widget_set_events(draw1, GDK_BUTTON_MOTION_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
@@ -811,9 +832,6 @@ gboolean on_draw1_draw(GtkWidget *widget, cairo_t *cr, app_widgets *app_wdgts) {
     cairo_paint(cr);
     
     if(widget) NULL;
-
-    cairo_set_line_width(cr, 1.0);
-
     if (start == NULL) return FALSE;
 
     int old_x = start->x;
@@ -822,16 +840,11 @@ gboolean on_draw1_draw(GtkWidget *widget, cairo_t *cr, app_widgets *app_wdgts) {
     p1 = start->next;
     app_wdgts->file_name = nameOfFile(app_wdgts);
     app_wdgts->imggd = gdImageCreateFromFile(app_wdgts->file_name);
-    // copy_image_for_crtlz(app_wdgts);
+    int scale_value = gtk_range_get_value(app_wdgts->scaleThickness);
+    gdImageSetThickness(app_wdgts->imggd,scale_value);
 
     while (p1!= NULL) {
-        // cairo_set_source_rgb(cr,p1->red, p1->green, p1->blue);
-
-        // cairo_move_to(cr, (double) old_x, (double) old_y);
-        // cairo_line_to(cr, (double) p1->x, (double) p1->y);
-        // cairo_stroke(cr);
-        app_wdgts->colorForDraw = gdImageColorAllocate(app_wdgts->imggd,(int)redd,(int)greenn,(int)bluee);
-        // printf("redd = %f\ngreenn = %f\nbluee = %f\nColor = %i\n",redd,greenn,bluee,app_wdgts->colorForDraw);
+        app_wdgts->colorForDraw = gdImageColorAllocate(app_wdgts->imggd,colorDraw.red*255.0,colorDraw.green*255.0,colorDraw.blue*255.0);
         gdImageLine(app_wdgts->imggd,old_x,old_y,p1->x,p1->y,app_wdgts->colorForDraw);
 
         old_x = p1->x;
@@ -859,10 +872,6 @@ gboolean on_draw1_button_press_event(GtkWidget *widget, GdkEventButton *event,ap
 gboolean on_draw1_button_release_event(GtkWidget *widget, GdkEventButton *event) {
     if (event) NULL;
     on_btn_draw_clear_clicked(widget);
-    // app_wdgts->file_name = nameOfFile(app_wdgts);
-    // gdImagePtr img = gdImageCreateFromFile(app_wdgts->file_name);
-    // copy_image_for_crtlz(app_wdgts);
-    // gdImageDestroy(img);
     return TRUE;
 }
 
@@ -875,26 +884,8 @@ void on_btn_draw_clear_clicked(GtkWidget *b1) { // For free the point struct
     gtk_widget_queue_draw(draw1);
 }
 
-void on_btn_draw_undo_clicked(GtkWidget *widget, app_widgets *app_wdgts) {
-    if (widget) NULL;
-    if(app_wdgts->number==0)
-    {
-        GtkWidget* dialog = gtk_message_dialog_new_with_markup(GTK_WINDOW(app_wdgts->drawing_widget),GTK_DIALOG_MODAL,GTK_MESSAGE_INFO,GTK_BUTTONS_CLOSE,"You haven't done any actions\n <b>Return impossible. </b>");
-		gtk_window_set_title(GTK_WINDOW (dialog), "Problem");
-		gtk_dialog_run(GTK_DIALOG (dialog));
-		gtk_widget_destroy(dialog);
-    }
-    else
-    {
-        app_wdgts->number-=1;
-        app_wdgts->file_name = nameOfFile(app_wdgts);
-        app_wdgts->tmp_img = gdk_pixbuf_new_from_file(app_wdgts->file_name,NULL);
-        
-    }
-}
 
-gboolean on_draw1_motion_notify_event(GtkWidget *widget, GdkEventMotion *event, gpointer data) {
-    if (data) NULL;
+gboolean on_draw1_motion_notify_event(GtkWidget *widget, GdkEventMotion *event) {
     if(event->state & GDK_BUTTON1_MASK) draw_brush(widget, event->x, event->y);
     return TRUE;
 }
@@ -906,18 +897,24 @@ static void draw_brush(GtkWidget *widget, gdouble x, gdouble y) {
     // printf("x = %f, y = %f\n",x,y);
     p1->x = x;
     p1->y = y;
-    p1->red = redd;
-    p1->green = greenn;
-    p1->blue = bluee;
+    p1->red = colorDraw.red;
+    p1->green = colorDraw.green;
+    p1->blue = colorDraw.blue;
     p1->next = start;
     start = p1;
     gtk_widget_queue_draw(draw1);
 }
 
-void on_btn_draw_red_clicked(GtkWidget *b1) {if (b1) NULL; redd = 255.0; greenn = 0.0; bluee = 0.0; on_btn_draw_clear_clicked(b1);}
-void on_btn_draw_green_clicked(GtkWidget *b1) {if (b1) NULL; redd = 0.0; greenn = 255.0; bluee = 0.0;on_btn_draw_clear_clicked(b1);}
-void on_btn_draw_blue_clicked(GtkWidget *b1) {if (b1) NULL; redd = 0.0; greenn = 0.0; bluee = 255.0;on_btn_draw_clear_clicked(b1);}
-void on_btn_draw_white_clicked(GtkWidget *b1) {if (b1) NULL; redd = 255.0; greenn = 255.0; bluee = 255.0;on_btn_draw_clear_clicked(b1);}
+void on_btn_choose_color_clicked(GtkWidget *widget, app_widgets *app_wdgts) {
+    if (widget) NULL;
+    gtk_widget_show(app_wdgts->color_widget);
+}
+
+void on_btn_color_draw_clicked(GtkWidget *widget, app_widgets *app_wdgts) {
+    if (widget) NULL;
+    gtk_widget_hide(app_wdgts->color_widget);
+    gtk_color_chooser_get_rgba(app_wdgts->colorChooser,&colorDraw);
+}
 
 // Return one action before (CRTL+Z)
 void on_menuitm_return_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
@@ -975,6 +972,14 @@ void on_btn_close_doc_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
     if(widget) NULL;
     gtk_widget_hide(app_wdgts->w_dlg_doc);
+}
+
+void on_window_main_key_press_event(GtkWidget *widget, GdkEventKey *event,app_widgets *app_wdgts){
+    if (widget) NULL;
+    if(event->keyval == GDK_KEY_r)
+    {
+        on_menuitm_return_activate(NULL,app_wdgts);
+    }
 }
 
 

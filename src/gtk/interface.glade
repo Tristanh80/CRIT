@@ -19,6 +19,13 @@
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
+  <object class="GtkAdjustment" id="adjustement_thickness">
+    <property name="lower">1</property>
+    <property name="upper">100</property>
+    <property name="value">1</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
   <object class="GtkAdjustment" id="adjustment_blur">
     <property name="lower">2</property>
     <property name="upper">100</property>
@@ -157,6 +164,7 @@
     <property name="default_height">768</property>
     <property name="icon">img/shotopof.png</property>
     <property name="gravity">north</property>
+    <signal name="key-press-event" handler="on_window_main_key_press_event" swapped="no"/>
     <child type="titlebar">
       <placeholder/>
     </child>
@@ -1383,6 +1391,7 @@ Iony Rakotoson</property>
   <object class="GtkWindow" id="drawing_widget">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Draw on your image</property>
+    <property name="resizable">False</property>
     <property name="deletable">False</property>
     <property name="transient_for">window_main</property>
     <child type="titlebar">
@@ -1405,7 +1414,7 @@ Iony Rakotoson</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
+            <property name="top_attach">1</property>
           </packing>
         </child>
         <child>
@@ -1427,11 +1436,12 @@ Iony Rakotoson</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkButton" id="btn_draw_undo">
-                <property name="label" translatable="yes">Undo</property>
+              <object class="GtkButton" id="btn_choose_color">
+                <property name="label" translatable="yes">Choose a color</property>
+                <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_btn_draw_undo_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_btn_choose_color_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1440,12 +1450,37 @@ Iony Rakotoson</property>
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="btn_draw_red">
-                <property name="label" translatable="yes">red</property>
+              <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_btn_draw_red_clicked" swapped="no"/>
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkLabel" id="pencil_thickness">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Thickness</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkScale" id="draw_thickness">
+                    <property name="width_request">100</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="adjustment">adjustement_thickness</property>
+                    <property name="round_digits">1</property>
+                    <property name="digits">0</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1453,52 +1488,52 @@ Iony Rakotoson</property>
                 <property name="position">1</property>
               </packing>
             </child>
-            <child>
-              <object class="GtkButton" id="btn_draw_green">
-                <property name="label" translatable="yes">green</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_btn_draw_green_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="btn_draw_blue">
-                <property name="label" translatable="yes">blue</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_btn_draw_blue_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="btn_draw_white">
-                <property name="label" translatable="yes">white</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_btn_draw_white_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">4</property>
-              </packing>
-            </child>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">1</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="color_widget">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Choose your color</property>
+    <property name="deletable">False</property>
+    <property name="transient_for">drawing_widget</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkColorChooserWidget" id="color_draw_chooser">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="rgba">rgb(85,85,85)</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="btn_color_draw">
+            <property name="label" translatable="yes">OK</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_btn_color_draw_clicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </object>
