@@ -241,7 +241,7 @@ void interface(int argc, char *argv[])
 	gtk_main();
 
     char pathbefore[64];
-    sprintf(pathbefore,"imgmodify");
+    sprintf(pathbefore,"imgmodified");
     char *path = pathbefore;
     char actualpath[PATH_MAX+1];
     char *ptr;
@@ -249,23 +249,23 @@ void interface(int argc, char *argv[])
 
     if (ptr == NULL)
     {
-        int dir = system("mkdir imgmodify");
+        int dir = system("mkdir imgmodified");
         if(dir ==-1)
         {
-            errx(1,"Could not create imgmodify directory");
+            errx(1,"Could not create imgmodified directory");
         }
     }
     else
     {
-        int dir = system("rm -rf imgmodify");
+        int dir = system("rm -rf imgmodified");
         if(dir ==-1)
         {
-            errx(1,"Could not delete imgmodify directory");
+            errx(1,"Could not delete imgmodified directory");
         }
-        dir = system("mkdir imgmodify");
+        dir = system("mkdir imgmodified");
         if(dir ==-1)
         {
-            errx(1,"Could not create imgmodify directory");
+            errx(1,"Could not create imgmodified directory");
         }
     }
 
@@ -274,7 +274,7 @@ void interface(int argc, char *argv[])
     {
         widgets->file_name = nameOfFile(widgets);
         SDL_Surface *image = load_image(widgets->file_name);      // Loading image
-        SDL_SaveBMP(image,"imgmodify/yourmodifyimage.bmp");
+        SDL_SaveBMP(image,"imgmodified/yourmodifiedimage.bmp");
         SDL_FreeSurface(image);
     }
     
@@ -812,7 +812,7 @@ void on_btn_edge_clicked(GtkButton *widget, app_widgets *app_wdgts)
 void on_btn_draw_clicked(GtkButton *widget, app_widgets *app_wdgts)
 {
     if(widget) NULL;
-    gtk_window_set_default_size(GTK_WINDOW(app_wdgts->drawing_widget),(gint) app_wdgts->width, (gint) app_wdgts->height+70);
+    gtk_window_set_default_size(GTK_WINDOW(app_wdgts->drawing_widget),(gint) (app_wdgts->width)%1300, (gint) (app_wdgts->height+100)%760);
     // app_wdgts->imggd = gdImageCreateFromFile(app_wdgts->file_name);
     gtk_widget_show(app_wdgts->drawing_widget);
 }
