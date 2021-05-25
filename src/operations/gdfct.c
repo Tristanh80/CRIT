@@ -7,7 +7,7 @@
 void negate(gdImagePtr img, FILE *fdout, char *path)
 {
     fdout = fopen(path, "wb");
-    //gdImageNegate(img);
+    gdImageNegate(img);
 
 
     //TESTS A ENLEVER
