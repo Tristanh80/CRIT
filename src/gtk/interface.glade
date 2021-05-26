@@ -211,7 +211,6 @@
                       <object class="GtkImageMenuItem" id="menuitm_saveas">
                         <property name="label">gtk-save-as</property>
                         <property name="visible">True</property>
-                        <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
@@ -1297,16 +1296,7 @@ Iony Rakotoson</property>
           </packing>
         </child>
         <child>
-          <object class="GtkEntry" id="buffer_name">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="text" translatable="yes">YourFileName</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
-          </packing>
+          <placeholder/>
         </child>
       </object>
     </child>
@@ -1479,32 +1469,15 @@ Iony Rakotoson</property>
           </packing>
         </child>
         <child>
-          <object class="GtkScrolledWindow">
+          <object class="GtkDrawingArea" id="draw1">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
+            <property name="can_focus">False</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
-            <property name="shadow_type">in</property>
-            <child>
-              <object class="GtkViewport">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="hexpand">True</property>
-                <property name="vexpand">True</property>
-                <child>
-                  <object class="GtkDrawingArea" id="draw1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="hexpand">True</property>
-                    <property name="vexpand">True</property>
-                    <signal name="button-press-event" handler="on_draw1_button_press_event" swapped="no"/>
-                    <signal name="button-release-event" handler="on_draw1_button_release_event" swapped="no"/>
-                    <signal name="draw" handler="on_draw1_draw" swapped="no"/>
-                    <signal name="motion-notify-event" handler="on_draw1_motion_notify_event" swapped="no"/>
-                  </object>
-                </child>
-              </object>
-            </child>
+            <signal name="button-press-event" handler="on_draw1_button_press_event" swapped="no"/>
+            <signal name="button-release-event" handler="on_draw1_button_release_event" swapped="no"/>
+            <signal name="draw" handler="on_draw1_draw" swapped="no"/>
+            <signal name="motion-notify-event" handler="on_draw1_motion_notify_event" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">0</property>

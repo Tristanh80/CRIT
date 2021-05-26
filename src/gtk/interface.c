@@ -35,8 +35,8 @@ typedef struct {
     GtkWidget *window;
     GtkWidget *w_dlg_file_choose;       // Pointer to file chooser dialog box
     GtkWidget *save_file_choose;        // For save(WIP)
-    GtkEntry *bufferSave;               // For save(WIP)
-    const gchar *filemaneSave;          // For save (WIP)
+    // GtkEntry *bufferSave;               // For save(WIP)
+    char *fileNameSave;          // For save (WIP)
     GtkWidget *w_img_main;              // Pointer to image widget
     GtkWidget *ret;                     // For return
     GtkWidget *w_dlg_about;             // For about
@@ -159,8 +159,8 @@ void interface(int argc, char *argv[])
 	widgets->w_img_main = GTK_WIDGET(gtk_builder_get_object(builder, "img_main"));
     widgets->file_name = NULL;
     // WIP
-    widgets->bufferSave = GTK_ENTRY(gtk_builder_get_object(builder,"buffer_name"));
-    widgets->filemaneSave = NULL;
+    // widgets->bufferSave = GTK_ENTRY(gtk_builder_get_object(builder,"buffer_name"));
+    // widgets->filemaneSave = NULL;
     // End on WIP
     widgets->w_dlg_about = GTK_WIDGET(gtk_builder_get_object(builder,"dlg_about"));
     widgets->w_dlg_doc = GTK_WIDGET(gtk_builder_get_object(builder,"dlg_doc"));
@@ -380,14 +380,17 @@ void on_menuitm_saveas_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
     }
     else
     {
-        gtk_widget_show(app_wdgts->w_dlg_file_choose);
+        // gtk_widget_show(app_wdgts->w_dlg_file_choose);
             
             // Check return value from Open Image dialog box to see if user clicked the Open button
             if (gtk_dialog_run(GTK_DIALOG (app_wdgts->save_file_choose)) == GTK_RESPONSE_OK) {
                 // Get the file name from the dialog box
-                char *filename;
-                filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(app_wdgts->save_file_choose));
-                printf("%s\n",filename);
+                app_wdgts->fileNameSave = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(app_wdgts->save_file_choose));
+                strcat(app_wdgts->fileNameSave,".bmp");
+                app_wdgts->file_name = nameOfFile(app_wdgts);
+                SDL_Surface *image = load_image(app_wdgts->file_name);
+                SDL_SaveBMP(image,app_wdgts->fileNameSave);
+                SDL_FreeSurface(image);
                 gtk_widget_hide(app_wdgts->save_file_choose);
         }
     }
