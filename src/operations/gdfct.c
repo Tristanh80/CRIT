@@ -84,11 +84,119 @@ void crop(gdImagePtr img, FILE *fdout, char *path, int a, int b)
 }
 
 
+
+//---------------Bucket and queues-------------------------//
+
+typedef struct Queue
+{
+    int x;
+    int y;
+    struct queue* next;
+}queue;
+
+int queue_is_empty(queue *q)
+{
+    return q == NULL;
+}
+
+void queue_push(queue *q, int x, int y)
+{
+    queue *tmp;
+    tmp = malloc(sizeof (struct queue));
+    tmp->x = x;
+    tmp->y = y;
+
+    if(q)
+    {
+        tmp->next = q->next;
+        q->next = tmp;
+    }
+    else
+    {
+        tmp->next = tmp;
+    }
+
+    return tmp;
+}
+
+queue* queue_pop(queue **q)//return oldest element
+{
+    queue *tmp = (*q)->next;
+    void *x = tmp->x;
+    void *y = tmp->y;
+    if(tmp == tmp->next)
+        *q = NULL;
+    else
+        *q->next = tmp->next;
+    return tmp;
+}
+
+
+void bucket(gdImagePtr img, FILE *fdout, char *path, int x, int y, int th, int color)
+{
+    th*=5;
+    inicolor = gdImageGetPixel(img, x, y);  //the color to change
+
+    int a = 0;  //coord x
+    int b = 0;  //coord y
+    int c = 0;  //color in (x,y)
+
+    //first element
+    gdImageSetPixel(img, x, y, color);
+    queue* q = NULL;
+    q = queue_push(q, x+1, y);
+    q = queue_push(q, x-1, y);
+    q = queue_push(q, x, y+1);
+    q = queue_push(q, x, y-1);
+
+    do{
+        queue *q = queue_pop(&q);
+
+        a = q->x;
+        b = q->y;
+        c = gdImageGetPixel(img, a, b);
+
+        if(abs(c - inicolor) <= th)
+        {
+            gdImageSetPixel(img, a, b, color);
+
+            q = queue_push(q, a+1, b);
+            q = queue_push(q, a-1, b);
+            q = queue_push(q, a, b+1);
+            q = queue_push(q, a, b-1);
+        }
+
+        free(q);
+
+    }while(!queue_is_empty(q));
+}
+
+//--------------------------------------------------------------------------//
+
+
+
+
 /*
-void draw(gdImagePtr img, FILE *fdout, char *path, int x, int y, int color)
+void correct(gdImagePtr img, FILE *fdout, char *path, int x, int y, int a, int b)
 {
     fdout = fopen(path, img);
-    gdImageSetPixel(img, x, y, color);
+    int arr[3][3] = {{0, 0, 0},{0, 0, 0},{0, 0, 0}};
+
+    if(abs(y-b) > abs(x-a))
+    {
+        arr = {{1, 0, 1},{2, 0, 2},{1, 0, 1}};
+    }
+
+    else
+    {
+        arr = {{1, 2, 1},{0, 0, 0},{1, 2, 1}};
+    }
+
+    while(x!=a && y!=b)
+    {
+
+        gdImageSetPixel(img, x, y, color);
+    }
     dgImageBmp(img, fdout, 0);
     fclose(fdout);
 }*/

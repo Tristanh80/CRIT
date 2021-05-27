@@ -9,5 +9,7 @@ void emboss(gdImagePtr img, FILE *fdout, char *path);
 void contrast(gdImagePtr img, FILE *fdout, char *path, int val);
 void crop(gdImagePtr img, FILE *fdout, char *path, int a, int b);
 void brightness(gdImagePtr img, FILE *fdout, char *path, int val);
+void bucket(gdImagePtr img, FILE *fdout, char *path, int x, int y, int th, int color)
+
 
 #endif
