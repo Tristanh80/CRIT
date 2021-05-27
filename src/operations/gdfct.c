@@ -91,7 +91,7 @@ typedef struct Queue
 {
     int x;
     int y;
-    struct queue* next;
+    struct Queue* next;
 }queue;
 
 int queue_is_empty(queue *q)
@@ -99,12 +99,14 @@ int queue_is_empty(queue *q)
     return q == NULL;
 }
 
-void queue_push(queue *q, int x, int y)
+queue* queue_push(queue *q, int x, int y)
 {
     queue *tmp;
-    tmp = malloc(sizeof (struct queue));
+    tmp = malloc(sizeof (struct Queue));
     tmp->x = x;
     tmp->y = y;
+
+    //printf("dans qpush x=%d %d et b=%d %d\n", x, *(tmp->x));
 
     if(q)
     {
@@ -119,56 +121,82 @@ void queue_push(queue *q, int x, int y)
     return tmp;
 }
 
-queue* queue_pop(queue **q)//return oldest element
+queue* queue_pop(queue **q) //return oldest element
 {
     queue *tmp = (*q)->next;
-    void *x = tmp->x;
-    void *y = tmp->y;
     if(tmp == tmp->next)
         *q = NULL;
     else
-        *q->next = tmp->next;
+    {
+       (*q)->next = tmp->next;
+    }
     return tmp;
 }
 
 
 void bucket(gdImagePtr img, FILE *fdout, char *path, int x, int y, int th, int color)
 {
-    th*=5;
-    inicolor = gdImageGetPixel(img, x, y);  //the color to change
+    fdout = fopen(path, "wb");
 
+    th*=2.5;
     int a = 0;  //coord x
     int b = 0;  //coord y
     int c = 0;  //color in (x,y)
+
+    const int w = gdImageSX(img);   //width and height of the image
+    const int h = gdImageSY(img);
+
+    int ini = gdImageGetPixel(img, x, y);  //the color to change
+    //printf("%d / %d\n",ini,color);
+
+    int ri = gdImageRed(img, ini);
+    int bi = gdImageBlue(img,ini);
+    int gi = gdImageGreen(img, ini);
 
     //first element
     gdImageSetPixel(img, x, y, color);
     queue* q = NULL;
     q = queue_push(q, x+1, y);
+    //printf("ici q->x=%d", *(q->x));
     q = queue_push(q, x-1, y);
     q = queue_push(q, x, y+1);
     q = queue_push(q, x, y-1);
 
     do{
-        queue *q = queue_pop(&q);
+        queue *last = queue_pop(&q);
 
-        a = q->x;
-        b = q->y;
+        a = last->x;
+        b = last->y;
         c = gdImageGetPixel(img, a, b);
 
-        if(abs(c - inicolor) <= th)
+        int re = gdImageRed(img, c);
+        int bl = gdImageBlue(img, c);
+        int gr = gdImageGreen(img, c);
+
+        //printf("a=%d; b= %d; c=%d\n",a,b,c);
+        //printf("%d\n", abs(c - ini));
+
+        if(abs(re-ri)<=th && abs(gr-gi)<=th && abs(bl-bi)<=th)
         {
             gdImageSetPixel(img, a, b, color);
 
-            q = queue_push(q, a+1, b);
-            q = queue_push(q, a-1, b);
-            q = queue_push(q, a, b+1);
-            q = queue_push(q, a, b-1);
+            if(a-1 >= 0)
+                q = queue_push(q, a-1, b);
+            if(a+1 < w)
+                q = queue_push(q, a+1, b);
+            if(b-1 >= 0)
+                q = queue_push(q, a, b+1);
+            if(b+1 < h)
+                q = queue_push(q, a, b-1);
         }
 
-        free(q);
-
+        free(last);
+        //printf("COUCOU\n");
     }while(!queue_is_empty(q));
+
+
+    gdImageBmp(img, fdout, 0);
+    fclose(fdout);
 }
 
 //--------------------------------------------------------------------------//

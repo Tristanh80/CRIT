@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
     FILE *fd=NULL;
     gdImagePtr img = gdImageCreateFromFile("my_image.jpg");
     brightness(img, fd, "brightness.bmp", 80);
-
+/*
     img = gdImageCreateFromFile("my_image.jpg");
     crop(img, fd, "crop.bmp", 100, 50);
 
@@ -55,9 +55,13 @@ int main(int argc, char* argv[])
     emboss(img, fd, "emboss.bmp");
 
     img = gdImageCreateFromFile("my_image.jpg");
-    edges(img, fd, "edges.bmp");
+    edges(img, fd, "edges.bmp");*/
 
-    gdFree(img);
+    img = gdImageCreateFromFile("my_image.jpg");
+    bucket(img, fd, "bucket.bmp", 500, 300, 70, 16777);
+
+
+   gdFree(img);
 
 
 /*
