@@ -204,28 +204,83 @@ void bucket(gdImagePtr img, FILE *fdout, char *path, int x, int y, int th, int c
 
 
 
-/*
-void correct(gdImagePtr img, FILE *fdout, char *path, int x, int y, int a, int b)
+
+void correct(gdImagePtr img, FILE *fdout, char *path, int x, int y, int r)
 {
-    fdout = fopen(path, img);
-    int arr[3][3] = {{0, 0, 0},{0, 0, 0},{0, 0, 0}};
+    fdout = fopen(path, "wb");
+    const int w = gdImageSX(img);   // width and height of the image
+    const int h = gdImageSY(img);
+    int pixel = 0;                  // The chosen pixel
+    int n = 0;                      // Number of pixels within the circle
 
-    if(abs(y-b) > abs(x-a))
+    int red = 0;
+    int blue = 0;
+    int green = 0;
+
+    int xa = x - r;
+    int ya = y - r; 
+    
+    int xb = x+r;
+    int yb = y-r;
+
+    int xc = x+r;
+    int yc = y+r;
+
+    int xd = x-r;
+    int yd = y+r;
+
+    
+    if (xa < 0)
     {
-        arr = {{1, 0, 1},{2, 0, 2},{1, 0, 1}};
+        xa = 0;
+        xd = 0;
     }
 
-    else
+    else if (ya < 0)
     {
-        arr = {{1, 2, 1},{0, 0, 0},{1, 2, 1}};
+        ya = 0;
+        yb = 0;
+    }
+    
+    if (xc > w)
+    {
+        xc = w;
+        xb = w;
     }
 
-    while(x!=a && y!=b)
+    else if (yc > h)
     {
-
-        gdImageSetPixel(img, x, y, color);
+        yc = h;
+        yd = h;
     }
-    dgImageBmp(img, fdout, 0);
+
+    for (int i = xa; i < xb; i++){
+        for(int j = ya; j < yd; j++){
+            if ((i-x)*(i-x)+(j-y)*(j-y) <= r*r){
+                pixel = gdImageGetPixel(img, x, y); 
+                red += gdImageRed(img, pixel);
+                green += gdImageGreen(img, pixel);
+                blue += gdImageBlue(img, pixel);
+                n++;
+            }
+        }
+    }
+
+    int avred = red/n;
+    int avgreen = green/n;
+    int avblue = blue/n;
+
+    int color = gdImageColorAllocate(img, avred, avgreen, avblue);
+
+    for (int i = xa; i < xb; i++){
+        for(int j = ya; j < yd; j++){
+            if ((i-x)*(i-x)+(j-y)*(j-y) <= r*r){
+                gdImageSetPixel(img, i, j, color);
+            }
+        }
+    }
+
+    gdImageBmp(img, fdout, 0);
     fclose(fdout);
-}*/
+}
 

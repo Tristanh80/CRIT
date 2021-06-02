@@ -57,11 +57,11 @@ int main(int argc, char* argv[])
     img = gdImageCreateFromFile("my_image.jpg");
     edges(img, fd, "edges.bmp");*/
 
-    img = gdImageCreateFromFile("my_image.jpg");
-    bucket(img, fd, "bucket.bmp", 500, 300, 70, 16777);
+    img = gdImageCreateFromFile("test.png");
+    correct(img, fd, "correct.bmp", 445, 280, 45);
 
 
-   gdFree(img);
+    gdFree(img);
 
 
 /*
