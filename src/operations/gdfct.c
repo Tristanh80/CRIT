@@ -134,11 +134,11 @@ queue* queue_pop(queue **q) //return oldest element
 }
 
 
-void bucket(gdImagePtr img, FILE *fdout, char *path, int x, int y, int th, int color)
+void bucket(gdImagePtr img, FILE *fdout, char *path, int x, int y, int th, int color) // flood-fill method
 {
     fdout = fopen(path, "wb");
 
-    th*=2.5;
+    //th*=2;
     int a = 0;  //coord x
     int b = 0;  //coord y
     int c = 0;  //color in (x,y)
