@@ -15,6 +15,7 @@
 #include "../operations/saturation.h"
 #include "../operations/rotate.h"
 #include "../operations/gdfct.h"
+#include "../operations/transparence.h"
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gdk/gdk.h>
 #include <unistd.h>
@@ -96,6 +97,14 @@ typedef struct {
     GtkButton *drawOkColor;
 
     GtkRange *scaleThickness;
+
+    GtkButton *transparenceButton;
+
+    GtkWidget *imageCoorWidget;
+    GtkWidget *imgageCoor;
+    GtkWidget *color_widget2;
+    GtkColorChooser *colorChooser2;
+    GtkButton *drawOkColor2;
     
 
     
@@ -110,10 +119,13 @@ typedef struct {
 
     int opentest;
     size_t number;                      // Count for CRTLZ
+    int x;
+    int y;                              // for coordinates
 
 } app_widgets;                          // Our struct for gtk
 
 GdkRGBA colorDraw;
+GdkRGBA colorDraw2;
 
 static void draw_brush (GtkWidget *widget, gdouble x, gdouble y);
 void on_btn_draw_clear_clicked(GtkWidget *b1);
@@ -224,6 +236,15 @@ void interface(int argc, char *argv[])
     widgets->drawOkColor = GTK_BUTTON(gtk_builder_get_object(builder, "btn_color_draw"));
     
     widgets->scaleThickness = GTK_RANGE(gtk_builder_get_object(builder, "draw_thickness"));
+
+    widgets->transparenceButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_transparence"));
+
+    widgets->imageCoorWidget = GTK_WIDGET(gtk_builder_get_object(builder, "dlg_bucket"));
+    widgets->imgageCoor = GTK_WIDGET(gtk_builder_get_object(builder, "img_dlg"));
+
+    widgets->color_widget2 = GTK_WIDGET(gtk_builder_get_object(builder, "color_widget2"));
+    widgets->colorChooser2 = GTK_COLOR_CHOOSER(gtk_builder_get_object(builder, "color_draw_chooser1"));
+    widgets->drawOkColor2 = GTK_BUTTON(gtk_builder_get_object(builder, "btn_color_draw1"));
 
     webkit_web_view_load_uri(WEBKIT_WEB_VIEW(widgets->w_webkit_webview), "https://k4gos.github.io");
 
@@ -362,6 +383,7 @@ void on_menuitm_open_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->sepiaButton),TRUE);
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->edgeButton),TRUE);
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->drawButton),TRUE);
+        gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->transparenceButton),TRUE);
     }
 
     // Finished with the "Open Image" dialog box, so hide it
@@ -433,21 +455,6 @@ char* nameOfFile(app_widgets *app_wdgts)
     // sprintf(temp,"/.tmp/temp%li.bmp",app_wdgts->number);
     // strcat(test,temp);
     // return test;
-}
-
-char* nameOfFilewithoutbmp(app_widgets *app_wdgts)
-{
-    char temp[32];
-    char pathbefore[64];
-    sprintf(pathbefore,".tmp");
-    char *path = pathbefore;
-    char actualpath[PATH_MAX+1];
-    char *ptr;
-    ptr = realpath(path,actualpath);
-    sprintf(temp,"/temp%li",app_wdgts->number);
-    strcat(ptr,temp);
-    return ptr;
-
 }
 
 // Copy image when one action is made
@@ -908,6 +915,7 @@ static void draw_brush(GtkWidget *widget, gdouble x, gdouble y) {
     gtk_widget_queue_draw(draw1);
 }
 
+
 void on_btn_choose_color_clicked(GtkWidget *widget, app_widgets *app_wdgts) {
     if (widget) NULL;
     gtk_widget_show(app_wdgts->color_widget);
@@ -917,6 +925,61 @@ void on_btn_color_draw_clicked(GtkWidget *widget, app_widgets *app_wdgts) {
     if (widget) NULL;
     gtk_widget_hide(app_wdgts->color_widget);
     gtk_color_chooser_get_rgba(app_wdgts->colorChooser,&colorDraw);
+}
+
+void on_btn_transparence_clicked(GtkButton *widget,app_widgets *app_wdgts)
+{
+	if(widget) NULL;
+    app_wdgts->file_name = nameOfFile(app_wdgts);               // Changing filename for temp value
+    SDL_Surface *image = load_image(app_wdgts->file_name);      // Loading image
+    transparence(image,128);                                           // Applied function
+    copy_image_for_crtlz(app_wdgts);                            // Copy for return
+    app_wdgts->file_name = nameOfFile(app_wdgts);               // Update filename
+    SDL_SaveBMP(image,app_wdgts->file_name);                    // Save image wit good temp value
+    SDL_FreeSurface(image);                                     // Free sdl
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name); // Set the image on application
+    
+}
+
+void on_btn_bucket_clicked(GtkButton *widget,app_widgets *app_wdgts) {
+    if(widget) NULL;
+    gtk_window_set_default_size(GTK_WINDOW(app_wdgts->imageCoorWidget),(gint) (app_wdgts->width)%1300, (gint) (app_wdgts->height)%760);
+    app_wdgts->file_name = nameOfFile(app_wdgts);
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->imgageCoor), app_wdgts->file_name);
+    gtk_widget_show(app_wdgts->imageCoorWidget);
+}
+
+void on_img_dlg_button_press_event(GtkWidget *widget, GdkEventMotion *event, app_widgets *app_wdgts) {
+    if (widget) NULL;
+    app_wdgts->x = (int)event->x;
+    app_wdgts->y = (int)event->y;
+    gtk_widget_hide(app_wdgts->imageCoorWidget);
+    gtk_widget_show(app_wdgts->color_widget2);    
+}
+
+void on_btn_color_draw1_clicked(GtkWidget *widget, app_widgets *app_wdgts) {
+    if (widget) NULL;
+    gtk_color_chooser_get_rgba(app_wdgts->colorChooser2,&colorDraw2);
+    printf("rouge : %f\nblue : %f\ngreen : %f\n",colorDraw2.red,colorDraw2.blue,colorDraw2.green);
+    float r = colorDraw2.red * 255;
+    unsigned int rr = (unsigned int)r;
+    float b = colorDraw2.blue * 255;
+    unsigned int bb = (unsigned int)b;
+    float g = colorDraw2.green * 255;
+    unsigned int gg = (unsigned int)g;
+    char hexstring[64];
+    sprintf(hexstring, "%x%x%x",rr,bb,gg);
+
+    printf("hexstring = %s",hexstring);
+    int number = (int)strtol(hexstring,NULL,16);
+    gtk_widget_hide(app_wdgts->color_widget2);
+    app_wdgts->file_name = nameOfFile(app_wdgts);
+    gdImagePtr img = gdImageCreateFromFile(app_wdgts->file_name);
+    copy_image_for_crtlz(app_wdgts);
+    app_wdgts->file_name= nameOfFile(app_wdgts);
+    bucket(img, NULL, app_wdgts->file_name, app_wdgts->x, app_wdgts->y, 20, 0);
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
+    gdImageDestroy(img);
 }
 
 // Return one action before (CRTL+Z)
