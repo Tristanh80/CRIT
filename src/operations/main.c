@@ -60,9 +60,14 @@ int main(int argc, char* argv[])
     img = gdImageCreateFromFile("Example.bmp");
     bucket(img, fd, "bucket.bmp", 400, 450, 30, 16000);
 
-    //img = gdImageCreateFromFile("Example.bmp");
-    //correct(img, fd, "correct.bmp", 445, 280, 45);
+    img = gdImageCreateFromFile("acne.jpeg");
+    correct(img, fd, "correct.bmp", 159, 60, 25);
 
+    img = gdImageCreateFromFile("vache.jpg");
+    correct(img, fd, "correct.bmp", 50, 225, 25);
+
+    img = gdImageCreateFromFile("jaaj.png");
+    correct(img, fd, "correct.bmp", 350, 350, 15);
 
     gdFree(img);
 

@@ -191,7 +191,7 @@ void bucket(gdImagePtr img, FILE *fdout, char *path, int x, int y, int th, int c
         }
 
         free(last);
-        //printf("COUCOU\n");
+
     }while(!queue_is_empty(q));
 
 
@@ -218,30 +218,25 @@ void correct(gdImagePtr img, FILE *fdout, char *path, int x, int y, int r)
     int green = 0;
 
     int xa = x - r;
-    int ya = y - r; 
-    
+    int ya = y - r;
+
     int xb = x+r;
-    int yb = y-r;
 
     int xc = x+r;
     int yc = y+r;
 
-    int xd = x-r;
     int yd = y+r;
 
-    
     if (xa < 0)
     {
         xa = 0;
-        xd = 0;
     }
 
     else if (ya < 0)
     {
         ya = 0;
-        yb = 0;
     }
-    
+
     if (xc > w)
     {
         xc = w;
@@ -270,11 +265,26 @@ void correct(gdImagePtr img, FILE *fdout, char *path, int x, int y, int r)
     int avgreen = green/n;
     int avblue = blue/n;
 
-    int color = gdImageColorAllocate(img, avred, avgreen, avblue);
+    int color;
+    float rnd = 0;
 
     for (int i = xa; i < xb; i++){
         for(int j = ya; j < yd; j++){
             if ((i-x)*(i-x)+(j-y)*(j-y) <= r*r){
+                rnd = (rand()%200)/(float)1000+0.9;
+
+                int cr = (int)((float)avred*rnd);
+                int cg = (int)((float)avgreen*rnd);
+                int cb = (int)((float)avblue*rnd);
+
+                if(cr>255)
+                    cr = 255;
+                if(cg>255)
+                    cg = 255;
+                if(cb>255)
+                    cb = 255;
+
+                color = gdImageColorAllocate(img, cr,cg,cb);
                 gdImageSetPixel(img, i, j, color);
             }
         }
