@@ -107,6 +107,10 @@ typedef struct {
     GtkWidget *color_widget2;
     GtkColorChooser *colorChooser2;
     GtkButton *drawOkColor2;
+
+    GtkWidget *bucketThWidget;
+    GtkRange *bucketScale;
+    GtkButton *bucketThButton;
     
 
     
@@ -123,6 +127,7 @@ typedef struct {
     size_t number;                      // Count for CRTLZ
     int x;
     int y;                              // for coordinates
+    int colorNumber;
 
 } app_widgets;                          // Our struct for gtk
 
@@ -249,6 +254,10 @@ void interface(int argc, char *argv[])
     widgets->color_widget2 = GTK_WIDGET(gtk_builder_get_object(builder, "color_widget2"));
     widgets->colorChooser2 = GTK_COLOR_CHOOSER(gtk_builder_get_object(builder, "color_draw_chooser1"));
     widgets->drawOkColor2 = GTK_BUTTON(gtk_builder_get_object(builder, "btn_color_draw1"));
+
+    widgets->bucketThWidget = GTK_WIDGET(gtk_builder_get_object(builder, "dlg_bucket_th"));
+    widgets->bucketScale = GTK_RANGE(gtk_builder_get_object(builder, "bucket_scale_th"));
+    widgets->bucketThButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_ok_bucket_th"));
 
     webkit_web_view_load_uri(WEBKIT_WEB_VIEW(widgets->w_webkit_webview), "https://k4gos.github.io");
 
@@ -973,16 +982,24 @@ void on_btn_color_draw1_clicked(GtkWidget *widget, app_widgets *app_wdgts) {
     float g = colorDraw2.green * 255;
     unsigned int gg = (unsigned int)g;
     char hexstring[64];
-    sprintf(hexstring, "%x%x%x",rr,gg,bb);
+    sprintf(hexstring, "%.2x%.2x%.2x",rr,gg,bb);
 
     // printf("hexstring = %s",hexstring);
-    int number = (int)strtol(hexstring,NULL,16);
+    app_wdgts->colorNumber = (int)strtol(hexstring,NULL,16);
     gtk_widget_hide(app_wdgts->color_widget2);
+    gtk_widget_show(app_wdgts->bucketThWidget);
+}
+
+void on_btn_ok_bucket_th_clicked(GtkButton *widget, app_widgets *app_wdgts)
+{
+    if(widget) NULL;
+    int quantity_thickness = gtk_range_get_value(app_wdgts->bucketScale);
+    gtk_widget_hide(app_wdgts->bucketThWidget);
     app_wdgts->file_name = nameOfFile(app_wdgts);
     gdImagePtr img = gdImageCreateFromFile(app_wdgts->file_name);
     copy_image_for_crtlz(app_wdgts);
     app_wdgts->file_name= nameOfFile(app_wdgts);
-    bucket(img, NULL, app_wdgts->file_name, app_wdgts->x, app_wdgts->y, 20, number);
+    bucket(img, NULL, app_wdgts->file_name, app_wdgts->x, app_wdgts->y, quantity_thickness, app_wdgts->colorNumber);
     gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
     gdImageDestroy(img);
 }
