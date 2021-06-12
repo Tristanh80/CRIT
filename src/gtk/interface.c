@@ -111,9 +111,11 @@ typedef struct {
     GtkWidget *bucketThWidget;
     GtkRange *bucketScale;
     GtkButton *bucketThButton;
-    
 
-    
+    GtkButton *correctButton;
+    GtkWidget *correctWidget;
+    GtkRange *correctScale;
+    GtkButton *correctThButton;
 
     GdkPixbuf *tmp_img;
     int width;
@@ -128,6 +130,8 @@ typedef struct {
     int x;
     int y;                              // for coordinates
     int colorNumber;
+
+    int numberForWidget;
 
 } app_widgets;                          // Our struct for gtk
 
@@ -258,6 +262,11 @@ void interface(int argc, char *argv[])
     widgets->bucketThWidget = GTK_WIDGET(gtk_builder_get_object(builder, "dlg_bucket_th"));
     widgets->bucketScale = GTK_RANGE(gtk_builder_get_object(builder, "bucket_scale_th"));
     widgets->bucketThButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_ok_bucket_th"));
+
+    widgets->correctButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_correct"));
+    widgets->correctWidget = GTK_WIDGET(gtk_builder_get_object(builder, "dlg_correct_th"));
+    widgets->correctScale = GTK_RANGE(gtk_builder_get_object(builder, "correct_scale_th1"));
+    widgets->correctThButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_ok_bucket_th"));
 
     webkit_web_view_load_uri(WEBKIT_WEB_VIEW(widgets->w_webkit_webview), "https://k4gos.github.io");
 
@@ -398,6 +407,7 @@ void on_menuitm_open_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->drawButton),TRUE);
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->transparenceButton),TRUE);
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->bucketButton),TRUE);
+        gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->correctButton),TRUE);
     }
 
     // Finished with the "Open Image" dialog box, so hide it
@@ -960,6 +970,16 @@ void on_btn_bucket_clicked(GtkButton *widget,app_widgets *app_wdgts) {
     gtk_window_set_default_size(GTK_WINDOW(app_wdgts->imageCoorWidget),(gint) (app_wdgts->width)%1300, (gint) (app_wdgts->height)%760);
     app_wdgts->file_name = nameOfFile(app_wdgts);
     gtk_image_set_from_file(GTK_IMAGE(app_wdgts->imgageCoor), app_wdgts->file_name);
+    app_wdgts->numberForWidget = 0;
+    gtk_widget_show(app_wdgts->imageCoorWidget);
+}
+
+void on_btn_correct_clicked(GtkButton *widget,app_widgets *app_wdgts) {
+    if(widget) NULL;
+    gtk_window_set_default_size(GTK_WINDOW(app_wdgts->imageCoorWidget),(gint) (app_wdgts->width)%1300, (gint) (app_wdgts->height)%760);
+    app_wdgts->file_name = nameOfFile(app_wdgts);
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->imgageCoor), app_wdgts->file_name);
+    app_wdgts->numberForWidget = 1;
     gtk_widget_show(app_wdgts->imageCoorWidget);
 }
 
@@ -968,7 +988,12 @@ void on_img_dlg_button_press_event(GtkWidget *widget, GdkEventMotion *event, app
     app_wdgts->x = (int)event->x;
     app_wdgts->y = (int)event->y;
     gtk_widget_hide(app_wdgts->imageCoorWidget);
-    gtk_widget_show(app_wdgts->color_widget2);    
+    if (app_wdgts->numberForWidget == 0) {
+        gtk_widget_show(app_wdgts->color_widget2);
+    }
+    else {
+        gtk_widget_show(app_wdgts->correctWidget);
+    }
 }
 
 void on_btn_color_draw1_clicked(GtkWidget *widget, app_widgets *app_wdgts) {
@@ -1000,6 +1025,20 @@ void on_btn_ok_bucket_th_clicked(GtkButton *widget, app_widgets *app_wdgts)
     copy_image_for_crtlz(app_wdgts);
     app_wdgts->file_name= nameOfFile(app_wdgts);
     bucket(img, NULL, app_wdgts->file_name, app_wdgts->x, app_wdgts->y, quantity_thickness, app_wdgts->colorNumber);
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
+    gdImageDestroy(img);
+}
+
+void on_btn_ok_correct_th1_clicked(GtkButton *widget, app_widgets *app_wdgts)
+{
+    if(widget) NULL;
+    int quantity_thickness_scale = gtk_range_get_value(app_wdgts->correctScale);
+    gtk_widget_hide(app_wdgts->correctWidget);
+    app_wdgts->file_name = nameOfFile(app_wdgts);
+    gdImagePtr img = gdImageCreateFromFile(app_wdgts->file_name);
+    copy_image_for_crtlz(app_wdgts);
+    app_wdgts->file_name= nameOfFile(app_wdgts);
+    correct(img, NULL, app_wdgts->file_name, app_wdgts->x, app_wdgts->y, quantity_thickness_scale);
     gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
     gdImageDestroy(img);
 }
