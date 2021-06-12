@@ -100,6 +100,8 @@ typedef struct {
 
     GtkButton *transparenceButton;
 
+    GtkButton *bucketButton;
+
     GtkWidget *imageCoorWidget;
     GtkWidget *imgageCoor;
     GtkWidget *color_widget2;
@@ -238,6 +240,8 @@ void interface(int argc, char *argv[])
     widgets->scaleThickness = GTK_RANGE(gtk_builder_get_object(builder, "draw_thickness"));
 
     widgets->transparenceButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_transparence"));
+
+    widgets->bucketButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_bucket"));
 
     widgets->imageCoorWidget = GTK_WIDGET(gtk_builder_get_object(builder, "dlg_bucket"));
     widgets->imgageCoor = GTK_WIDGET(gtk_builder_get_object(builder, "img_dlg"));
@@ -384,6 +388,7 @@ void on_menuitm_open_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->edgeButton),TRUE);
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->drawButton),TRUE);
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->transparenceButton),TRUE);
+        gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->bucketButton),TRUE);
     }
 
     // Finished with the "Open Image" dialog box, so hide it
