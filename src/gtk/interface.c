@@ -960,7 +960,7 @@ void on_img_dlg_button_press_event(GtkWidget *widget, GdkEventMotion *event, app
 void on_btn_color_draw1_clicked(GtkWidget *widget, app_widgets *app_wdgts) {
     if (widget) NULL;
     gtk_color_chooser_get_rgba(app_wdgts->colorChooser2,&colorDraw2);
-    printf("rouge : %f\nblue : %f\ngreen : %f\n",colorDraw2.red,colorDraw2.blue,colorDraw2.green);
+    // printf("rouge : %f\nblue : %f\ngreen : %f\n",colorDraw2.red,colorDraw2.blue,colorDraw2.green);
     float r = colorDraw2.red * 255;
     unsigned int rr = (unsigned int)r;
     float b = colorDraw2.blue * 255;
@@ -968,16 +968,16 @@ void on_btn_color_draw1_clicked(GtkWidget *widget, app_widgets *app_wdgts) {
     float g = colorDraw2.green * 255;
     unsigned int gg = (unsigned int)g;
     char hexstring[64];
-    sprintf(hexstring, "%x%x%x",rr,bb,gg);
+    sprintf(hexstring, "%x%x%x",rr,gg,bb);
 
-    printf("hexstring = %s",hexstring);
+    // printf("hexstring = %s",hexstring);
     int number = (int)strtol(hexstring,NULL,16);
     gtk_widget_hide(app_wdgts->color_widget2);
     app_wdgts->file_name = nameOfFile(app_wdgts);
     gdImagePtr img = gdImageCreateFromFile(app_wdgts->file_name);
     copy_image_for_crtlz(app_wdgts);
     app_wdgts->file_name= nameOfFile(app_wdgts);
-    bucket(img, NULL, app_wdgts->file_name, app_wdgts->x, app_wdgts->y, 20, 0);
+    bucket(img, NULL, app_wdgts->file_name, app_wdgts->x, app_wdgts->y, 20, number);
     gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
     gdImageDestroy(img);
 }
