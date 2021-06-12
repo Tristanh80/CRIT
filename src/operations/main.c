@@ -40,8 +40,8 @@ int main(int argc, char* argv[])
 {
     FILE *fd=NULL;
     gdImagePtr img = gdImageCreateFromFile("my_image.jpg");
-    brightness(img, fd, "brightness.bmp", 80);
-/*
+/*    brightness(img, fd, "brightness.bmp", 80);
+
     img = gdImageCreateFromFile("my_image.jpg");
     crop(img, fd, "crop.bmp", 100, 50);
 
@@ -57,8 +57,11 @@ int main(int argc, char* argv[])
     img = gdImageCreateFromFile("my_image.jpg");
     edges(img, fd, "edges.bmp");*/
 
-    img = gdImageCreateFromFile("test.png");
-    correct(img, fd, "correct.bmp", 445, 280, 45);
+    img = gdImageCreateFromFile("Example.bmp");
+    bucket(img, fd, "bucket.bmp", 400, 450, 30, 16000);
+
+    //img = gdImageCreateFromFile("Example.bmp");
+    //correct(img, fd, "correct.bmp", 445, 280, 45);
 
 
     gdFree(img);
