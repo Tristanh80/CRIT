@@ -9,24 +9,6 @@ void negate(gdImagePtr img, FILE *fdout, char *path)
     fdout = fopen(path, "wb");
     gdImageNegate(img);
 
-
-    //TESTS A ENLEVER
-    /*for(int x = 16770000; x<16777215; x++)
-    {
-        gdImageColorReplace(img,x,16711680);
-    }
-    gdImageFile(img, "testColor.jpg");*/
-
-    /*
-    gdImageBoundsSafe(img, 100, 100);
-    gdImageFile(img, "testBounds.jpg");
-    */
-
-    /*
-    gdImageChar(img, NULL, 100, 100, 64, 0);
-    gdImageFile(img, "testChar.jpg");
-    */
-
     gdImageBmp(img, fdout, 0);
     fclose(fdout);
 }
@@ -87,6 +69,9 @@ void crop(gdImagePtr img, FILE *fdout, char *path, int a, int b)
 
 //---------------Bucket and queues-------------------------//
 
+//Circular queue without sentinel is used
+
+//queue structure, x and y of the pixel, next is the next element in the queue
 typedef struct Queue
 {
     int x;
@@ -94,19 +79,20 @@ typedef struct Queue
     struct Queue* next;
 }queue;
 
+
+//check if the queue is empty
 int queue_is_empty(queue *q)
 {
     return q == NULL;
 }
 
+//add a new element to the queue
 queue* queue_push(queue *q, int x, int y)
 {
     queue *tmp;
     tmp = malloc(sizeof (struct Queue));
     tmp->x = x;
     tmp->y = y;
-
-    //printf("dans qpush x=%d %d et b=%d %d\n", x, *(tmp->x));
 
     if(q)
     {
@@ -121,7 +107,8 @@ queue* queue_push(queue *q, int x, int y)
     return tmp;
 }
 
-queue* queue_pop(queue **q) //return oldest element
+//return oldest element of the queue
+queue* queue_pop(queue **q) 
 {
     queue *tmp = (*q)->next;
     if(tmp == tmp->next)
@@ -134,11 +121,13 @@ queue* queue_pop(queue **q) //return oldest element
 }
 
 
-void bucket(gdImagePtr img, FILE *fdout, char *path, int x, int y, int th, int color) // flood-fill method
+// flood-fill method, choose a pixel and change the color of all the pixels 
+// in touch with the first one, and with the same color
+// x and y of the pixel, th = threshold of initial color we select, color = the new color
+void bucket(gdImagePtr img, FILE *fdout, char *path, int x, int y, int th, int color)
 {
     fdout = fopen(path, "wb");
 
-    //th*=2;
     int a = 0;  //coord x
     int b = 0;  //coord y
     int c = 0;  //color in (x,y)
@@ -147,7 +136,6 @@ void bucket(gdImagePtr img, FILE *fdout, char *path, int x, int y, int th, int c
     const int h = gdImageSY(img);
 
     int ini = gdImageGetPixel(img, x, y);  //the color to change
-    //printf("%d / %d\n",ini,color);
 
     int ri = gdImageRed(img, ini);
     int bi = gdImageBlue(img,ini);
@@ -157,7 +145,6 @@ void bucket(gdImagePtr img, FILE *fdout, char *path, int x, int y, int th, int c
     gdImageSetPixel(img, x, y, color);
     queue* q = NULL;
     q = queue_push(q, x+1, y);
-    //printf("ici q->x=%d", *(q->x));
     q = queue_push(q, x-1, y);
     q = queue_push(q, x, y+1);
     q = queue_push(q, x, y-1);
@@ -172,9 +159,6 @@ void bucket(gdImagePtr img, FILE *fdout, char *path, int x, int y, int th, int c
         int re = gdImageRed(img, c);
         int bl = gdImageBlue(img, c);
         int gr = gdImageGreen(img, c);
-
-        //printf("a=%d; b= %d; c=%d\n",a,b,c);
-        //printf("%d\n", abs(c - ini));
 
         if(abs(re-ri)<=th && abs(gr-gi)<=th && abs(bl-bi)<=th)
         {
@@ -204,7 +188,8 @@ void bucket(gdImagePtr img, FILE *fdout, char *path, int x, int y, int th, int c
 
 
 
-
+//draws a disc in x,y of radius r.
+//its color is the average color of the surface covered by the disc
 void correct(gdImagePtr img, FILE *fdout, char *path, int x, int y, int r)
 {
     fdout = fopen(path, "wb");
