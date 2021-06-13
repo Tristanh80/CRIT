@@ -82,6 +82,11 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">img/Chromatic_classic_border.bmp</property>
   </object>
+  <object class="GtkImage" id="img_bucket">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">img/seau.jpg</property>
+  </object>
   <object class="GtkImage" id="img_color">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -91,6 +96,11 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">img/contrast.bmp</property>
+  </object>
+  <object class="GtkImage" id="img_correct">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">img/rond.jpg</property>
   </object>
   <object class="GtkImage" id="img_crop">
     <property name="visible">True</property>
@@ -586,7 +596,7 @@
                 <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Apply edge detection to your image</property>
+                <property name="tooltip_text" translatable="yes">Draw on your image</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
                 <property name="image">img_draw</property>
@@ -605,7 +615,9 @@
                 <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Apply transparence on your image</property>
                 <property name="image">img_transparence</property>
+                <property name="relief">none</property>
                 <signal name="clicked" handler="on_btn_transparence_clicked" swapped="no"/>
               </object>
               <packing>
@@ -615,11 +627,13 @@
             </child>
             <child>
               <object class="GtkButton" id="btn_bucket">
-                <property name="label" translatable="yes">Bucket</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Apply bucket to your image</property>
+                <property name="image">img_bucket</property>
+                <property name="relief">none</property>
                 <signal name="clicked" handler="on_btn_bucket_clicked" swapped="no"/>
               </object>
               <packing>
@@ -629,11 +643,13 @@
             </child>
             <child>
               <object class="GtkButton" id="btn_correct">
-                <property name="label" translatable="yes">Correct</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Apply correct to your image</property>
+                <property name="image">img_correct</property>
+                <property name="relief">none</property>
                 <signal name="clicked" handler="on_btn_correct_clicked" swapped="no"/>
               </object>
               <packing>
@@ -1011,6 +1027,7 @@ Iony Rakotoson</property>
   </object>
   <object class="GtkWindow" id="dlg_bucket">
     <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Clic where you want</property>
     <property name="resizable">False</property>
     <property name="deletable">False</property>
     <property name="transient_for">window_main</property>
