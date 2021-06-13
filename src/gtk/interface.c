@@ -36,7 +36,6 @@ typedef struct {
     GtkWidget *window;
     GtkWidget *w_dlg_file_choose;       // Pointer to file chooser dialog box
     GtkWidget *save_file_choose;        // For save(WIP)
-    // GtkEntry *bufferSave;               // For save(WIP)
     char *fileNameSave;          // For save (WIP)
     GtkWidget *w_img_main;              // Pointer to image widget
     GtkWidget *ret;                     // For return
@@ -419,16 +418,15 @@ void on_menuitm_saveas_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
     if(menuitem) NULL;
     if(app_wdgts->number==0)
     {
-        GtkWidget* dialog = gtk_message_dialog_new_with_markup(GTK_WINDOW(app_wdgts->window),GTK_DIALOG_MODAL,GTK_MESSAGE_INFO,GTK_BUTTONS_CLOSE,"You haven't done any actions\n <b>Save impossible. </b>");
+        GtkWidget* dialog = gtk_message_dialog_new_with_markup(GTK_WINDOW(app_wdgts->window),
+        GTK_DIALOG_MODAL,GTK_MESSAGE_INFO,GTK_BUTTONS_CLOSE,"You haven't done any actions\n <b>Save impossible. </b>");
 		gtk_window_set_title(GTK_WINDOW (dialog), "Problem");
 		gtk_dialog_run(GTK_DIALOG (dialog));
 		gtk_widget_destroy(dialog);
     }
     else
     {
-        // gtk_widget_show(app_wdgts->w_dlg_file_choose);
             
-            // Check return value from Open Image dialog box to see if user clicked the Open button
             if (gtk_dialog_run(GTK_DIALOG (app_wdgts->save_file_choose)) == GTK_RESPONSE_OK) {
                 // Get the file name from the dialog box
                 app_wdgts->fileNameSave = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(app_wdgts->save_file_choose));
@@ -454,31 +452,7 @@ char* nameOfFile(app_widgets *app_wdgts)
     ptr = realpath(path,actualpath);
     sprintf(temp,"/temp%li.bmp",app_wdgts->number);
     strcat(ptr,temp);
-    // printf("realpath ptr = %s\n",ptr);
     return ptr;
-    // printf("path = %s\n",path);
-    
-    // printf("realpath actualpath = %s\n",actualpath);
-    
-    // FILE *fp;
-    // fp = popen("pwd","r");
-
-    // if(fgets(buffer, 64, fp) == NULL)
-    // {
-    //     errx(1,"Error fgets in nameOfFile");
-    // };
-    
-    // pclose(fp);
-    // int i = 0;
-    // char *test = (char *)malloc(sizeof(char)*64);
-    // while(buffer[i] !=10)
-    // {
-    //     test[i] = buffer[i];
-    //     i++;
-    // }
-    // sprintf(temp,"/.tmp/temp%li.bmp",app_wdgts->number);
-    // strcat(test,temp);
-    // return test;
 }
 
 // Copy image when one action is made
@@ -999,7 +973,6 @@ void on_img_dlg_button_press_event(GtkWidget *widget, GdkEventMotion *event, app
 void on_btn_color_draw1_clicked(GtkWidget *widget, app_widgets *app_wdgts) {
     if (widget) NULL;
     gtk_color_chooser_get_rgba(app_wdgts->colorChooser2,&colorDraw2);
-    // printf("rouge : %f\nblue : %f\ngreen : %f\n",colorDraw2.red,colorDraw2.blue,colorDraw2.green);
     float r = colorDraw2.red * 255;
     unsigned int rr = (unsigned int)r;
     float b = colorDraw2.blue * 255;
@@ -1009,7 +982,6 @@ void on_btn_color_draw1_clicked(GtkWidget *widget, app_widgets *app_wdgts) {
     char hexstring[64];
     sprintf(hexstring, "%.2x%.2x%.2x",rr,gg,bb);
 
-    // printf("hexstring = %s",hexstring);
     app_wdgts->colorNumber = (int)strtol(hexstring,NULL,16);
     gtk_widget_hide(app_wdgts->color_widget2);
     gtk_widget_show(app_wdgts->bucketThWidget);
@@ -1106,6 +1078,22 @@ void on_window_main_key_press_event(GtkWidget *widget, GdkEventKey *event,app_wi
     if(event->keyval == GDK_KEY_r)
     {
         on_menuitm_return_activate(NULL,app_wdgts);
+    }
+    if(event->keyval == GDK_KEY_s)
+    {
+        on_menuitm_saveas_activate(NULL,app_wdgts);
+    }
+    if(event->keyval == GDK_KEY_o)
+    {
+        on_menuitm_open_activate(NULL,app_wdgts);
+    }
+    if(event->keyval == GDK_KEY_w)
+    {
+        on_menuitm_documentation_activate(NULL,app_wdgts);
+    }
+    if(event->keyval == GDK_KEY_a)
+    {
+        on_menuitm_about_activate(NULL,app_wdgts);
     }
 }
 
