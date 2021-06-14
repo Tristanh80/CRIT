@@ -7,21 +7,21 @@
 
 void filters(SDL_Surface *img, int choice, int alpha)
 {
-    SDL_Surface *filter = load_image("filter1.png");
+    SDL_Surface *filter = load_image("src/operations/filter1.png");
 
     if (choice == 1)
     {
-      filter = load_image("filter1.png");
+      filter = load_image("src/operations/filter1.png");
     }
 
     if (choice == 2)
     {
-      filter = load_image("filter2.png");
+      filter = load_image("src/operations/filter2.png");
     }
 
     if (choice == 3)
     {
-      filter = load_image("filter3.png");
+      filter = load_image("src/operations/filter3.png");
     }
     
     
