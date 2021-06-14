@@ -5,6 +5,6 @@
 #include <SDL/SDL.h>
 #include "../import/import.h"
 
-void transparence (SDL_Surface *img, int level);
+void transparence (SDL_Surface *img, int choice, int alpha);
 
 #endif
