@@ -13,6 +13,7 @@
 #include "../operations/sepia.h"
 #include "../operations/sym.h"
 #include "../operations/saturation.h"
+#include "../operations/socialfilter.h"
 #include "../operations/rotate.h"
 #include "../operations/gdfct.h"
 #include "../operations/transparence.h"
@@ -98,6 +99,8 @@ typedef struct {
     GtkRange *scaleThickness;
 
     GtkButton *transparenceButton;
+    GtkWidget *transparenceWidget;
+    GtkButton *transparenceOkButton;
 
     GtkButton *bucketButton;
 
@@ -115,6 +118,13 @@ typedef struct {
     GtkWidget *correctWidget;
     GtkRange *correctScale;
     GtkButton *correctThButton;
+
+    GtkWidget *filtersWidget;
+    GtkButton *filtersButton;
+    GtkRange *alphaScale;
+    GtkButton *filters1;
+    GtkButton *filters2;
+    GtkButton *filters3;
 
     GdkPixbuf *tmp_img;
     int width;
@@ -248,6 +258,8 @@ void interface(int argc, char *argv[])
     widgets->scaleThickness = GTK_RANGE(gtk_builder_get_object(builder, "draw_thickness"));
 
     widgets->transparenceButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_transparence"));
+    widgets->transparenceWidget = GTK_WIDGET(gtk_builder_get_object(builder, "dlg_transparence"));
+    widgets->transparenceOkButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_transparence_ok"));
 
     widgets->bucketButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_bucket"));
 
@@ -266,6 +278,14 @@ void interface(int argc, char *argv[])
     widgets->correctWidget = GTK_WIDGET(gtk_builder_get_object(builder, "dlg_correct_th"));
     widgets->correctScale = GTK_RANGE(gtk_builder_get_object(builder, "correct_scale_th1"));
     widgets->correctThButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_ok_bucket_th"));
+
+    widgets->filtersWidget = GTK_WIDGET(gtk_builder_get_object(builder, "dlg_filters"));
+    widgets->filtersButton = GTK_BUTTON(gtk_builder_get_object(builder, "btn_filters"));
+    widgets->alphaScale = GTK_RANGE(gtk_builder_get_object(builder, "alphaScale"));
+    widgets->filters1 = GTK_BUTTON(gtk_builder_get_object(builder, "btn_filter1"));
+    widgets->filters2 = GTK_BUTTON(gtk_builder_get_object(builder, "btn_filter2"));
+    widgets->filters3 = GTK_BUTTON(gtk_builder_get_object(builder, "btn_filter3"));
+    
 
     webkit_web_view_load_uri(WEBKIT_WEB_VIEW(widgets->w_webkit_webview), "https://k4gos.github.io");
 
@@ -407,6 +427,7 @@ void on_menuitm_open_activate(GtkMenuItem *menuitem, app_widgets *app_wdgts)
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->transparenceButton),TRUE);
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->bucketButton),TRUE);
         gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->correctButton),TRUE);
+        gtk_widget_set_sensitive(GTK_WIDGET(app_wdgts->filtersButton),TRUE);
     }
 
     // Finished with the "Open Image" dialog box, so hide it
@@ -928,9 +949,17 @@ void on_btn_color_draw_clicked(GtkWidget *widget, app_widgets *app_wdgts) {
 void on_btn_transparence_clicked(GtkButton *widget,app_widgets *app_wdgts)
 {
 	if(widget) NULL;
+    gtk_widget_show(app_wdgts->transparenceWidget);
+    
+}
+void on_btn_transparence_ok_clicked(GtkButton *widget,app_widgets *app_wdgts)
+{
+	if(widget) NULL;
+    gtk_widget_hide(app_wdgts->transparenceWidget);
+    int alphaScale = gtk_range_get_value(app_wdgts->alphaScale);
     app_wdgts->file_name = nameOfFile(app_wdgts);               // Changing filename for temp value
     SDL_Surface *image = load_image(app_wdgts->file_name);      // Loading image
-    transparence(image,128);                                           // Applied function
+    transparence(image,alphaScale);                                           // Applied function
     copy_image_for_crtlz(app_wdgts);                            // Copy for return
     app_wdgts->file_name = nameOfFile(app_wdgts);               // Update filename
     SDL_SaveBMP(image,app_wdgts->file_name);                    // Save image wit good temp value
@@ -1013,6 +1042,57 @@ void on_btn_ok_correct_th1_clicked(GtkButton *widget, app_widgets *app_wdgts)
     correct(img, NULL, app_wdgts->file_name, app_wdgts->x, app_wdgts->y, quantity_thickness_scale);
     gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name);
     gdImageDestroy(img);
+}
+
+void on_btn_filters_clicked(GtkButton *widget,app_widgets *app_wdgts)
+{
+	if(widget) NULL;
+    gtk_widget_show(app_wdgts->filtersWidget);
+}
+
+void on_btn_filter1_clicked(GtkButton *widget,app_widgets *app_wdgts)
+{
+	if(widget) NULL;
+    gtk_widget_hide(app_wdgts->filtersWidget);
+    app_wdgts->file_name = nameOfFile(app_wdgts);               // Changing filename for temp value
+    SDL_Surface *image = load_image(app_wdgts->file_name);      // Loading image
+    int alphaScale = gtk_range_get_value(app_wdgts->alphaScale);
+    filters(image,1,alphaScale);                                           // Applied function
+    copy_image_for_crtlz(app_wdgts);                            // Copy for return
+    app_wdgts->file_name = nameOfFile(app_wdgts);               // Update filename
+    SDL_SaveBMP(image,app_wdgts->file_name);                    // Save image wit good temp value
+    SDL_FreeSurface(image);                                     // Free sdl
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name); // Set the image on application
+}
+
+void on_btn_filter2_clicked(GtkButton *widget,app_widgets *app_wdgts)
+{
+	if(widget) NULL;
+    gtk_widget_hide(app_wdgts->filtersWidget);
+    app_wdgts->file_name = nameOfFile(app_wdgts);               // Changing filename for temp value
+    SDL_Surface *image = load_image(app_wdgts->file_name);      // Loading image
+    int alphaScale = gtk_range_get_value(app_wdgts->alphaScale);
+    filters(image,2,alphaScale);                                           // Applied function
+    copy_image_for_crtlz(app_wdgts);                            // Copy for return
+    app_wdgts->file_name = nameOfFile(app_wdgts);               // Update filename
+    SDL_SaveBMP(image,app_wdgts->file_name);                    // Save image wit good temp value
+    SDL_FreeSurface(image);                                     // Free sdl
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name); // Set the image on application
+}
+
+void on_btn_filter3_clicked(GtkButton *widget,app_widgets *app_wdgts)
+{
+	if(widget) NULL;
+    gtk_widget_hide(app_wdgts->filtersWidget);
+    app_wdgts->file_name = nameOfFile(app_wdgts);               // Changing filename for temp value
+    SDL_Surface *image = load_image(app_wdgts->file_name);      // Loading image
+    int alphaScale = gtk_range_get_value(app_wdgts->alphaScale);
+    filters(image,3,alphaScale);                                           // Applied function
+    copy_image_for_crtlz(app_wdgts);                            // Copy for return
+    app_wdgts->file_name = nameOfFile(app_wdgts);               // Update filename
+    SDL_SaveBMP(image,app_wdgts->file_name);                    // Save image wit good temp value
+    SDL_FreeSurface(image);                                     // Free sdl
+    gtk_image_set_from_file(GTK_IMAGE(app_wdgts->w_img_main), app_wdgts->file_name); // Set the image on application
 }
 
 // Return one action before (CRTL+Z)
