@@ -23,3 +23,7 @@ The aim of this project is to do a photoshop like, at least a photoshop lite.
 ## Links
 [Repository for website](https://github.com/K4GOS/K4GOS.github.io)<br>
 [Website](https://k4gos.github.io/)
+
+## END OF THE PROJECT
+
+This project has ended ( for our part ) and will no longer continue.
